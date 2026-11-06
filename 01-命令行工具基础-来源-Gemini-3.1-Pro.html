@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>命令行工具基础 (CLI) - 学习地图</title>
+    <!-- 字体表不阻塞首屏：国内网络访问 Google Fonts 常超时，原来的写法会一直白屏到请求失败；现在先用系统字体显示，字体到了再换上 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet"></noscript>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'dark', fontFamily: 'Inter' });
+    </script>
+    <style>
+        :root {
+            --bg-color: #0B0F19;
+            --card-bg: rgba(20, 27, 45, 0.6);
+            --text-main: #E2E8F0;
+            --text-muted: #94A3B8;
+            --accent: #00F0FF;
+            --accent-secondary: #7000FF;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(112, 0, 255, 0.1), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 240, 255, 0.1), transparent 25%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(to right, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+        h3 { color: var(--accent); font-size: 1.3rem; margin-top: 30px;}
+        p { color: var(--text-muted); font-size: 1.05rem; }
+        .mermaid {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 16px;
+            margin: 30px 0;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        .card strong { color: #fff; display: block; margin-bottom: 10px; font-size: 1.1rem; }
+        .summary-box {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(112, 0, 255, 0.1));
+            border: 1px solid var(--accent);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 60px;
+            font-size: 1.2rem;
+        }
+        .summary-box .highlight-text {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 700;
+            display: block;
+            margin-top: 15px;
+        }
+        ul { list-style-type: none; padding: 0; }
+        li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>命令行工具基础 (CLI)</h1>
+
+        <h2>1. Essence (本质)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>What is it fundamentally?</strong>
+                <p>CLI (Command Line Interface) 是人类与计算机通过纯文本进行对话的原始且最纯粹的接口。它是操作系统的“神经末梢”。</p>
+            </div>
+            <div class="card">
+                <strong>Why does it exist?</strong>
+                <p>为了让计算资源能够被精确、无歧义且可重复地调用。图形界面 (GUI) 限制了你能做什么，而 CLI 只限制了你能想到什么。</p>
+            </div>
+            <div class="card">
+                <strong>What problem does it solve?</strong>
+                <p>解决 GUI 无法被自动化、难以批量处理、以及跨平台远程操作极其消耗带宽和计算资源的问题。</p>
+            </div>
+            <div class="card">
+                <strong>What new possibilities does it create?</strong>
+                <p>将独立的微小工具组合成庞大、自动化的流水线（Pipeline），让机器代替人类执行重复性极高的复杂逻辑。</p>
+            </div>
+        </div>
+
+        <h2>2. World Model (世界模型)</h2>
+        <p>在 CLI 的世界里，一切都是围绕“文本流”和“进程”展开的。</p>
+        <div class="mermaid">
+            graph TD
+                User((User)) -->|Commands / Text| Shell[Shell / 解释器]
+                Shell -->|Spawns| Process1[Process A]
+                Shell -->|Spawns| Process2[Process B]
+                Process1 -->|stdout| Pipe((Pipe '|'))
+                Pipe -->|stdin| Process2
+                Process2 -->|stdout| Display((Terminal / File))
+                Process1 -.->|stderr| Display
+                Process2 -.->|stderr| Display
+                OS[(Operating System)] --- Shell
+        </div>
+        <ul>
+            <li><strong>Objects (对象):</strong> 纯文本、文件 (File)、进程 (Process)、标准流 (stdin/stdout/stderr)。</li>
+            <li><strong>Actors (参与者):</strong> 用户 (发出意图)、Shell (解析意图)、操作系统内核 (执行意图)。</li>
+            <li><strong>Workflows (工作流):</strong> 输入参数 -> 程序执行数据处理 -> 输出结果文本 -> 传递给下一个程序。</li>
+        </ul>
+
+        <h2>3. Concept Map (概念图谱)</h2>
+        <p>理解 CLI，就是理解下面这三个概念层级：</p>
+        <div class="mermaid">
+            mindmap
+              root((CLI 核心概念))
+                执行层
+                  Shell
+                  Process
+                  Environment Variables
+                数据层
+                  File System
+                  Standard Streams
+                  Pipes & Redirects
+                组织层
+                  PATH
+                  Permissions
+                  Package Managers
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Shell (壳)</strong>
+                <p>Action: 解释与执行。Purpose: 翻译人类的文本指令为系统的系统调用。</p>
+            </div>
+            <div class="card">
+                <strong>Standard Streams (标准流)</strong>
+                <p>Action: 数据传输。Purpose: 统一所有程序的数据输入输出格式，使得它们可以互相连接。</p>
+            </div>
+            <div class="card">
+                <strong>Environment (环境变量)</strong>
+                <p>Action: 状态维持。Purpose: 在不同的进程之间共享全局上下文（如当前位置、用户身份）。</p>
+            </div>
+        </div>
+
+        <h2>4. Decision Map (决策图谱)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Situation: 需要偶尔直观地修改系统设置</strong>
+                <p>Decision: GUI (图形界面)<br>Reason: 认知成本极低，所见即所得。<br>Outcome: 快速完成单次任务。</p>
+            </div>
+            <div class="card">
+                <strong>Situation: 需要对1000个文件进行重命名过滤</strong>
+                <p>Decision: CLI (命令行)<br>Reason: 文本化指令极易实现批量化和自动化。<br>Outcome: 极高的吞吐量和精确度。</p>
+            </div>
+            <div class="card">
+                <strong>Situation: 将操作部署到云服务器</strong>
+                <p>Decision: CLI (命令行)<br>Reason: 服务器通常没有图形界面以节省资源。<br>Outcome: 稳定的远程管控。</p>
+            </div>
+        </div>
+
+        <h2>5. Search Space Expansion (认知空间拓展)</h2>
+        <ul>
+            <li><strong>Beginner (很少问的问题):</strong> “程序报错的信息去哪了？” (引出 stderr 和 stdout 的分离概念)</li>
+            <li><strong>Expert (专家关注):</strong> “如何保证这组 CLI 命令的幂等性(Idempotence)和原子性？”</li>
+            <li><strong>Next to explore (值得探索):</strong> POSIX 标准是什么？为什么所有工具的参数格式都大同小异？</li>
+            <li><strong>Mastery (大师级):</strong> 掌握 Unix 哲学 (Do one thing and do it well)，自己编写能无缝接入系统 Pipe 管道的工具。</li>
+        </ul>
+
+        <h2>6. Ecosystem (生态系统)</h2>
+        <div class="mermaid">
+            graph LR
+                OS[Kernel / 操作系统] --> Shell[Shell: bash/zsh/fish]
+                Shell --> Tools[Coreutils: ls, grep, awk]
+                Tools --> PkgMgr[Package Mgr: apt, brew]
+                Shell --> Term[Terminal Emulator: iTerm, Alacritty]
+                Term --> Human((User))
+        </div>
+        <ul>
+            <li><strong>Upstream:</strong> 终端模拟器 (Terminal Emulator)、SSH (远程协议)。</li>
+            <li><strong>Downstream:</strong> 构建工具、自动化脚本 (Bash scripts)、CI/CD 管道。</li>
+            <li><strong>Alternatives:</strong> GUI 控制面板、API 接口调用。</li>
+            <li><strong>Complements:</strong> AI 命令行助手、Dotfiles 配置管理。</li>
+        </ul>
+
+        <h2>7. Transferable Principles (可迁移原则)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>1. 一切皆文件 (Everything is a file)</strong>
+                <p>Unix 核心哲学，硬件设备、进程信息、网络套接字均抽象为可通过文本读写的文件。</p>
+            </div>
+            <div class="card">
+                <strong>2. 组合优于单体 (Composition over Monolith)</strong>
+                <p>不写一个能做100件事的庞大软件，而是写100个各做一件事的小程序，然后用管道拼装。</p>
+            </div>
+            <div class="card">
+                <strong>3. 纯文本是永恒的接口</strong>
+                <p>数据结构会过时，二进制协议会变迁，但纯文本流可以跨越操作系统和时间的限制。</p>
+            </div>
+        </div>
+
+        <h2>8. Minimum Mental Model (最小记忆模型)</h2>
+        <p>如果你只能记住关于 CLI 的几个核心：</p>
+        <ul>
+            <li><strong>Command + Arguments:</strong> 动作 + 对象。如 <code>动词(指令) -副词(参数) 名词(目标文件)</code>。</li>
+            <li><strong>PATH:</strong> 你的指令去哪找？系统通过 PATH 环境变量去固定目录寻宝。</li>
+            <li><strong>Pipeline ( | ):</strong> 数据像水一样，从一个管子流出(stdout)，流入下一个管子(stdin)。</li>
+            <li><strong>Redirection ( > ):</strong> 把原本要显示在屏幕上的结果，截流并保存到文件里。</li>
+        </ul>
+
+        <h2>9. Common Misconceptions (常见误区)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Misconception: CLI 是落后时代的产物。</strong>
+                <p><strong>Why:</strong> 习惯了手机和鼠标的“直觉式交互”。<br><strong>Better Model:</strong> GUI 面向消费者(Consumer)，CLI 面向创造者(Creator)和系统管理员，它是与机器对话的高级语言。</p>
+            </div>
+            <div class="card">
+                <strong>Misconception: 需要死记硬背所有命令。</strong>
+                <p><strong>Why:</strong> 缺乏结构化思维。<br><strong>Better Model:</strong> 只需要记住核心动词。具体的参数可以通过 <code>--help</code> 或 AI 生成。重点是“你知道它能做到什么”，而不是“具体怎么拼写”。</p>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <p>What I truly gain is not <strong>memorizing complex command syntax</strong>, but</p>
+            <span class="highlight-text">Absolute control over the machine, enabling composable automation.</span>
+            <p style="margin-top: 10px; color: var(--text-muted); font-size: 1rem;">(我真正获得的不是死记硬背的复杂命令语法，而是对计算机的绝对控制权以及可组合的自动化能力。)</p>
+        </div>
+    </div>
+</body>
+</html>

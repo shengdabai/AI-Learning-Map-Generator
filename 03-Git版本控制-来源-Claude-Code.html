@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git 版本控制 · 心智模型与世界模型 | AI 时代学习地图 03</title>
+<style>
+:root{
+  --bg:#0B0E14; --surface:#141A26; --surface2:#1A2234; --border:#26304A;
+  --text:#E8ECF4; --muted:#92A0B8; --accent:#F15B3E;
+  --accent-soft:rgba(240,81,51,.12);
+  --accent-line:rgba(240,81,51,.38);
+  --green:#4EC9A0; --blue:#5B9DF9; --purple:#A77BF3; --amber:#E8B44A;
+  --radius:14px;
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei","Helvetica Neue",sans-serif;
+  --mono:"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{
+  background:var(--bg);color:var(--text);font-family:var(--font);
+  line-height:1.78;font-size:16px;-webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(900px 500px at 80% -10%,rgba(240,81,51,.10),transparent 60%),
+    radial-gradient(700px 420px at 5% 8%,rgba(91,157,249,.07),transparent 60%);
+  background-attachment:fixed;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+code,.mono{font-family:var(--mono);font-size:.86em}
+code{
+  background:var(--surface2);border:1px solid var(--border);
+  padding:.12em .5em;border-radius:6px;color:#FFB9A6;white-space:nowrap;
+}
+a{color:inherit}
+
+/* ---------- HERO ---------- */
+.hero{padding:88px 0 56px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:auto auto -60% -10%;width:520px;height:520px;
+  background:radial-gradient(circle,rgba(240,81,51,.16),transparent 62%);filter:blur(10px);
+}
+.hero .wrap{position:relative}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.06em;
+  color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line);
+  padding:6px 14px;border-radius:999px;font-family:var(--mono);
+}
+h1{
+  font-size:clamp(40px,7.2vw,76px);line-height:1.06;margin:26px 0 20px;
+  letter-spacing:-.02em;font-weight:800;
+}
+h1 .accent{color:var(--accent)}
+.hero-lead{font-size:clamp(17px,2.2vw,21px);color:var(--muted);max-width:760px;line-height:1.72}
+.hero-lead strong{color:var(--text);font-weight:600}
+.meta{
+  margin-top:30px;display:flex;flex-wrap:wrap;gap:10px;font-size:13px;
+  color:var(--muted);font-family:var(--mono);
+}
+.meta span{border:1px solid var(--border);background:var(--surface);padding:5px 12px;border-radius:999px}
+
+/* ---------- NAV ---------- */
+nav.toc{
+  position:sticky;top:0;z-index:40;background:rgba(11,14,20,.86);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+nav.toc .inner{
+  max-width:1080px;margin:0 auto;padding:11px 24px;display:flex;gap:6px;
+  overflow-x:auto;scrollbar-width:none;
+}
+nav.toc .inner::-webkit-scrollbar{display:none}
+nav.toc a{
+  flex:0 0 auto;font-size:13px;color:var(--muted);text-decoration:none;
+  padding:6px 12px;border-radius:8px;border:1px solid transparent;transition:.18s;white-space:nowrap;
+}
+nav.toc a:hover{color:var(--text);background:var(--surface2);border-color:var(--border)}
+nav.toc a .n{font-family:var(--mono);color:var(--accent);margin-right:6px;font-size:12px}
+
+/* ---------- SECTION ---------- */
+section{padding:72px 0;border-bottom:1px solid var(--border)}
+.sec-head{display:flex;align-items:flex-start;gap:20px;margin-bottom:34px}
+.sec-num{
+  font-family:var(--mono);font-size:clamp(46px,7vw,72px);line-height:.85;font-weight:800;
+  color:transparent;-webkit-text-stroke:1.5px var(--accent-line);opacity:.85;flex:0 0 auto;
+}
+.sec-head h2{font-size:clamp(25px,3.6vw,34px);letter-spacing:-.01em;font-weight:750;line-height:1.25}
+.sec-sub{font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:5px}
+.lead{font-size:17.5px;color:var(--muted);max-width:840px;margin-bottom:28px;line-height:1.82}
+.lead strong{color:var(--text)}
+h3.blk{
+  font-size:16px;font-weight:700;margin:34px 0 16px;display:flex;align-items:center;gap:10px;
+}
+h3.blk::before{content:"";width:4px;height:16px;background:var(--accent);border-radius:2px;display:inline-block}
+p+p{margin-top:14px}
+
+/* ---------- CARDS ---------- */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;transition:.2s;
+}
+.card:hover{border-color:var(--accent-line);transform:translateY(-2px)}
+.card h4{font-size:15.5px;margin-bottom:10px;font-weight:700;display:flex;align-items:center;gap:9px}
+.card p{font-size:14.5px;color:var(--muted);line-height:1.75}
+.card p strong{color:var(--text);font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.dot.b{background:var(--blue)} .dot.g{background:var(--green)}
+.dot.p{background:var(--purple)} .dot.a{background:var(--amber)}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line);
+  padding:2px 9px;border-radius:999px;margin-bottom:10px;
+}
+.tag.b{color:var(--blue);background:rgba(91,157,249,.12);border-color:rgba(91,157,249,.34)}
+.tag.g{color:var(--green);background:rgba(78,201,160,.12);border-color:rgba(78,201,160,.34)}
+.tag.p{color:var(--purple);background:rgba(167,123,243,.12);border-color:rgba(167,123,243,.34)}
+.tag.a{color:var(--amber);background:rgba(232,180,74,.12);border-color:rgba(232,180,74,.34)}
+
+/* ---------- 四栏流转图 ---------- */
+.flow{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface);
+}
+.flow .col{padding:22px 18px;border-right:1px solid var(--border);position:relative}
+.flow .col:last-child{border-right:none}
+.flow .col h5{font-size:14.5px;font-weight:700;margin-bottom:4px}
+.flow .col .en{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;margin-bottom:12px}
+.flow .col p{font-size:13.5px;color:var(--muted);line-height:1.7}
+.flow .col .who{
+  margin-top:14px;font-size:12px;font-family:var(--mono);color:var(--accent);
+  border-top:1px dashed var(--border);padding-top:10px;
+}
+.flow-arrows{display:grid;grid-template-columns:repeat(4,1fr);margin-top:10px}
+.flow-arrows div{
+  text-align:center;font-family:var(--mono);font-size:11.5px;color:var(--muted);position:relative;
+}
+.flow-arrows div::before{
+  content:"→";color:var(--accent);position:absolute;left:-6px;top:-1px;font-size:14px;
+}
+.flow-arrows div:first-child::before{content:""}
+
+/* ---------- CSS DAG ---------- */
+.dag{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:30px 24px 22px;overflow-x:auto;
+}
+.dag-row{display:flex;align-items:center;min-width:640px;margin-bottom:6px}
+.dag-label{
+  font-family:var(--mono);font-size:11.5px;color:var(--muted);width:96px;flex:0 0 96px;text-align:right;padding-right:14px;
+}
+.dag-track{display:flex;align-items:center;flex:1}
+.cm{
+  width:16px;height:16px;border-radius:50%;background:var(--surface2);
+  border:2px solid var(--accent);flex:0 0 auto;position:relative;
+}
+.cm.b{border-color:var(--blue)} .cm.p{border-color:var(--purple)}
+.cm.solid{background:var(--accent)} .cm.b.solid{background:var(--blue)} .cm.p.solid{background:var(--purple)}
+.cm span{
+  position:absolute;top:-24px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:10.5px;color:var(--muted);white-space:nowrap;
+}
+.ln{height:2px;flex:1;background:var(--border);min-width:44px}
+.ln.a{background:var(--accent-line)} .ln.b{background:rgba(91,157,249,.4)} .ln.p{background:rgba(167,123,243,.4)}
+.ln.dash{background:none;border-top:2px dashed var(--border)}
+.ptr{
+  font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:6px;margin-left:12px;
+  border:1px solid var(--accent-line);color:var(--accent);background:var(--accent-soft);white-space:nowrap;
+}
+.ptr.b{border-color:rgba(91,157,249,.4);color:var(--blue);background:rgba(91,157,249,.12)}
+.ptr.p{border-color:rgba(167,123,243,.4);color:var(--purple);background:rgba(167,123,243,.12)}
+.dag-note{font-size:13px;color:var(--muted);margin-top:16px;border-top:1px dashed var(--border);padding-top:12px}
+
+/* ---------- 场景卡 ---------- */
+.scn{
+  background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:10px;padding:20px 22px;margin-bottom:14px;
+}
+.scn .row{display:grid;grid-template-columns:82px 1fr;gap:12px;padding:5px 0;align-items:baseline}
+.scn .k{
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);
+  text-transform:uppercase;
+}
+.scn .v{font-size:14.8px;line-height:1.72}
+.scn .row.dec .v{font-weight:650;color:var(--text)}
+.scn .row.why .v,.scn .row.out .v{color:var(--muted);font-size:14.2px}
+.scn .row.out .v{color:var(--green)}
+.scn .title{font-size:15.5px;font-weight:700;margin-bottom:10px;color:var(--accent)}
+
+/* ---------- 双栏对比 ---------- */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cmp .side{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+.cmp .side.stable{border-top:3px solid var(--green)}
+.cmp .side.volatile{border-top:3px solid var(--amber)}
+.cmp h4{font-size:15px;margin-bottom:6px}
+.cmp .hint{font-size:12.5px;color:var(--muted);font-family:var(--mono);margin-bottom:14px}
+.cmp ul{list-style:none}
+.cmp li{
+  font-size:14.3px;color:var(--muted);padding:9px 0 9px 20px;position:relative;
+  border-bottom:1px dashed var(--border);line-height:1.7;
+}
+.cmp li:last-child{border-bottom:none}
+.cmp li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+.cmp li strong{color:var(--text);font-weight:600}
+
+/* ---------- 排序清单 ---------- */
+.rank{counter-reset:r;display:grid;gap:10px}
+.rank .it{
+  display:grid;grid-template-columns:42px 1fr;gap:16px;align-items:start;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;
+  transition:.18s;
+}
+.rank .it:hover{border-color:var(--accent-line)}
+.rank .it .n{
+  font-family:var(--mono);font-size:19px;font-weight:800;color:transparent;
+  -webkit-text-stroke:1px var(--accent-line);line-height:1.3;
+}
+.rank .it h4{font-size:15.2px;margin-bottom:5px;font-weight:700}
+.rank .it p{font-size:14px;color:var(--muted);line-height:1.72}
+
+/* ---------- 误区 ---------- */
+.myth{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;margin-bottom:14px;
+}
+.myth .wrong{
+  font-size:15.5px;font-weight:700;color:#FF8B72;margin-bottom:12px;display:flex;gap:10px;align-items:baseline;
+}
+.myth .wrong .x{font-family:var(--mono);font-size:13px;opacity:.8}
+.myth .lineitem{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:6px 0;align-items:baseline}
+.myth .lineitem .k{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+.myth .lineitem .v{font-size:14.4px;color:var(--muted);line-height:1.74}
+.myth .lineitem.fix .v{color:var(--text)}
+.myth .lineitem.fix .k{color:var(--green)}
+
+/* ---------- 层 ---------- */
+.layer{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;margin-bottom:16px;position:relative;overflow:hidden;
+}
+.layer::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+.layer.l2::before{background:var(--blue)} .layer.l3::before{background:var(--purple)}
+.layer .lh{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.layer .lh h4{font-size:16px;font-weight:750}
+.layer .lh .en{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.08em}
+.layer .ldesc{font-size:14.2px;color:var(--muted);margin-bottom:16px}
+.concepts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cpt{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:15px 16px}
+.cpt .name{font-size:14.6px;font-weight:700;margin-bottom:9px}
+.cpt .attr{display:grid;grid-template-columns:52px 1fr;gap:9px;padding:2.5px 0}
+.cpt .attr .k{font-family:var(--mono);font-size:10.5px;color:var(--accent);letter-spacing:.05em;padding-top:3px}
+.cpt .attr .v{font-size:13.2px;color:var(--muted);line-height:1.66}
+
+/* ---------- mermaid ---------- */
+.mmwrap{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:26px 18px;margin:24px 0;overflow-x:auto;
+}
+.mmwrap .mcap{
+  font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.08em;
+  text-align:center;margin-top:16px;
+}
+.mermaid{display:flex;justify-content:center;min-width:520px}
+
+/* ---------- 引用块 ---------- */
+.quote{
+  border-left:3px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),transparent 70%);
+  padding:18px 22px;border-radius:0 10px 10px 0;margin:24px 0;font-size:16px;line-height:1.8;
+}
+.quote strong{color:var(--accent)}
+
+/* ---------- 总结填空 ---------- */
+.fill{
+  background:var(--surface);border:1px solid var(--accent-line);border-radius:var(--radius);
+  padding:34px 30px;margin:8px 0 26px;text-align:center;
+}
+.fill .sentence{font-size:clamp(19px,3vw,26px);line-height:1.75;font-weight:600}
+.fill .b1{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--accent);text-decoration-thickness:2px}
+.fill .b2{color:var(--accent)}
+
+footer{padding:52px 0 68px;text-align:center;color:var(--muted);font-size:13px;font-family:var(--mono)}
+footer .l1{margin-bottom:8px;letter-spacing:.1em}
+footer .l2{opacity:.6}
+
+@media(max-width:900px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(2,1fr)}
+  .flow{grid-template-columns:repeat(2,1fr)}
+  .flow .col:nth-child(2){border-right:none}
+  .flow .col:nth-child(1),.flow .col:nth-child(2){border-bottom:1px solid var(--border)}
+  .flow-arrows{display:none}
+}
+@media(max-width:640px){
+  .g2,.g3,.g4,.cmp,.concepts{grid-template-columns:1fr}
+  .card code{white-space:normal;overflow-wrap:anywhere}  /* 长文件名在卡片内换行，不撑宽页面 */
+  .flow{grid-template-columns:1fr}
+  .flow .col{border-right:none;border-bottom:1px solid var(--border)}
+  .sec-head{gap:14px}
+  .scn .row{grid-template-columns:1fr;gap:2px}
+  .myth .lineitem{grid-template-columns:1fr;gap:2px}
+  .cpt .attr{grid-template-columns:1fr;gap:1px}
+  .dag-label{width:64px;flex:0 0 64px;font-size:10.5px}
+  section{padding:54px 0}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="badge">AI 时代学习地图 · 03</div>
+    <h1>Git <span class="accent">版本控制</span></h1>
+    <p class="hero-lead">
+      Git 是<strong>项目历史的时间机器，加上一台平行宇宙管理器</strong>。
+      它的底层不是"记录你改了什么"，而是一个<strong>内容寻址的不可变快照数据库</strong>——
+      每次提交都是整个项目某一刻的完整切片，这些切片串成一张有向无环图。
+      在 AI 替你写下大部分代码的今天，Git 不再只是协作工具，
+      而是<strong>你敢于放手让 AI 大改的那张安全网，以及验收 AI 产出的那块屏幕</strong>。
+    </p>
+    <div class="meta">
+      <span>2026-07</span>
+      <span>心智模型 / 世界模型</span>
+      <span>不是命令教程</span>
+      <span>面向 AI 委派者</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="inner">
+    <a href="#s1"><span class="n">01</span>本质</a>
+    <a href="#s2"><span class="n">02</span>世界模型</a>
+    <a href="#s3"><span class="n">03</span>概念地图</a>
+    <a href="#s4"><span class="n">04</span>决策地图</a>
+    <a href="#s5"><span class="n">05</span>搜索空间</a>
+    <a href="#s6"><span class="n">06</span>生态系统</a>
+    <a href="#s7"><span class="n">07</span>可迁移原则</a>
+    <a href="#s8"><span class="n">08</span>最小心智模型</a>
+    <a href="#s9"><span class="n">09</span>常见误区</a>
+    <a href="#s10"><span class="n">10</span>总结</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ============ 01 ============ -->
+<section id="s1">
+  <div class="sec-head">
+    <div class="sec-num">01</div>
+    <div><h2>本质：它到底是什么</h2><div class="sec-sub">Essence</div></div>
+  </div>
+
+  <p class="lead">
+    大多数人把 Git 学成了一串命令，然后忘掉。真正该留在脑子里的只有一句话：
+    <strong>Git 是一个只写不改的快照数据库，加上一组廉价的指针</strong>。
+    快照负责"历史不会丢"，指针负责"平行宇宙不打架"。所有让人困惑的行为，
+    追到底都是这两件事的组合。
+  </p>
+
+  <div class="quote">
+    <strong>一句话定义 ——</strong>
+    Git 把你的项目在每个你说"存档"的瞬间完整地拍下来，用内容哈希给每张快照一个不可伪造的身份，
+    再把这些快照按"谁是谁的前一张"连成一张<strong>有向无环图（DAG）</strong>。
+    你日常操作的分支、标签、HEAD，全都只是指向图中某个节点的<strong>便利贴</strong>。
+  </div>
+
+  <h3 class="blk">为什么它必须存在</h3>
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag">根本需求 · 试错</span>
+      <h4><span class="dot"></span>人类做事是要反悔的</h4>
+      <p>任何有创造性的工作都是<strong>试错</strong>：写一段、觉得不对、退回去、换个方向。没有可靠的"退回去"，人会本能地变保守——不敢删、不敢重构、不敢大改。<strong>Git 把"反悔"的成本压到接近零，于是把胆量还给了你。</strong></p>
+    </div>
+    <div class="card">
+      <span class="tag b">根本需求 · 协作</span>
+      <h4><span class="dot b"></span>多个人（现在是多个 AI）要同时动同一份东西</h4>
+      <p>两个人同时改一份文件，天然要回答三个问题：谁改的、改了什么、冲突了算谁的。Git 给出的答案是：<strong>先各自在独立的宇宙里改，再显式地合并，冲突必须被人看见并裁决</strong>，而不是悄悄覆盖。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">在 Git 之前，人们是怎么办的</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h4><span class="dot a"></span>文件名版本学</h4>
+      <p><code>方案_v2_最终版_真最终版_改完这版就不动了.docx</code>。历史存在，但只存在于文件名的<strong>民间约定</strong>里：没人知道 v2 和 v3 之间到底改了什么，也没人能安全地把 v3 的一处改动挪回 v2。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot a"></span>共享盘互相覆盖</h4>
+      <p>局域网共享目录 + 口头协调"我现在在改这个文件你别动"。协调一旦失效，<strong>后保存的人静默覆盖前一个人</strong>，丢失甚至不会被发现，等到发现时已无从追溯。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot a"></span>中心化版本管理</h4>
+      <p>SVN 一类工具解决了"有历史"，但历史存在中心服务器上：<strong>断网就不能提交，开分支很贵所以没人愿意开</strong>，于是所有人挤在一条主线上互相踩脚。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">Git 真正解决掉的三个根本问题</h3>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag g">不可篡改</span>
+      <h4><span class="dot g"></span>历史是可信的</h4>
+      <p>每个提交的 ID 是<strong>其内容的哈希</strong>，且包含父提交的哈希。改动历史中任何一个字节，后面所有提交的 ID 都会变——篡改无法悄无声息。历史因此可以当作<strong>证据</strong>使用。</p>
+    </div>
+    <div class="card">
+      <span class="tag g">并行不互踩</span>
+      <h4><span class="dot g"></span>分支便宜到可以随手开</h4>
+      <p>分支只是一个存着 40 字符哈希的小文件。开一个分支的代价约等于零，于是"为每个想法开一个宇宙"从奢侈变成了默认动作。<strong>这是后面所有 AI 并行玩法的物理基础。</strong></p>
+    </div>
+    <div class="card">
+      <span class="tag g">变更可审查</span>
+      <h4><span class="dot g"></span>diff 让改动变成可读文本</h4>
+      <p>任意两个快照之间可以算出差异。于是"我改了什么"不再靠<strong>口头汇报</strong>，而是一段可以逐行看、逐行质疑、逐行批准的文本。这一点在 AI 时代的权重被拉到了最高。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">它打开的新可能</h3>
+  <div class="grid g4">
+    <div class="card">
+      <h4><span class="dot p"></span>无惧试错</h4>
+      <p>"先试了再说"变成理性选择，因为退回的成本是一条命令。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot p"></span>陌生人协作</h4>
+      <p>互不认识的人可以基于同一份历史贡献代码——开源生态的地基。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot p"></span>自动化的抓手</h4>
+      <p>"提交"是一个机器可识别的事件，CI、部署、审查全部挂在它上面。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot p"></span>多智能体并行</h4>
+      <p>多个 AI 各占一个隔离现场同时干活，最后由你在合并处统一裁决。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">AI 时代的角色迁移</h3>
+  <p class="lead" style="margin-bottom:16px">
+    在 AI 之前，Git 的主要用户是<strong>写代码的人</strong>；在 AI 之后，Git 的主要用户变成了<strong>指挥 AI 写代码的人</strong>。
+    你不需要背命令——那是 AI 的活；你需要的是知道<strong>什么时候该想到它</strong>：
+  </p>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag">协调层</span>
+      <h4><span class="dot"></span>让并行的 AI 不互相覆盖</h4>
+      <p>两个 agent 同时改同一批文件，是最典型的翻车方式。分支与 worktree 提供<strong>物理隔离</strong>：各干各的，最后在合并点显式对账。</p>
+    </div>
+    <div class="card">
+      <span class="tag">安全网</span>
+      <h4><span class="dot"></span>让你敢说"你随便改"</h4>
+      <p>AI 的产出质量有方差。<strong>因为随时可以整体回滚，你才敢给它足够大的自由度</strong>——没有回滚保障时，人会本能地把任务切得太碎，反而废掉 AI 的优势。</p>
+    </div>
+    <div class="card">
+      <span class="tag">验收界面</span>
+      <h4><span class="dot"></span>让"改好了"变成可核查的事实</h4>
+      <p>AI 说"已完成"是一句<strong>自我评价</strong>。diff 是它留下的物证。你读 diff 的能力，直接决定你能安全委派多大的任务。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 ============ -->
+<section id="s2">
+  <div class="sec-head">
+    <div class="sec-num">02</div>
+    <div><h2>世界模型：这个世界里有什么</h2><div class="sec-sub">World Model</div></div>
+  </div>
+
+  <p class="lead">
+    要能凭直觉判断"现在该怎么办"，你需要脑子里有一张地图：
+    <strong>有哪些东西（Objects）、谁在动它们（Actors）、系统此刻处在什么状态（State）、
+    正常的流转路径是什么（Workflow）、周边接了哪些系统（Systems）、最终产出什么价值（Value）。</strong>
+  </p>
+
+  <h3 class="blk">Objects · 世界里的名词</h3>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag">核心</span>
+      <h4><span class="dot"></span>提交 Commit</h4>
+      <p><strong>一张完整快照</strong> + 作者 + 时间 + 说明 + 指向父提交的指针。它是这个世界里唯一真正"存在过"的东西，其余都是对它的引用。</p>
+    </div>
+    <div class="card">
+      <span class="tag b">指针</span>
+      <h4><span class="dot b"></span>分支 Branch</h4>
+      <p><strong>一张会自动跟着走的便利贴</strong>，贴在某个提交上。你在这条分支上提交一次，便利贴就往前挪一格。删掉便利贴，提交本身还在。</p>
+    </div>
+    <div class="card">
+      <span class="tag b">指针</span>
+      <h4><span class="dot b"></span>HEAD</h4>
+      <p><strong>"你此刻站在哪儿"</strong>。它通常指向某个分支，间接指向一个提交。切换分支，本质是把 HEAD 挪走，并把工作区的文件换成那一版的样子。</p>
+    </div>
+    <div class="card">
+      <span class="tag a">缓冲</span>
+      <h4><span class="dot a"></span>暂存区 Staging</h4>
+      <p><strong>下一张快照的草稿台</strong>。它的存在是为了让你能从一堆散乱的改动里，挑出<strong>属于同一件事</strong>的那部分单独提交。</p>
+    </div>
+    <div class="card">
+      <span class="tag a">现场</span>
+      <h4><span class="dot a"></span>工作区 Working Tree</h4>
+      <p>你（和 AI）实际编辑的那些文件。它是唯一<strong>可以随便弄脏</strong>的地方——因为它还没进入历史。</p>
+    </div>
+    <div class="card">
+      <span class="tag p">副本</span>
+      <h4><span class="dot p"></span>远程 Remote</h4>
+      <p><strong>另一份完整的仓库</strong>，恰好放在别的机器上。它没有任何特权，只是大家约定"以它为准"。理解这点，同步类问题就不再玄学。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">Actors · 谁在动这些东西</h3>
+  <div class="grid g4">
+    <div class="card">
+      <h4><span class="dot"></span>你</h4>
+      <p>决策者与验收者。定义"什么算一个逻辑单元"、裁决冲突、批准合并。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot b"></span>协作者</h4>
+      <p>推送自己的提交、发起评审、提出修改意见的其他人类。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot p"></span>AI Agent</h4>
+      <p>高频写入者。产出量大、速度快、需要隔离与逐条审查的新型 actor。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot g"></span>自动化 CI</h4>
+      <p>只读历史、只写结论（通过 / 失败）的机器审查员，挂在提交事件上。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">State · 三棵树与你的位置</h3>
+  <p class="lead" style="margin-bottom:18px">
+    任何时刻，你的处境由两个问题决定：<strong>三棵树各自长什么样，以及 HEAD 站在哪</strong>。
+    绝大多数"我现在是什么情况"的困惑，都是这两个问题没答清楚。
+  </p>
+
+  <div class="flow">
+    <div class="col">
+      <h5>工作区</h5>
+      <div class="en">WORKING TREE</div>
+      <p>磁盘上你能直接打开的文件。AI 改的就是这里。<strong>脏了不要紧，它还没进历史。</strong></p>
+      <div class="who">你 / AI 直接编辑</div>
+    </div>
+    <div class="col">
+      <h5>暂存区</h5>
+      <div class="en">STAGING / INDEX</div>
+      <p>你挑出来准备打包成下一张快照的部分。<strong>它让"一次提交只讲一件事"成为可能。</strong></p>
+      <div class="who">你挑选 · 语义决策</div>
+    </div>
+    <div class="col">
+      <h5>本地仓库</h5>
+      <div class="en">LOCAL REPOSITORY</div>
+      <p>已经落成快照的历史，全在你自己机器上。<strong>断网也照样能提交、能查历史、能回滚。</strong></p>
+      <div class="who">不可变 · 你的安全网</div>
+    </div>
+    <div class="col">
+      <h5>远程仓库</h5>
+      <div class="en">REMOTE</div>
+      <p>另一台机器上的同款仓库。<strong>推送不是"保存"，是"把我的历史同步给大家"。</strong></p>
+      <div class="who">协作 / 备份 / 触发自动化</div>
+    </div>
+  </div>
+  <div class="flow-arrows">
+    <div>编辑</div><div>挑选（stage）</div><div>存档（commit）</div><div>同步（push）</div>
+  </div>
+
+  <div class="dag" style="margin-top:26px">
+    <div class="dag-row">
+      <div class="dag-label">main</div>
+      <div class="dag-track">
+        <div class="cm solid"><span>A</span></div><div class="ln a"></div>
+        <div class="cm solid"><span>B</span></div><div class="ln a"></div>
+        <div class="cm solid"><span>C</span></div><div class="ln dash"></div>
+      </div>
+      <div class="ptr">main</div>
+    </div>
+    <div class="dag-row" style="margin-top:30px">
+      <div class="dag-label">ai/任务一</div>
+      <div class="dag-track">
+        <div class="ln dash" style="max-width:110px"></div>
+        <div class="cm b solid"><span>D</span></div><div class="ln b"></div>
+        <div class="cm b solid"><span>E</span></div>
+      </div>
+      <div class="ptr b">HEAD → ai/任务一</div>
+    </div>
+    <div class="dag-row" style="margin-top:30px">
+      <div class="dag-label">ai/任务二</div>
+      <div class="dag-track">
+        <div class="ln dash" style="max-width:110px"></div>
+        <div class="cm p solid"><span>F</span></div><div class="ln p"></div>
+        <div class="cm p solid"><span>G</span></div>
+      </div>
+      <div class="ptr p">ai/任务二</div>
+    </div>
+    <div class="dag-note">
+      三条线从同一个提交 <code>C</code> 分叉出去，互不影响。两个 AI 分别在蓝线和紫线上干活，
+      彼此看不见对方的改动，因此<strong>物理上不可能互相覆盖</strong>。
+      你站在蓝线末端（HEAD 的位置），随时可以跳到紫线去看看它干得怎么样。
+      最后由你决定：把哪条线合回 <code>main</code>、以什么顺序、要不要先整理。
+    </div>
+  </div>
+
+  <h3 class="blk">Workflow · 正常的流转路径</h3>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag">1 · 隔离</span>
+      <h4><span class="dot"></span>开一个分支再动手</h4>
+      <p>在任何有风险的改动之前先分叉。这一步是<strong>为"万一不行"预留的整体撤销键</strong>，成本几乎为零。</p>
+    </div>
+    <div class="card">
+      <span class="tag">2 · 修改</span>
+      <h4><span class="dot"></span>你或 AI 弄脏工作区</h4>
+      <p>这个阶段可以放开手脚，因为工作区的改动<strong>还没有进入历史</strong>，随时可以整体丢弃。</p>
+    </div>
+    <div class="card">
+      <span class="tag">3 · 挑选</span>
+      <h4><span class="dot"></span>把属于一件事的改动挑出来</h4>
+      <p>暂存区的意义在这里：AI 常常一次改了三件事，<strong>你把它们拆成三次提交，历史才可读</strong>。</p>
+    </div>
+    <div class="card">
+      <span class="tag b">4 · 存档</span>
+      <h4><span class="dot b"></span>提交 = 打一个存档点</h4>
+      <p>提交信息写"为什么"而不是"改了什么"——"改了什么"看 diff 就有，"为什么"只有当时的你知道。</p>
+    </div>
+    <div class="card">
+      <span class="tag b">5 · 同步</span>
+      <h4><span class="dot b"></span>推送到远程</h4>
+      <p>让别人（和 CI）看得到。推送同时也是<strong>一次异地备份</strong>——本机炸了历史还在。</p>
+    </div>
+    <div class="card">
+      <span class="tag g">6 · 评审合并</span>
+      <h4><span class="dot g"></span>看 diff，然后决定合不合</h4>
+      <p>这是整条流程里<strong>唯一不能外包给 AI 的一步</strong>：判断这些改动是不是你真正想要的。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">Systems &amp; Value · 接口与产出</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4><span class="dot p"></span>它连着哪些系统</h4>
+      <p><strong>代码托管平台</strong>（GitHub / GitLab）把提交历史变成可讨论的社交对象；<strong>CI/CD</strong> 监听提交并自动跑测试、自动部署；<strong>部署平台</strong>（Vercel 等）把"某个提交"直接映射成一个线上版本；<strong>AI 编程工具</strong>（Claude Code 等）则把分支与 diff 当作自己的工作现场与交付凭证。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot g"></span>它最终产出的价值</h4>
+      <p>一句话：<strong>把"不可逆的工作"变成"可逆的工作"</strong>。由此派生出三件事——你敢试更大胆的方案；多个执行者（人或 AI）可以真正并行；每一次变更都留下可追溯、可质疑、可回滚的证据链。<strong>这三件事合起来，才是"放心把工作交给 AI"的前提。</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 ============ -->
+<section id="s3">
+  <div class="sec-head">
+    <div class="sec-num">03</div>
+    <div><h2>概念地图：三层结构</h2><div class="sec-sub">Concept Map</div></div>
+  </div>
+
+  <p class="lead">
+    Git 之所以让人觉得难，是因为教程通常从<strong>协作层</strong>（第三层）开始教命令，
+    而困惑的根源全在<strong>对象模型</strong>（第一层）。把三层的关系搞清楚，
+    命令层面的一切就都变成了推论，而推论是可以交给 AI 的。
+  </p>
+
+  <div class="mmwrap">
+    <pre class="mermaid">
+flowchart TD
+  subgraph L1["第一层 · 对象模型 不可变"]
+    B["blob 文件内容"] --> T["tree 目录结构"]
+    T --> C["commit 一张完整快照"]
+    C --> C2["parent 指向上一张快照"]
+    C2 --> DAG["提交构成有向无环图"]
+  end
+  subgraph L2["第二层 · 引用层 会移动的便利贴"]
+    BR["branch 分支指针"] --> C
+    HD["HEAD 你此刻的位置"] --> BR
+    TG["tag 钉死的里程碑"] --> C
+    RM["remote 远程仓库的镜像引用"] --> BR
+  end
+  subgraph L3["第三层 · 协作层 人与 AI 的约定"]
+    CL["clone fetch push 搬运提交"] --> RM
+    PR["Pull Request 评审"] --> DIFF["diff 两张快照的差异"]
+    MG["merge 保留历史"] --> DAG
+    RB["rebase 重写历史"] --> DAG
+    WT["worktree 同仓库多现场"] --> BR
+  end
+  DIFF --> C
+    </pre>
+    <div class="mcap">图 1 · 三层关系：越往下越稳定，越往上越是约定</div>
+  </div>
+
+  <div class="layer">
+    <div class="lh"><h4>第一层 · 对象模型</h4><span class="en">OBJECT MODEL · 不可变、内容寻址</span></div>
+    <p class="ldesc">这一层是 Git 的物理定律，二十年没变过，也几乎不可能变。理解它，其余全是推论。</p>
+    <div class="concepts">
+      <div class="cpt">
+        <div class="name">快照 Commit</div>
+        <div class="attr"><div class="k">实体</div><div class="v">整个项目某一刻的完整状态，加上作者、时间、说明、父提交</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">创建（只增不改）、被引用、被比较</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">让"那一刻的样子"永远可以被完整复原</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">指向父提交；被分支和标签指向；与另一提交可求 diff</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">内容寻址哈希</div>
+        <div class="attr"><div class="k">实体</div><div class="v">由内容算出的 40 字符指纹，同时也是这个对象的地址</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">计算、比对、去重</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">身份即内容——改一个字节，ID 必变，篡改无法隐藏</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">相同内容全局只存一份；提交哈希包含父哈希，形成链式防伪</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">有向无环图 DAG</div>
+        <div class="attr"><div class="k">实体</div><div class="v">提交之间的父子关系构成的网络，可分叉、可汇合、不能成环</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">分叉、汇合、遍历、求共同祖先</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">让"历史"能表达并行——它本来就不是一条直线</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">合并的本质就是找到两条线的共同祖先，再做三方比对</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">不可变性 Immutability</div>
+        <div class="attr"><div class="k">实体</div><div class="v">已写入的对象只能新增、不能原地修改</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">"修改历史"其实是造一批新对象、再把指针挪过去</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">历史可以当证据用；已提交的东西极难真正丢失</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">解释了 rebase 的代价：旧提交并没消失，只是没人再指向它</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer l2">
+    <div class="lh"><h4>第二层 · 引用层</h4><span class="en">REFERENCES · 会移动的便利贴</span></div>
+    <p class="ldesc">这一层解释了 90% 的"我现在到底在哪"式困惑。记住：<strong>引用很轻，快照很重</strong>。</p>
+    <div class="concepts">
+      <div class="cpt">
+        <div class="name">分支 Branch</div>
+        <div class="attr"><div class="k">实体</div><div class="v">一个存着某提交哈希的小文件，仅此而已</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">创建、移动（每次提交自动前移）、删除、合并</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">给一条探索路线一个名字，让并行工作可被称呼和管理</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">删分支只是撕掉便利贴，快照仍在图里；这就是它"免费"的原因</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">HEAD</div>
+        <div class="attr"><div class="k">实体</div><div class="v">指向"当前分支"的指针，即你此刻所站的位置</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">切换（checkout / switch）、被提交操作推着走</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">回答"我改的东西会落到哪条线上"这个关键问题</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">HEAD 决定工作区显示哪一版；派 AI 干活前先确认它指向何处</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">标签 Tag</div>
+        <div class="attr"><div class="k">实体</div><div class="v">钉死在某个提交上、不会自动移动的名字</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">打标、按标检出、按标发布</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">标记里程碑：v1.0、上线版本、演示用的那一版</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">与分支的唯一区别就是"会不会自己往前挪"</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">远程引用 Remote</div>
+        <div class="attr"><div class="k">实体</div><div class="v">本地保存的一份"我上次看到的远程长什么样"的镜像</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">fetch 更新认知、push 推送自己的提交</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">让本地能离线判断"我领先了几个提交、落后了几个"</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">它可能已经过时——很多"莫名其妙的冲突"来源于此</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer l3">
+    <div class="lh"><h4>第三层 · 协作层</h4><span class="en">COLLABORATION · 人与 AI 的社会约定</span></div>
+    <p class="ldesc">这一层不是技术，是<strong>约定</strong>：会随团队、平台、时代变化，也是 AI 时代变化最快的一层。</p>
+    <div class="concepts">
+      <div class="cpt">
+        <div class="name">克隆与同步</div>
+        <div class="attr"><div class="k">实体</div><div class="v">clone / fetch / push——在两份完整仓库之间搬运提交对象</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">复制整段历史、拉取新提交、推送本地提交</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">让每个参与者都持有完整历史，而不是租用中心服务器</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">分布式的核心：远程没有特权，只有大家约定"以它为准"</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">评审 Pull Request</div>
+        <div class="attr"><div class="k">实体</div><div class="v">一次"请把我这条线合进主线"的正式请求，附带完整 diff</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">发起、逐行讨论、要求修改、批准、合并</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">在改动进入主线之前，强制插入一道人类判断</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">AI 时代它的价值不降反升——它是 AI 产出的验收关卡</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">merge 与 rebase</div>
+        <div class="attr"><div class="k">实体</div><div class="v">两种把分叉重新并到一起的策略</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">merge 造一个有两个父亲的新提交；rebase 把提交逐个重放到新基点</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">merge 保留"事情真实发生的样子"；rebase 产出"更好读的故事"</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v">这是权衡不是高下：真实 vs 可读，代价是 rebase 会重写提交 ID</div></div>
+      </div>
+      <div class="cpt">
+        <div class="name">工作树 Worktree</div>
+        <div class="attr"><div class="k">实体</div><div class="v">同一个仓库在磁盘上的第二、第三个独立现场</div></div>
+        <div class="attr"><div class="k">动作</div><div class="v">开一个新目录检出另一条分支，与原目录互不干扰</div></div>
+        <div class="attr"><div class="k">目的</div><div class="v">同时开工多条线，不必反复切换、不必反复暂存</div></div>
+        <div class="attr"><div class="k">关系</div><div class="v"><strong>多 AI 并行的标准解</strong>：一个 agent 一个现场，物理隔离</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 ============ -->
+<section id="s4">
+  <div class="sec-head">
+    <div class="sec-num">04</div>
+    <div><h2>决策地图：什么时候该想到它</h2><div class="sec-sub">Decision Map</div></div>
+  </div>
+
+  <p class="lead">
+    心智模型的真正用途，是在<strong>某个具体处境下立刻知道该做什么</strong>。
+    下面每张卡是一个真实场景：<strong>处境 → 决策 → 理由 → 预期结果</strong>。
+    命令怎么敲交给 AI；你要保留的是"此刻该走哪条路"的判断。
+  </p>
+
+  <div class="scn">
+    <div class="title">场景一 · 要让 AI 大改一块代码</div>
+    <div class="row"><div class="k">Situation</div><div class="v">你准备让 agent 重构整个模块，涉及十几个文件，你不确定它能不能做对。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">动手前先开一条独立分支，让 AI 在分支上放开手脚改。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">分支的成本接近零，但它把"整体撤销"变成一个动作。<strong>你的胆量应该建立在回滚能力上，而不是建立在对 AI 的信任上。</strong></div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">做成了就合并；做砸了直接扔掉整条分支，主线一个字节都没被污染。</div></div>
+  </div>
+
+  <div class="scn">
+    <div class="title">场景二 · 两个 AI 要同时干两件不相关的事</div>
+    <div class="row"><div class="k">Situation</div><div class="v">一个 agent 修 bug，另一个 agent 写新功能，两边都要改代码，都要跑测试。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">给每个 agent 一个独立的 worktree（各自的目录 + 各自的分支），而不是让它们共用一个目录。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">共用目录时，两个 agent 会互相看到对方写了一半的文件，也会互相覆盖。<strong>worktree 提供的是物理隔离，不依赖任何一方"守规矩"。</strong></div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">两条线真正并行推进，冲突被推迟到合并时刻，由你一次性、显式地裁决。</div></div>
+  </div>
+
+  <div class="scn">
+    <div class="title">场景三 · AI 说"改好了"</div>
+    <div class="row"><div class="k">Situation</div><div class="v">agent 报告任务完成，附了一段自信的总结，列了它做的三件事。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">不看它的总结，先看 diff。以 diff 为准，总结只当索引。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">总结是<strong>自我评价</strong>，diff 是<strong>物证</strong>。AI 最常见的失败不是"写错了"，而是"顺手改了你没让它改的东西"——这在总结里通常看不到，在 diff 里一定看得到。</div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">你验收的是事实而非叙述；越界改动、残留调试代码、被误删的配置全部暴露。</div></div>
+  </div>
+
+  <div class="scn">
+    <div class="title">场景四 · 改坏了，要退回去</div>
+    <div class="row"><div class="k">Situation</div><div class="v">合并之后发现方向错了，或者线上出问题需要立刻恢复。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">用 Git 的回退机制整体回到某个已知良好的提交，<strong>不要手工一处处撤销</strong>。已经推送给别人的历史，用"反向提交"而不是"抹掉历史"。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">手工撤销必然漏掉一两处，且过程本身不可复现。而抹掉已共享的历史会让所有协作者的仓库对不上——<strong>对私有分支可以随便重写，对共享分支要用可加的方式修正。</strong></div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">系统精确回到某个已验证状态，且"我们曾经走错过并退了回来"这件事本身也留在历史里。</div></div>
+  </div>
+
+  <div class="scn">
+    <div class="title">场景五 · 完成了一个逻辑单元</div>
+    <div class="row"><div class="k">Situation</div><div class="v">一个小功能能跑通了，但整个任务还差得远，你想继续往下推。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">立刻提交。<strong>提交是存档点，不是交作业。</strong>一天提交十次完全正常。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">存档点的密度决定了你出错时最多损失多少。让 AI 连续改两小时不提交，一旦跑偏，你只能整体丢弃或者在一大坨混杂改动里做考古。</div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">任何时刻都能退回最近一个"确定是好的"状态，试错半径被压到很小。</div></div>
+  </div>
+
+  <div class="scn">
+    <div class="title">场景六 · 这段历史将来要给人（或 AI）读</div>
+    <div class="row"><div class="k">Situation</div><div class="v">分支上堆了二十个提交，一半是"修个 typo""再试一次""还是不行"。现在准备合回主线。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">合并前把这些过程性提交整理成几个语义清晰的提交，每个只讲一件事。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">主线历史的读者是三个月后的你、你的协作者，<strong>以及以后要读这段历史来理解代码意图的 AI</strong>。可读的历史是资产，噪音历史是负债。</div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">主线上每个提交都能独立回答"这次改了什么、为什么"，定位问题时二分查找才有意义。</div></div>
+  </div>
+
+  <div class="scn">
+    <div class="title">场景七 · 要做一个可能没结果的实验</div>
+    <div class="row"><div class="k">Situation</div><div class="v">你想试一个新架构 / 新库 / 新写法，成功率大概三成。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">开分支，甚至让两三个 AI 在各自分支上出<strong>互不相同的方案</strong>，最后对比择优。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">失败的分支代价为零，成功的分支价值巨大——这是一笔极度不对称的赌注。<strong>并行探索之所以在 AI 时代才变得划算，是因为执行成本降下来了，而 Git 早就把隔离成本降到零。</strong></div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">你比较的是几份真实可运行的实现，而不是几段"听起来都有道理"的方案描述。</div></div>
+  </div>
+
+  <div class="scn">
+    <div class="title">场景八 · 某个功能不知何时坏的</div>
+    <div class="row"><div class="k">Situation</div><div class="v">昨天还好好的，今天不行了，中间有几十个提交，你想不起来是哪次弄坏的。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">用二分定位：在历史上折半查找第一个坏掉的提交，而不是靠回忆和猜测。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">因为每个提交都是<strong>完整可运行的快照</strong>，历史天然是一个有序、可二分的数组。几十个提交只需要五六次验证就能锁定罪魁。<strong>这个能力的前提是：你的提交足够小且每个都能跑。</strong></div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">从"大海捞针式调试"变成"确定性搜索"，而且这个过程完全可以交给 AI 自动执行。</div></div>
+  </div>
+
+  <div class="scn">
+    <div class="title">场景九 · 要把一份重要的非代码资产管起来</div>
+    <div class="row"><div class="k">Situation</div><div class="v">你的提示词库、课程讲义、配置文件、写作稿——都是会不断迭代且改坏了很麻烦的东西。</div></div>
+    <div class="row dec"><div class="k">Decision</div><div class="v">凡是纯文本、且"改坏了会痛"的资产，一律纳入版本控制，而不是靠网盘同步。</div></div>
+    <div class="row why"><div class="k">Reason</div><div class="v">网盘给你的是"最新版"，Git 给你的是<strong>"每一版 + 每次改动的理由 + 谁改的"</strong>。当 AI 开始批量修改你的这些资产时，两者的差距会立刻从"方便"变成"能不能收拾残局"。</div></div>
+    <div class="row out"><div class="k">Outcome</div><div class="v">你可以放心让 AI 批量重写一百个文件，因为每一处改动都可见、可选择性接受、可整体撤销。</div></div>
+  </div>
+</section>
+
+<!-- ============ 05 ============ -->
+<section id="s5">
+  <div class="sec-head">
+    <div class="sec-num">05</div>
+    <div><h2>搜索空间扩展：你还不知道该问什么</h2><div class="sec-sub">Search Space Expansion</div></div>
+  </div>
+
+  <p class="lead">
+    一个领域真正的难点，不是"答案难找"，而是<strong>你压根不知道存在这个问题</strong>。
+    AI 能回答你提出的任何问题，但提不出的问题它也帮不了你。
+    这一节的作用，是把 Git 的<strong>问题空间</strong>撑开——让你知道边界在哪儿。
+  </p>
+
+  <h3 class="blk">初学者不会问，但答案会重塑整个理解的问题</h3>
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag">反直觉</span>
+      <h4><span class="dot"></span>提交存的是快照，还是差异？</h4>
+      <p>几乎所有人的第一直觉是"存差异"，<strong>但 Git 存的是完整快照</strong>（相同内容靠哈希去重，所以不浪费空间）。这个事实一旦接受，很多行为立刻变得合理：为什么可以直接跳到任意历史版本、为什么分支切换那么快、为什么二分查找每一步都能直接运行。</p>
+    </div>
+    <div class="card">
+      <span class="tag">反直觉</span>
+      <h4><span class="dot"></span>为什么分支"免费"？</h4>
+      <p>因为它<strong>只是一个存了 40 个字符的小文件</strong>，不复制任何代码。理解这一点，你才会真的把"开分支"当成随手动作，而不是一件需要慎重考虑的事——而"随手开分支"正是安全委派 AI 的前提习惯。</p>
+    </div>
+    <div class="card">
+      <span class="tag b">边界</span>
+      <h4><span class="dot b"></span>提交之后的东西，真的会丢吗？</h4>
+      <p>几乎不会。即使分支被删、即使 rebase 把历史重写了，<strong>原来的提交对象仍在仓库里躺着</strong>，Git 还有一份"你的 HEAD 都去过哪儿"的日志可以把它找回来。真正会丢的只有一种东西：<strong>从没提交过的工作区改动</strong>。这条边界决定了你该在什么时候提交。</p>
+    </div>
+    <div class="card">
+      <span class="tag b">边界</span>
+      <h4><span class="dot b"></span>Git 对什么东西是无能的？</h4>
+      <p>它擅长<strong>行结构的纯文本</strong>。对大体积二进制文件（视频、设计源文件、模型权重），它既不能给出有意义的 diff，也会让仓库快速膨胀——需要额外方案。知道这条边界，你就不会把整个素材库塞进仓库然后抱怨它慢。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">进入实战后才会关心的问题</h3>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag p">历史质量</span>
+      <h4><span class="dot p"></span>什么样的提交算"一个原子"？</h4>
+      <p>判据是：<strong>它能不能被单独回滚而不破坏别的东西</strong>。做不到，说明这次提交里塞了不止一件事。AI 一次改动往往横跨多个关注点，把它拆成原子提交，是你把 AI 产出转成可维护资产的关键手工活。</p>
+    </div>
+    <div class="card">
+      <span class="tag p">代价</span>
+      <h4><span class="dot p"></span>重写历史到底代价在哪儿？</h4>
+      <p>rebase 会给每个提交<strong>换一个新身份</strong>。如果别人已经基于旧身份工作，两边的历史就对不上了。所以判据不是"高级不高级"，而是<strong>这段历史有没有被别人依赖</strong>：私有分支随便重写，共享分支慎之又慎。</p>
+    </div>
+    <div class="card">
+      <span class="tag p">语义</span>
+      <h4><span class="dot p"></span>合并冲突的本质是什么？</h4>
+      <p>不是"工具搞不定"，而是<strong>两个人对同一段代码做出了互斥的意图，机器无权替你选</strong>。冲突是系统在诚实地把决策权交还给你。真正危险的是<strong>语义冲突</strong>：两边都改得很干净、自动合并没报错，合起来却逻辑冲突——这类只能靠测试和阅读发现。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">下一步值得探索的方向</h3>
+  <div class="grid g4">
+    <div class="card">
+      <h4><span class="dot g"></span>钩子 Hooks</h4>
+      <p>在提交、推送等时刻自动触发脚本：跑格式化、拦截密钥、阻止不合规提交。<strong>这是把你的规矩变成机器执行的护栏</strong>，对约束 AI 尤其有效。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot g"></span>二分定位 bisect</h4>
+      <p>在历史上做折半查找，自动锁定第一个坏掉的提交。整个过程可以完全自动化——<strong>把调试从猜测变成搜索</strong>。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot g"></span>逐行溯源 blame</h4>
+      <p>任意一行代码，回答"谁、什么时候、在哪个提交里、为了什么"写下了它。<strong>这是理解陌生代码意图最快的路径</strong>，AI 读代码时同样依赖它。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot g"></span>多现场 worktree</h4>
+      <p>同一仓库开出多个独立工作目录。<strong>多 agent 并行的基础设施</strong>，值得优先掌握。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">真正决定上限的那个问题</h3>
+  <div class="quote">
+    <strong>如何设计一段"人和 AI 都能读懂"的历史？</strong><br>
+    当代码的产出速度被 AI 拉高一个数量级，瓶颈立刻从"写得出来"移到"看得明白"。
+    提交信息不再只是写给同事看的备注，而是<strong>喂给未来 AI 的上下文</strong>——
+    它读你的历史来理解这个项目为什么长成现在这样、哪些决定是深思熟虑的、哪些是临时凑合的。
+    <strong>历史的可读性，正在从个人素养变成一项系统能力。</strong>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card">
+      <h4><span class="dot a"></span>衍生问题一</h4>
+      <p>如果 AI 每天产出上百个提交，人类的评审能力就成了新瓶颈。<strong>该如何分层：哪些改动必须人看，哪些可以交给自动化门禁？</strong>这不是技术问题，是你自己的风险配置问题。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot a"></span>衍生问题二</h4>
+      <p>当 AI 也开始读历史来决策，<strong>历史里的错误示范会被学习和放大</strong>。混乱的提交、无意义的说明、把十件事塞进一次的提交，成本不再只是"以后不好查"，而是"未来的 AI 会照着这个样子继续做"。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 ============ -->
+<section id="s6">
+  <div class="sec-head">
+    <div class="sec-num">06</div>
+    <div><h2>生态系统：它站在哪个位置</h2><div class="sec-sub">Ecosystem</div></div>
+  </div>
+
+  <p class="lead">
+    一个技术的价值，往往不在它自身，而在<strong>它成了什么东西的地基</strong>。
+    Git 之所以重要到无法绕开，是因为整个现代软件交付链——协作、评审、测试、部署、
+    直到今天的 AI 编程工具——全都<strong>把它当作事实标准的底座</strong>。
+  </p>
+
+  <div class="mmwrap">
+    <pre class="mermaid">
+flowchart LR
+  FS["文件系统与哈希算法"] --> GIT["Git 内容寻址快照数据库"]
+  DIFF["diff 与三方合并算法"] --> GIT
+  LK["Linux 内核开发的真实压力"] --> GIT
+  GIT --> HOST["代码托管平台 GitHub GitLab"]
+  GIT --> WT["worktree 多现场隔离"]
+  HOST --> PR["Pull Request 评审文化"]
+  HOST --> CI["CI 持续集成自动测试"]
+  CI --> DEP["部署平台 Vercel Railway"]
+  PR --> CULT["工程协作规范"]
+  GIT --> AI["AI 编程工具 Claude Code"]
+  WT --> AI
+  AI --> MULTI["多 agent 并行工作流"]
+  PR --> MULTI
+    </pre>
+    <div class="mcap">图 2 · 上游能力汇入 Git，下游生态建立其上</div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag b">Upstream · 它站在什么之上</span>
+      <h4><span class="dot b"></span>它借用的三样东西</h4>
+      <p><strong>文件系统与哈希</strong>：内容寻址的想法直接来自"用内容的指纹当地址"这一密码学常识。<strong>diff 与三方合并算法</strong>：比较文本、找共同祖先并自动合并的数学，早于 Git 存在。<strong>真实的组织压力</strong>：它诞生于 2005 年 Linux 内核开发的实际困境——上千名互不信任的贡献者、没有中心权威、必须离线工作。<strong>Git 的设计不是从理论推出来的，是从一个极端场景里长出来的</strong>，这也是它今天能扛住 AI 并行写入的原因。</p>
+    </div>
+    <div class="card">
+      <span class="tag g">Downstream · 什么建立在它之上</span>
+      <h4><span class="dot g"></span>整条现代交付链</h4>
+      <p><strong>代码托管平台</strong>把提交历史变成可讨论的社交对象，顺带发明了 Pull Request。<strong>CI/CD</strong> 监听提交事件自动跑测试、自动构建。<strong>部署平台</strong>把"某个提交"直接映射成一个线上版本，回滚就是切回上一个提交。<strong>评审文化</strong>——"改动进主线前必须有人看过"——这条工程规范之所以能落地，完全依赖 diff 的存在。<strong>AI 编程工具</strong>则把分支当工作现场、把 diff 当交付凭证。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">Alternatives · 别的路走得通吗</h3>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag a">替代方案</span>
+      <h4><span class="dot a"></span>网盘 / 同步盘</h4>
+      <p>它给你的是<strong>"最新的一份"</strong>，历史是副产品（几个版本、有限保留），且没有分支概念。它无法回答"这个改动为什么发生"，也无法让两个人在同一份文件上安全并行。<strong>够用于文档，不够用于任何会被反复迭代的资产。</strong></p>
+    </div>
+    <div class="card">
+      <span class="tag a">替代方案</span>
+      <h4><span class="dot a"></span>实时协同编辑</h4>
+      <p>Google Docs 式的实时协作，用<strong>自动合并每一次击键</strong>换来了零冲突体验。代价是：没有"提交"这个语义单元，因此没有原子回滚、没有审查关卡、没有分支。<strong>适合"共同产出一份文档"，不适合"必须保证每个状态都可运行"的系统。</strong></p>
+    </div>
+    <div class="card">
+      <span class="tag a">新工具</span>
+      <h4><span class="dot a"></span>下一代版本工具</h4>
+      <p>jj（Jujutsu）等新工具在 Git 之上重做了操作界面：取消暂存区、让每次修改自动成为可编辑的变更、把冲突当成一等公民而不是紧急事件。<strong>值得注意的是：它们几乎都兼容 Git 的对象模型。</strong>换句话说，变的是操作方式，不变的是"不可变快照 + 指针"这个内核——这印证了哪一层才是真正稳定的。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">Complements · 与它配合才完整的东西</h3>
+  <div class="grid g4">
+    <div class="card">
+      <h4><span class="dot"></span>AI 编程工具</h4>
+      <p>Claude Code 一类工具把分支和 worktree 当作 agent 的隔离沙箱，把 diff 当作交付物。<strong>Git 是它们的运行时地基。</strong></p>
+    </div>
+    <div class="card">
+      <h4><span class="dot"></span>Pull Request 工作流</h4>
+      <p>把"技术上可以合并"和"应该合并"分开的制度装置。AI 时代它的价值是<strong>强制插入人类判断</strong>。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot"></span>议题与任务跟踪</h4>
+      <p>把"为什么做这件事"和"这次改了什么"绑在一起，补上提交历史本身缺失的动机层。</p>
+    </div>
+    <div class="card">
+      <h4><span class="dot"></span>自动化测试</h4>
+      <p>没有测试，回滚只能靠肉眼判断"哪个版本是好的"。<strong>测试给了历史一个客观的好坏判据</strong>，二分定位才成立。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 ============ -->
+<section id="s7">
+  <div class="sec-head">
+    <div class="sec-num">07</div>
+    <div><h2>可迁移原则：哪些会带走，哪些会过期</h2><div class="sec-sub">Transferable Principles</div></div>
+  </div>
+
+  <p class="lead">
+    学任何东西都该问一句：<strong>五年后还剩什么？</strong>
+    命令会变、平台会换、工具会被新工具取代，
+    但"不可变历史 + 廉价隔离 + 显式审查"这套思维方式，
+    可以原样搬到你做的任何一件重要的事上。
+  </p>
+
+  <h3 class="blk">第一性原理 · 几乎不会变</h3>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag g">原理</span>
+      <h4><span class="dot g"></span>不可变的历史 + 会动的指针</h4>
+      <p>把系统拆成"永不修改的事实记录"和"轻量的当前视图指针"，是一个极其通用的架构模式。<strong>事件溯源、数据库的 WAL、区块链、乃至你的记账习惯，本质都是同一招。</strong>它带来的好处永远是同一个：任何时刻的状态都可复原，任何变更都可追责。</p>
+    </div>
+    <div class="card">
+      <span class="tag g">原理</span>
+      <h4><span class="dot g"></span>内容寻址：身份即内容</h4>
+      <p>用内容本身的指纹作为它的名字。于是相同的东西天然去重、篡改天然可检测、分布式副本天然可对账，<strong>不需要一个中心机构来发放和担保 ID</strong>。这个想法在缓存、内容分发、去重存储里反复出现。</p>
+    </div>
+    <div class="card">
+      <span class="tag g">原理</span>
+      <h4><span class="dot g"></span>快照优于差异</h4>
+      <p>存"完整状态"比存"变化过程"更贵一点，但换来了<strong>任何一点都能直接跳过去、直接运行</strong>。这是一个反复出现的权衡：牺牲一点空间，换回巨大的确定性与简单性。数据库快照、虚拟机镜像、容器层，走的是同一条路。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">可迁移的方法论 · 换个领域照样成立</h3>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag b">方法</span>
+      <h4><span class="dot b"></span>小步存档</h4>
+      <p>把大工作切成"每一步都完整可用"的小段，每段结束立刻存档。<strong>迁移到写作</strong>：每写完一节存一版，而不是写完一万字才第一次保存。<strong>迁移到配置</strong>：改一项、验一项、记一项。核心收益不是"保存"，而是<strong>把出错时的损失半径压到最小</strong>。</p>
+    </div>
+    <div class="card">
+      <span class="tag b">方法</span>
+      <h4><span class="dot b"></span>先隔离，再实验</h4>
+      <p>任何有风险的尝试，先给它一个不会污染主线的沙箱。<strong>迁移到课程设计</strong>：新讲法先在一个小班试，不要直接改主教案。<strong>迁移到业务</strong>：新模式先跑一个隔离的小盘子。<strong>隔离成本越低，你敢做的实验就越大胆——这条规律与领域无关。</strong></p>
+    </div>
+    <div class="card">
+      <span class="tag b">方法</span>
+      <h4><span class="dot b"></span>用 diff 审查一切变更</h4>
+      <p>不看结论看差异，不听汇报看物证。<strong>迁移到 AI 委派</strong>：无论 AI 帮你改的是代码、文案、提示词还是配置，都要求"给我看前后对比"而不是"告诉我你做了什么"。<strong>这是 AI 时代最值钱的一条工作习惯</strong>——它把信任问题转化成了核查问题。</p>
+    </div>
+  </div>
+
+  <h3 class="blk">稳定 vs 易变</h3>
+  <div class="cmp">
+    <div class="side stable">
+      <h4>稳定层 · 值得花时间真正理解</h4>
+      <div class="hint">保质期 10 年以上</div>
+      <ul>
+        <li><strong>提交是不可变快照</strong>，历史是一张图而不是一条线</li>
+        <li><strong>分支只是指针</strong>，所以隔离几乎不要钱</li>
+        <li><strong>差异是审查的界面</strong>，一切变更都应可被逐行质疑</li>
+        <li><strong>合并冲突是决策请求</strong>，不是工具故障</li>
+        <li><strong>可回滚性决定胆量上限</strong>——敢不敢放手取决于退得回来</li>
+        <li><strong>历史的可读性是资产</strong>，噪音历史是负债</li>
+      </ul>
+    </div>
+    <div class="side volatile">
+      <h4>易变层 · 交给 AI，别背</h4>
+      <div class="hint">保质期 1 到 3 年，甚至更短</div>
+      <ul>
+        <li><strong>具体命令与参数写法</strong>——问 AI 比查记忆快十倍</li>
+        <li><strong>平台的按钮与界面</strong>，评审页面长什么样</li>
+        <li><strong>团队的分支命名约定</strong>与合并策略偏好</li>
+        <li><strong>工具的默认行为</strong>，比如默认分支叫什么</li>
+        <li><strong>各家 AI 编程工具</strong>怎么封装隔离与提交</li>
+        <li><strong>新一代版本工具</strong>的操作模型（内核仍是同一套）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quote" style="margin-top:26px">
+    判断一个知识值不值得投入的简单办法：<strong>问它是"为什么这样设计"还是"具体怎么敲"</strong>。
+    前者决定你能做多大的决策，后者决定你打字快不快——而后者现在已经不是你的工作了。
+  </div>
+</section>
+
+<!-- ============ 08 ============ -->
+<section id="s8">
+  <div class="sec-head">
+    <div class="sec-num">08</div>
+    <div><h2>最小心智模型：只记这些就够</h2><div class="sec-sub">Minimum Viable Mental Model</div></div>
+  </div>
+
+  <p class="lead">
+    如果你只肯记住十几件事，就记这些。它们<strong>按重要性排序</strong>：
+    前几条决定你会不会理解错整个系统，后几条决定你能把 AI 委派得多大胆。
+    每一条都不是命令，而是一个可以拿来推理的<strong>事实</strong>。
+  </p>
+
+  <div class="rank">
+    <div class="it"><div class="n">01</div><div>
+      <h4>提交 = 整个项目的一张不可变快照</h4>
+      <p>不是"改动记录"，是那一刻的完整状态。这条错了，后面全会错——它解释了为什么你能瞬间跳到任意历史版本，也解释了为什么每个历史点都是能直接跑起来的。</p>
+    </div></div>
+    <div class="it"><div class="n">02</div><div>
+      <h4>历史是一张有向无环图，不是一条直线</h4>
+      <p>它可以分叉、可以汇合。"直线历史"只是一种被人为整理出来的呈现方式。<strong>接受"图"这个形状，并行工作才会变得自然，合并才不再神秘。</strong></p>
+    </div></div>
+    <div class="it"><div class="n">03</div><div>
+      <h4>分支只是一张会自动跟着走的便利贴</h4>
+      <p>它不复制代码，成本近乎为零。这条决定了一个关键习惯：<strong>有风险的事，先开分支</strong>。开分支便宜到不需要理由，不开才需要理由。</p>
+    </div></div>
+    <div class="it"><div class="n">04</div><div>
+      <h4>HEAD 是"你此刻站在哪儿"</h4>
+      <p>它决定你的改动会落到哪条线上。派 AI 干活之前先确认它站对了地方——<strong>大量翻车事故的根因，就是在错误的分支上改了两小时。</strong></p>
+    </div></div>
+    <div class="it"><div class="n">05</div><div>
+      <h4>三棵树：工作区、暂存区、仓库</h4>
+      <p>工作区可以随便弄脏，暂存区用来挑出"属于同一件事"的部分，仓库是已落成的历史。<strong>搞清楚东西现在在哪一棵树上，"我这是什么情况"的困惑就消失了大半。</strong></p>
+    </div></div>
+    <div class="it"><div class="n">06</div><div>
+      <h4>已经提交的东西，几乎不可能真丢</h4>
+      <p>删分支、重写历史，原提交对象都还在仓库里躺着，有办法找回来。<strong>真正会丢的只有"从没提交过的改动"。</strong>这条既是你的心理安全垫，也是"要早提交"的理由。</p>
+    </div></div>
+    <div class="it"><div class="n">07</div><div>
+      <h4>merge 保留真实历史，rebase 重写成好读的故事</h4>
+      <p>这是权衡不是高下。判据只有一个：<strong>这段历史有没有被别人依赖</strong>。私有分支随便重写，共享分支不要重写。</p>
+    </div></div>
+    <div class="it"><div class="n">08</div><div>
+      <h4>远程只是另一份完整仓库，没有特权</h4>
+      <p>它不是"云端保险箱"，只是大家约定以它为准的一份副本。理解这点，同步、落后、领先、冲突这一类问题就都变成了简单的对账问题。</p>
+    </div></div>
+    <div class="it"><div class="n">09</div><div>
+      <h4>diff 是你审查 AI 的核心界面</h4>
+      <p>AI 的总结是自我评价，diff 是物证。<strong>你读 diff 的能力，直接决定你能安全委派多大的任务</strong>——这可能是这份地图里最有现金价值的一条。</p>
+    </div></div>
+    <div class="it"><div class="n">10</div><div>
+      <h4>worktree = 同一仓库的多个独立现场</h4>
+      <p>多个 AI 同时干活的标准解法。物理隔离，不依赖任何一方"守规矩"，因此不可能互相覆盖。</p>
+    </div></div>
+    <div class="it"><div class="n">11</div><div>
+      <h4>提交要小、要原子、要能被单独回滚</h4>
+      <p>判据是"能不能单独撤掉而不弄坏别的"。<strong>把 AI 的一大坨改动拆成原子提交，是你把它的产出转成长期资产的关键手工活。</strong></p>
+    </div></div>
+    <div class="it"><div class="n">12</div><div>
+      <h4>提交信息写"为什么"，不写"改了什么"</h4>
+      <p>"改了什么"看 diff 就有，"为什么"只有当时的你知道。这段文字的未来读者，包括三个月后的你和以后要读历史来理解项目的 AI。</p>
+    </div></div>
+    <div class="it"><div class="n">13</div><div>
+      <h4>冲突是系统在请你做决定</h4>
+      <p>不是故障，是两个互斥意图撞在了一起，机器无权替你选。<strong>更危险的是不报冲突的语义冲突</strong>——两边都干净，合起来却逻辑矛盾，只能靠测试和阅读发现。</p>
+    </div></div>
+    <div class="it"><div class="n">14</div><div>
+      <h4>能回滚，才敢放手</h4>
+      <p>你给 AI 的自由度，应该建立在回滚能力上，而不是建立在对它的信任上。<strong>没有安全网时，人会本能地把任务切得太碎，反而废掉了 AI 的优势。</strong></p>
+    </div></div>
+    <div class="it"><div class="n">15</div><div>
+      <h4>凡是改坏了会痛的纯文本，都该进版本控制</h4>
+      <p>提示词库、讲义、配置、写作稿。<strong>当 AI 开始批量修改这些东西时，"有没有版本控制"的差别会立刻从"方便"升级成"能不能收拾残局"。</strong></p>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 09 ============ -->
+<section id="s9">
+  <div class="sec-head">
+    <div class="sec-num">09</div>
+    <div><h2>常见误区：错在哪、为什么会错</h2><div class="sec-sub">Common Misconceptions</div></div>
+  </div>
+
+  <p class="lead">
+    误区之所以顽固，是因为每一个都<strong>有合理的成因</strong>——它们通常来自一个在别处正确的直觉。
+    只有把成因也讲清楚，纠正才会真的留下来。
+  </p>
+
+  <div class="myth">
+    <div class="wrong"><span class="x">✕</span>Git 就是 GitHub</div>
+    <div class="lineitem"><div class="k">成因</div><div class="v">绝大多数人是通过 GitHub 第一次接触版本控制的，两个名字长得像，且日常工作几乎总是同时用到它们。把工具和平台混为一谈是自然的。</div></div>
+    <div class="lineitem fix"><div class="k">更准</div><div class="v"><strong>Git 是本地的版本控制系统，GitHub 是托管 Git 仓库的商业平台之一。</strong>你可以完全离线使用 Git 的全部核心能力——提交、开分支、查历史、回滚，一个都不少。GitHub 提供的是托管、评审界面、权限、自动化和社交层。分清这一层，你才会明白"推送失败"和"提交失败"是两类完全不同的问题。</div></div>
+  </div>
+
+  <div class="myth">
+    <div class="wrong"><span class="x">✕</span>提交存的是"这次改了哪几行"</div>
+    <div class="lineitem"><div class="k">成因</div><div class="v">你看到的界面全都在展示差异——提交页面显示的是红绿高亮的增删行，评审页面显示的也是差异。看得多了，自然以为存的就是它。</div></div>
+    <div class="lineitem fix"><div class="k">更准</div><div class="v"><strong>存的是完整快照，差异是每次现算出来的展示形式。</strong>相同内容通过哈希自动去重，所以完整快照并不浪费空间。接受这一点，一连串行为立刻自洽：为什么切换版本那么快、为什么任意历史点都能直接运行、为什么二分定位可行、为什么删掉分支后提交仍然存在。</div></div>
+  </div>
+
+  <div class="myth">
+    <div class="wrong"><span class="x">✕</span>删了分支，那些代码就没了</div>
+    <div class="lineitem"><div class="k">成因</div><div class="v">在文件系统的世界里，删掉文件夹就是删掉里面的东西。这个直觉迁移过来，就变成了"删分支 = 删代码"，于是很多人不敢删任何分支，仓库里堆着几十条不知道还能不能删的旧分支。</div></div>
+    <div class="lineitem fix"><div class="k">更准</div><div class="v"><strong>分支只是一张便利贴，撕掉便利贴不会撕掉贴纸底下的快照。</strong>提交仍在图里，只是暂时没有名字指向它，可以通过历史日志找回来。理解这一点，删分支就变成了一个日常的清洁动作，而不是一次需要犹豫的破坏性操作。</div></div>
+  </div>
+
+  <div class="myth">
+    <div class="wrong"><span class="x">✕</span>rebase 比 merge 更"高级"，应该优先用</div>
+    <div class="lineitem"><div class="k">成因</div><div class="v">rebase 产出的历史看起来更整齐，教程也常把它包装成"进阶技巧"。人本能地把"更难的"等同于"更好的"。</div></div>
+    <div class="lineitem fix"><div class="k">更准</div><div class="v"><strong>这是一组权衡，不是一条升级路线。</strong>merge 保留"事情真实发生的样子"，代价是历史图形复杂；rebase 产出一条好读的直线，代价是<strong>重写了提交的身份</strong>。唯一的实用判据：这段历史有没有被别人依赖——私有分支怎么整理都行，共享分支不要重写。</div></div>
+  </div>
+
+  <div class="myth">
+    <div class="wrong"><span class="x">✕</span>版本控制是团队协作才需要的，我一个人不用</div>
+    <div class="lineitem"><div class="k">成因</div><div class="v">"版本控制"这个词天然让人联想到多人协作，而单人工作时确实不会遇到"两个人同时改"的冲突。</div></div>
+    <div class="lineitem fix"><div class="k">更准</div><div class="v"><strong>协作只是它的用途之一，试错才是核心。</strong>单人使用时，你协作的对象是"过去的自己"和"几个并行方向的自己"。而在 AI 时代这条误区变得更危险：<strong>你早就不是一个人在改了</strong>——你的 agent 每天产生的改动量可能超过一个小团队，你需要的是与它们协作的机制。</div></div>
+  </div>
+
+  <div class="myth">
+    <div class="wrong"><span class="x">✕</span>AI 时代不用懂 Git 了，让它自己搞就行</div>
+    <div class="lineitem"><div class="k">成因</div><div class="v">这个推理有一半是对的：命令确实不用背了，AI 敲得比你快也比你准。人很自然地把"不用敲命令"外推成"不用懂这件事"。</div></div>
+    <div class="lineitem fix"><div class="k">更准</div><div class="v"><strong>恰恰相反——AI 越强，Git 的心智模型越重要，只是重要的部分换了。</strong>你不需要知道命令怎么写，但你必须知道：现在该不该开分支、两个 agent 该不该隔离、这个 diff 能不能批准、改坏了从哪个点退回来、这段历史将来读不读得懂。<strong>AI 接管了执行，而 Git 恰好是你保留控制权和验收权的那个界面。</strong>放弃它，等于放弃了对自己项目的最后一道把关。</div></div>
+  </div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section id="s10">
+  <div class="sec-head">
+    <div class="sec-num">10</div>
+    <div><h2>总结：我真正获得的是什么</h2><div class="sec-sub">Synthesis</div></div>
+  </div>
+
+  <div class="fill">
+    <div class="sentence">
+      我真正获得的不是 <span class="b1">一套需要背下来的命令</span>，<br>
+      而是 <span class="b2">"任何重要的工作，都应该有不可变的历史、可平行的试错、可审查的合并"</span> 这样一种工作观。
+    </div>
+  </div>
+
+  <p class="lead">
+    命令是可以问的，历史观是问不来的。当你真的把这三件事内化成默认动作，
+    你会发现变的不只是写代码的方式——<strong>是你面对任何一件"改坏了会很麻烦"的事情时的姿态</strong>。
+  </p>
+
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag">变化一</span>
+      <h4><span class="dot"></span>从"小心翼翼"到"大胆试错"</h4>
+      <p>过去不敢动的地方，现在敢动了——因为退路是一个动作而不是一场灾难。<strong>可回滚性不是技术细节，它直接决定了你的创造力上限。</strong>一个不能回滚的系统会把所有参与者训练得保守。</p>
+    </div>
+    <div class="card">
+      <span class="tag b">变化二</span>
+      <h4><span class="dot b"></span>从"串行推进"到"并行探索"</h4>
+      <p>不再需要先想清楚才动手。你可以同时开三条线，让三个 AI 各出一版真实可运行的实现，然后<strong>比较实物而不是比较方案描述</strong>。当执行成本被 AI 压低，隔离成本又本来就是零，并行探索就从奢侈变成了默认策略。</p>
+    </div>
+    <div class="card">
+      <span class="tag g">变化三</span>
+      <h4><span class="dot g"></span>从"听汇报"到"看物证"</h4>
+      <p>你和 AI 的关系，因为 diff 的存在而变得健康：<strong>你不需要信任它，你只需要能核查它</strong>。这比任何"如何写好提示词"的技巧都更根本——它把一个信任问题变成了一个流程问题。</p>
+    </div>
+  </div>
+
+  <div class="quote" style="margin-top:30px">
+    <strong>为什么这是"放心把工作交给 AI"的前提 ——</strong><br>
+    委派的本质是让渡执行权，同时保留决策权和验收权。
+    如果没有不可变历史，你无法知道它到底动了什么；
+    如果没有廉价隔离，你不敢让它一次做大事，也不敢让多个 agent 同时开工；
+    如果没有可审查的差异，你只能靠它的自我陈述来判断成败。
+    <strong>Git 一次性补齐了这三样，所以它不是"程序员的工具"，
+    而是任何人在 AI 时代进行大规模委派的基础设施。</strong>
+  </div>
+
+  <h3 class="blk">如果只带走一句话</h3>
+  <div class="card" style="border-color:var(--accent-line);background:linear-gradient(135deg,var(--accent-soft),var(--surface) 55%)">
+    <p style="font-size:17px;color:var(--text);line-height:1.85">
+      <strong>先隔离，再动手；小步存档；用差异验收，而不是听汇报。</strong><br>
+      <span style="color:var(--muted)">
+      这三句话既是 Git 的使用方法，也是与 AI 协作的方法，
+      更是任何需要长期迭代的重要工作的方法。命令会过期，这三句不会。
+      </span>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="l1">AI 时代学习地图 · 03 · Git 版本控制</div>
+    <div class="l2">心智模型与世界模型 · 2026-07</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad:true,
+  theme:'dark',
+  securityLevel:'loose',
+  themeVariables:{
+    darkMode:true,
+    background:'#0B0E14',
+    primaryColor:'#1A2234',
+    primaryTextColor:'#E8ECF4',
+    primaryBorderColor:'#26304A',
+    lineColor:'#F05133',
+    secondaryColor:'#141A26',
+    tertiaryColor:'#141A26',
+    fontFamily:'-apple-system,"PingFang SC","Noto Sans SC",sans-serif',
+    fontSize:'14px'
+  },
+  flowchart:{curve:'basis',padding:16,nodeSpacing:44,rankSpacing:52}
+});
+</script>
+</body>
+</html>

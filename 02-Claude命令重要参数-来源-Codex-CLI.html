@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Claude CLI 最重要参数：面向决策、权限、上下文与自动化的心智模型。">
+  <title>Claude CLI 重要参数｜AI 时代学习地图</title>
+  <link rel="stylesheet" href="assets/learning-map.css">
+  <script src="assets/learning-map.js" defer></script>
+</head>
+<body class="topic-claude">
+  <div class="reading-progress" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="atlas-hero" data-glyph="C">
+    <div class="hero-grid">
+      <p class="eyebrow">Learning map 02 · Claude CLI</p>
+      <h1>参数不是开关清单，而是一次 Agent 运行的治理边界</h1>
+      <p class="hero-deck">理解 Claude 命令，最重要的不是背 flags，而是看清八个决策：它怎样工作、延续哪段记忆、使用什么能力、能动到哪里、如何被验证。</p>
+      <div class="hero-thesis">
+        <span>核心判断</span>
+        <strong>Prompt 决定“想做什么”；参数决定“以什么运行形态、带什么上下文、在什么边界内做”。</strong>
+      </div>
+    </div>
+  </header>
+
+  <nav class="atlas-nav" aria-label="章节导航">
+    <a class="home-link" href="00-十五份HTML全面对比报告.html">总览</a>
+    <a href="#essence">01 本质</a>
+    <a href="#world">02 世界</a>
+    <a href="#concepts">03 概念</a>
+    <a href="#decisions">04 决策</a>
+    <a href="#search">05 搜索空间</a>
+    <a href="#ecosystem">06 生态</a>
+    <a href="#principles">07 原则</a>
+    <a href="#minimum">08 最小模型</a>
+    <a href="#misconceptions">09 误区</a>
+    <a href="#summary">10 总结</a>
+  </nav>
+
+  <div class="atlas-shell">
+    <main id="main">
+      <section class="chapter" id="essence">
+        <header class="chapter-head">
+          <span class="chapter-no">01</span>
+          <div>
+            <h2>本质：为 Agent 运行声明一个“任务容器”</h2>
+            <p class="chapter-intro">Claude CLI 是终端中的 agentic runtime：模型负责推理，工具负责行动，权限系统限制行动，会话负责连续性，输出协议把结果交给人或其他机器。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <p class="big-answer">它本质上不是聊天框，而是一个<mark>受上下文、能力和权限约束的 AI 执行环境</mark>。</p>
+          <div class="before-after">
+            <article>
+              <h3>为什么存在</h3>
+              <p>代码与本机工作天然分布在文件、Git、终端、浏览器和外部服务中。Claude CLI 把自然语言意图接到这些可操作系统上，并维持多轮任务状态。</p>
+            </article>
+            <article>
+              <h3>解决的根本问题</h3>
+              <p>传统聊天只能建议“你可以怎么做”；Agent runtime 需要读取现场、选择工具、执行、观察失败、修复并验证。</p>
+            </article>
+            <article>
+              <h3>过去怎么做</h3>
+              <p>人把问题拆成命令、编辑器操作、网页查询和 Git 步骤，再手动串联。脚本能自动化已知路径，却难以处理开放式判断与异常。</p>
+            </article>
+            <article>
+              <h3>新可能</h3>
+              <p>同一个任务可以交互协作、非交互自动化、恢复旧会话、切换模型、隔离 worktree，并向流水线输出结构化结果。</p>
+            </article>
+          </div>
+          <div class="callout"><strong>最重要的分工：</strong>Prompt 是任务内容；CLI 参数是执行政策。前者常变，后者应该由风险、成本、可复现性和接收者决定。</div>
+        </div>
+      </section>
+
+      <section class="chapter" id="world">
+        <header class="chapter-head">
+          <span class="chapter-no">02</span>
+          <div>
+            <h2>世界模型：意图经过五道边界才成为副作用</h2>
+            <p class="chapter-intro">Claude 不是直接“修改世界”；它在配置、模型、工具、权限和工作区共同定义的运行环境中行动。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="system-map" aria-label="Claude CLI 世界模型">
+            <div class="map-lane">
+              <div class="lane-label">Objects 对象</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>Prompt / System prompt</strong><small>任务意图与行为约束</small></div>
+                <div class="map-node"><strong>Session</strong><small>对话、工具结果与连续状态</small></div>
+                <div class="map-node"><strong>Workspace</strong><small>文件、Git、规则与当前目录</small></div>
+                <div class="map-node"><strong>Tool result</strong><small>Agent 观察现实的反馈</small></div>
+              </div>
+            </div>
+            <div class="map-lane">
+              <div class="lane-label">Actors 角色</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>用户</strong><small>目标、授权、验收和责任</small></div>
+                <div class="map-node"><strong>Claude model</strong><small>推理、计划和选择工具</small></div>
+                <div class="map-node"><strong>Runtime</strong><small>会话、配置、权限与工具调度</small></div>
+                <div class="map-node"><strong>Tools / MCP / Plugins</strong><small>对本地与外部系统执行动作</small></div>
+              </div>
+            </div>
+            <div class="map-lane">
+              <div class="lane-label">State 状态</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>Context</strong><small>当前模型实际可见的信息</small></div>
+                <div class="map-node"><strong>Permission</strong><small>允许、询问、拒绝或绕过</small></div>
+                <div class="map-node"><strong>Filesystem / Git</strong><small>工作产物与版本状态</small></div>
+                <div class="map-node"><strong>Output</strong><small>面向人、JSON 消费者或流式系统</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-line" aria-label="Claude CLI 执行生命周期">
+            <div class="flow-step"><strong>构造运行环境</strong><span>目录、设置、Agent、模型和会话</span></div>
+            <div class="flow-step"><strong>理解意图</strong><span>Prompt 与规则形成当前任务模型</span></div>
+            <div class="flow-step"><strong>请求行动</strong><span>工具调用经过权限与范围判断</span></div>
+            <div class="flow-step"><strong>返回证据</strong><span>文本、JSON、流事件、diff 与测试产物</span></div>
+          </div>
+          <div class="callout danger"><strong>安全事实：</strong><code>--dangerously-skip-permissions</code> 不是“更智能”或“更自动”，而是移除一道损害控制边界。只有外层沙箱已经可靠限制网络、文件与凭据时，才可能合理。</div>
+        </div>
+      </section>
+
+      <section class="chapter" id="concepts">
+        <header class="chapter-head">
+          <span class="chapter-no">03</span>
+          <div>
+            <h2>概念地图：三层、八个参数家族</h2>
+            <p class="chapter-intro">先按“运行形态 → 治理边界 → 集成接口”理解，再记具体参数。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="layer-stack">
+            <article class="concept-layer">
+              <h3>Layer 1<br>运行形态</h3>
+              <div class="concepts">
+                <div class="concept"><strong>交互 vs 非交互</strong><span>选择协作对话或一次性执行；关系到信任提示、输出协议和自动化。</span></div>
+                <div class="concept"><strong>会话连续性</strong><span>继续、恢复、复制或新建上下文；决定历史是否延续与分叉。</span></div>
+                <div class="concept"><strong>模型与 effort</strong><span>分配推理能力、速度和成本；决定任务的认知预算。</span></div>
+              </div>
+            </article>
+            <article class="concept-layer">
+              <h3>Layer 2<br>治理边界</h3>
+              <div class="concepts">
+                <div class="concept"><strong>权限模式</strong><span>决定工具调用何时自动、询问或禁止；控制副作用风险。</span></div>
+                <div class="concept"><strong>工具范围</strong><span>决定 Agent 能使用哪些行动通道；实现最小能力。</span></div>
+                <div class="concept"><strong>上下文与目录</strong><span>决定 Claude 看见哪些规则和文件；控制知识边界与作用域。</span></div>
+              </div>
+            </article>
+            <article class="concept-layer">
+              <h3>Layer 3<br>集成接口</h3>
+              <div class="concepts">
+                <div class="concept"><strong>结构化输入输出</strong><span>让其他程序可靠消费结果；把会话变成流水线节点。</span></div>
+                <div class="concept"><strong>扩展与诊断</strong><span>MCP、Plugin、Agent 和 debug 扩展能力或隔离故障。</span></div>
+              </div>
+            </article>
+          </div>
+
+          <div class="parameter-atlas" aria-label="Claude CLI 重要参数家族">
+            <article class="parameter-family">
+              <h3>① 交互方式</h3>
+              <div>
+                <p><strong>决定接收者是谁。</strong>默认交互会话面向人；print 模式面向管道、脚本和一次性任务。</p>
+                <div class="flag-row"><code>claude [prompt]</code><code>-p</code><code>--print</code><code>--background</code></div>
+              </div>
+            </article>
+            <article class="parameter-family">
+              <h3>② 会话身份</h3>
+              <div>
+                <p><strong>决定从哪段历史继续，以及是否分叉。</strong>“继续最近一次”和“恢复指定会话”不是同一语义。</p>
+                <div class="flag-row"><code>-c / --continue</code><code>-r / --resume [value]</code><code>--fork-session</code><code>--session-id</code><code>--name</code></div>
+              </div>
+            </article>
+            <article class="parameter-family">
+              <h3>③ 认知预算</h3>
+              <div>
+                <p><strong>决定用什么模型、思考到什么深度、不可用时如何退路。</strong>能力、延迟和成本在这里交换。</p>
+                <div class="flag-row"><code>--model</code><code>--effort</code><code>--fallback-model</code><code>--max-budget-usd</code></div>
+              </div>
+            </article>
+            <article class="parameter-family">
+              <h3>④ 权限与工具</h3>
+              <div>
+                <p><strong>决定 Agent 能做什么、何时需要询问。</strong><code>--tools</code> 定义可用集合；allow / disallow 进一步制定政策。</p>
+                <div class="flag-row"><code>--permission-mode</code><code>--tools</code><code>--allowed-tools</code><code>--disallowed-tools</code><code>--dangerously-skip-permissions</code></div>
+              </div>
+            </article>
+            <article class="parameter-family">
+              <h3>⑤ 上下文与工作区</h3>
+              <div>
+                <p><strong>决定 Claude 从哪里开始、还能访问哪里、遵循哪些设置。</strong>工作目录既是上下文边界，也是风险边界。</p>
+                <div class="flag-row"><code>--add-dir</code><code>-w / --worktree</code><code>--settings</code><code>--setting-sources</code></div>
+              </div>
+            </article>
+            <article class="parameter-family">
+              <h3>⑥ 行为指令</h3>
+              <div>
+                <p><strong>决定是在默认行为上补充，还是整体替换。</strong>system prompt 是高权重行为层，不应拿来承载普通任务内容。</p>
+                <div class="flag-row"><code>--append-system-prompt</code><code>--system-prompt</code><code>--agent</code><code>--agents</code></div>
+              </div>
+            </article>
+            <article class="parameter-family">
+              <h3>⑦ 机器接口</h3>
+              <div>
+                <p><strong>决定数据如何进入和离开。</strong>文本面向人，JSON 面向单次机器消费，stream-json 面向实时事件系统。</p>
+                <div class="flag-row"><code>--input-format</code><code>--output-format</code><code>--json-schema</code><code>--include-partial-messages</code><code>--no-session-persistence</code></div>
+              </div>
+            </article>
+            <article class="parameter-family">
+              <h3>⑧ 扩展与排障</h3>
+              <div>
+                <p><strong>决定加载哪些外部能力，或如何得到最小可诊断环境。</strong>排障先减少变量，再观察日志。</p>
+                <div class="flag-row"><code>--mcp-config</code><code>--strict-mcp-config</code><code>--plugin-dir</code><code>--debug</code><code>--debug-file</code><code>--safe-mode</code><code>--bare</code></div>
+              </div>
+            </article>
+          </div>
+          <div class="status-band">
+            <span><strong>事实基线：</strong>本机 Claude Code 2.1.220</span>
+            <span><strong>核验日期：</strong>2026-07-29</span>
+            <span><strong>易变项：</strong>模型别名、permission modes、实验参数</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="decisions">
+        <header class="chapter-head">
+          <span class="chapter-no">04</span>
+          <div>
+            <h2>决策地图：先判断运行政策，再选参数</h2>
+            <p class="chapter-intro">参数选择应该来自情境，而不是从帮助页随机挑功能。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="decision-list">
+            <article class="decision">
+              <div><small>Situation</small><p>你要与 Claude 共同澄清一个开放任务</p></div>
+              <div><small>Decision</small><p>使用默认交互会话</p></div>
+              <div><small>Reason</small><p>人需要在关键判断点补充上下文与验收</p></div>
+              <div><small>Outcome</small><p>目标逐步收敛，风险可见</p></div>
+            </article>
+            <article class="decision">
+              <div><small>Situation</small><p>结果要被脚本、CI 或另一 Agent 消费</p></div>
+              <div><small>Decision</small><p><code>--print</code> + 合适的 <code>--output-format</code>，必要时加 schema</p></div>
+              <div><small>Reason</small><p>机器需要确定的结束条件和结构化协议</p></div>
+              <div><small>Outcome</small><p>Claude 成为可编排的流水线节点</p></div>
+            </article>
+            <article class="decision">
+              <div><small>Situation</small><p>要延续刚才工作，或恢复一段明确历史</p></div>
+              <div><small>Decision</small><p>最近会话用 <code>--continue</code>；指定会话用 <code>--resume</code></p></div>
+              <div><small>Reason</small><p>连续性来自正确的 session，不来自“模型应该记得”</p></div>
+              <div><small>Outcome</small><p>减少重复读取，避免串错上下文</p></div>
+            </article>
+            <article class="decision">
+              <div><small>Situation</small><p>要探索新路线，但保留原会话轨迹</p></div>
+              <div><small>Decision</small><p>恢复时使用 <code>--fork-session</code></p></div>
+              <div><small>Reason</small><p>分叉允许共享历史，同时隔离后续决策</p></div>
+              <div><small>Outcome</small><p>可比较方案，不污染原路线</p></div>
+            </article>
+            <article class="decision">
+              <div><small>Situation</small><p>任务涉及敏感目录或有限动作</p></div>
+              <div><small>Decision</small><p>限制目录、工具与 permission mode</p></div>
+              <div><small>Reason</small><p>最小权限能缩小误解意图时的损害面</p></div>
+              <div><small>Outcome</small><p>Agent 有足够能力，但没有无关能力</p></div>
+            </article>
+            <article class="decision">
+              <div><small>Situation</small><p>项目配置、Hooks 或 Plugin 让 Claude 异常</p></div>
+              <div><small>Decision</small><p>用 <code>--safe-mode</code> 隔离自定义项，再用 debug 获取证据</p></div>
+              <div><small>Reason</small><p>先减少变量，才能区分 runtime、配置与项目问题</p></div>
+              <div><small>Outcome</small><p>从“重装试试”转为可证伪诊断</p></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="search">
+        <header class="chapter-head">
+          <span class="chapter-no">05</span>
+          <div>
+            <h2>搜索空间：重要问题不在参数名里</h2>
+            <p class="chapter-intro">成熟使用者关心的是运行可重复性、上下文污染、权限闭环和失败恢复。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="question-grid">
+            <article class="question-set">
+              <h3>初学者很少问</h3>
+              <ul>
+                <li>Claude 当前真正加载了哪些规则、目录和 setting sources？</li>
+                <li>恢复会话时，历史意图是否仍适用于今天的工作区状态？</li>
+                <li>允许一个工具，是否同时放大了网络、凭据或文件风险？</li>
+                <li>非交互模式为什么会改变 trust dialog 与错误呈现？</li>
+              </ul>
+            </article>
+            <article class="question-set">
+              <h3>专家真正关心</h3>
+              <ul>
+                <li>运行环境能否重建：模型、设置、工具、目录和版本是否明确？</li>
+                <li>结构化输出契约在失败、部分流式消息和工具事件下是否仍稳定？</li>
+                <li>工具授权是能力白名单，还是仅减少提示次数？</li>
+                <li>长会话何时应压缩、交接、分叉或重新读取真实现场？</li>
+              </ul>
+            </article>
+            <article class="question-set">
+              <h3>下一步值得探索</h3>
+              <ul>
+                <li>CLAUDE.md、system prompt、settings、Hooks、Skills 各处在哪个控制层？</li>
+                <li>MCP 与内置工具的信任边界有什么差别？</li>
+                <li>worktree 如何把 Git 路线与 Agent 会话隔离结合起来？</li>
+                <li>如何为客户交付定义可审计、可回滚的 Agent policy？</li>
+              </ul>
+            </article>
+            <article class="question-set">
+              <h3>定义掌握上限</h3>
+              <ul>
+                <li>能否为不同风险等级设计不同的运行 profile？</li>
+                <li>能否把一次优秀会话转成稳定的自动化契约，而非复制 prompt？</li>
+                <li>能否证明 Agent 的权限不超过任务所需？</li>
+                <li>能否在模型、工具或版本变化后检测行为漂移？</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="ecosystem">
+        <header class="chapter-head">
+          <span class="chapter-no">06</span>
+          <div>
+            <h2>生态系统：Claude CLI 位于“意图层”和“执行层”之间</h2>
+            <p class="chapter-intro">它既不是模型本身，也不是所有工具的替代品；它负责把推理、上下文、权限和行动组织成闭环。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="ecosystem">
+            <article class="eco-zone eco-upstream">
+              <h3>上游 Upstream</h3>
+              <p>人的目标与验收标准、项目规则、系统提示、模型能力、订阅或 API 供给。上游决定 Claude “知道什么、优先什么、承担多大认知预算”。</p>
+            </article>
+            <article class="eco-zone eco-alternatives">
+              <h3>替代 Alternatives</h3>
+              <p>Codex CLI、IDE 内 Agent、ChatGPT desktop、Claude desktop、直接 SDK、自建 Agent runtime。差异重点在现场访问、治理、扩展、可编排性和体验。</p>
+            </article>
+            <article class="eco-zone eco-complements">
+              <h3>互补 Complements</h3>
+              <p>Git / worktree 提供变更历史和路线隔离；测试与 CI 提供机器证据；MCP、Plugins、Skills 扩展能力；沙箱与权限策略限制损害面。</p>
+            </article>
+            <article class="eco-zone eco-downstream">
+              <h3>下游 Downstream</h3>
+              <p>Shell、文件系统、浏览器、GitHub、云平台、数据库、消息系统和客户交付产物。Agent 价值必须在这些系统的真实状态中被验收。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="principles">
+        <header class="chapter-head">
+          <span class="chapter-no">07</span>
+          <div>
+            <h2>可迁移原则：参数会变，治理逻辑不变</h2>
+            <p class="chapter-intro">用稳定原则管理快速变化的模型名、flags 和扩展生态。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="principle-strata">
+            <article class="stratum"><strong>第一性原理</strong><p>Agent 的实际能力 = 模型推理 × 可见上下文 × 可用工具 × 权限边界 × 反馈质量；任何一项为零，闭环都会断。</p></article>
+            <article class="stratum"><strong>可迁移方法论</strong><p>最小权限、上下文显式、会话可追踪、结构化接口、真实产物验收、故障先隔离变量、高风险动作外层沙箱。</p></article>
+            <article class="stratum"><strong>稳定知识</strong><p>交互 / 非交互、会话连续性、模型选择、工具能力、权限政策、输入输出协议、诊断与隔离。</p></article>
+            <article class="stratum"><strong>实现细节</strong><p>具体 flag 拼写、配置文件层级、permission mode 枚举、事件 JSON schema、Plugin 与 MCP 加载方式。</p></article>
+            <article class="stratum"><strong>易变知识</strong><p>模型别名、effort 等级、beta 选项、Chrome / Remote Control、background agents 与实验命令。使用前看当前 <code>claude --help</code>。</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="minimum">
+        <header class="chapter-head">
+          <span class="chapter-no">08</span>
+          <div>
+            <h2>最小心智模型：只记住这 14 个概念</h2>
+            <p class="chapter-intro">先记决策意义，再在需要时查询具体拼写。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <ol class="mental-model-list">
+            <li><strong>Runtime，不只是模型</strong><span>最终行为由模型、规则、工具、权限和现场共同产生。</span></li>
+            <li><strong>Prompt ≠ Policy</strong><span>任务内容放 prompt；运行边界由参数和配置治理。</span></li>
+            <li><strong>交互 / Print</strong><span>前者面向协作，后者面向一次性执行与机器集成。</span></li>
+            <li><strong>Session identity</strong><span>continue、resume、fork 是三种不同的历史关系。</span></li>
+            <li><strong>Model + effort</strong><span>它们是能力、延迟和成本的预算选择。</span></li>
+            <li><strong>Permission mode</strong><span>决定行动何时允许、询问、拒绝或绕过。</span></li>
+            <li><strong>Tool scope</strong><span>可用、允许、禁止是能力集合与政策的组合。</span></li>
+            <li><strong>Working directory</strong><span>项目上下文和默认作用域从这里开始。</span></li>
+            <li><strong>Additional directories</strong><span>扩大可见范围也扩大潜在损害面。</span></li>
+            <li><strong>System prompt</strong><span>append 是补充，replace 是重建行为基线。</span></li>
+            <li><strong>Structured output</strong><span>机器消费需要 JSON、schema 或流事件，而不是“看起来清楚”。</span></li>
+            <li><strong>Extensions</strong><span>MCP、Plugin、Agent 带来能力，也带来新的信任边界。</span></li>
+            <li><strong>Safe mode / Debug</strong><span>排障的核心是隔离自定义变量并收集证据。</span></li>
+            <li><strong>Artifact verification</strong><span>Claude 的最终回答不是完成证据；文件、diff、测试和外部状态才是。</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="chapter" id="misconceptions">
+        <header class="chapter-head">
+          <span class="chapter-no">09</span>
+          <div>
+            <h2>常见误区：不要把“自动”误认为“受控”</h2>
+            <p class="chapter-intro">参数最常见的误用来自对会话、权限和输出语义的混淆。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="misconceptions">
+            <article class="misconception">
+              <div><small>误解</small><p><code>--dangerously-skip-permissions</code> 能让 Claude 更强。</p></div>
+              <div><small>为什么</small><p>少弹确认会让执行显得更流畅。</p></div>
+              <div><small>更好模型</small><p>它不增加推理能力，只移除保护边界；速度提升来自减少摩擦，风险同时扩大。</p></div>
+            </article>
+            <article class="misconception">
+              <div><small>误解</small><p><code>--continue</code> 总能找到“我想要的那次会话”。</p></div>
+              <div><small>为什么</small><p>“最近”容易被理解为全局最近。</p></div>
+              <div><small>更好模型</small><p>会话和当前目录 / 项目有关；需要指定历史时用 resume，并核对会话身份。</p></div>
+            </article>
+            <article class="misconception">
+              <div><small>误解</small><p>换更强模型就能解决所有失败。</p></div>
+              <div><small>为什么</small><p>失败表面上像“模型没想明白”。</p></div>
+              <div><small>更好模型</small><p>很多失败来自上下文错误、工具缺失、权限拒绝、现场漂移或验收不清，模型只是系统的一环。</p></div>
+            </article>
+            <article class="misconception">
+              <div><small>误解</small><p><code>--output-format json</code> 意味着内容一定符合我的业务结构。</p></div>
+              <div><small>为什么</small><p>“JSON”被误当成了“正确 schema”。</p></div>
+              <div><small>更好模型</small><p>传输格式只保证外壳；业务字段约束需要 schema、验证和失败处理。</p></div>
+            </article>
+            <article class="misconception">
+              <div><small>误解</small><p>加载更多 MCP、Plugin 和目录会让 Agent 更懂我。</p></div>
+              <div><small>为什么</small><p>能力数量看起来等于能力质量。</p></div>
+              <div><small>更好模型</small><p>过多能力会扩大搜索空间、上下文噪声和安全面；任务相关的最小工具集通常更可靠。</p></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="summary">
+        <header class="chapter-head">
+          <span class="chapter-no">10</span>
+          <div>
+            <h2>总结：真正的收益</h2>
+            <p class="chapter-intro">重要参数是你与 Agent 之间的运行契约。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <p class="summary-statement">我真正获得的不是<span>背会 Claude 的所有参数</span>，而是<span>为每次 Agent 运行设计清楚的上下文、能力、权限、成本与证据边界</span>。</p>
+          <div class="status-band">
+            <span><strong>首要三问：</strong>谁接收结果？能动到哪里？如何证明完成？</span>
+            <span><strong>危险边界：</strong>跳过权限不等于沙箱</span>
+            <span><strong>下一张地图：</strong>Git 的状态与历史</span>
+          </div>
+          <aside class="source-notes">
+            <h3>事实来源与维护提示</h3>
+            <ul>
+              <li><a href="https://code.claude.com/docs/en/cli-reference">Claude Code CLI Reference</a>：参数语义的当前官方来源。</li>
+              <li><a href="https://code.claude.com/docs/en/permission-modes">Permission modes</a>：权限模式和风险边界。</li>
+              <li>本页已与本机 <code>claude --help</code>（Claude Code 2.1.220，2026-07-29）交叉核对；升级后优先重新核对“易变知识”。</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="page-footer">
+    <p>AI 时代学习地图 · 02 / 03</p>
+    <nav class="footer-nav" aria-label="相邻学习地图">
+      <a href="01-命令行工具基础-来源-Codex-CLI.html">← 上一张：命令行</a>
+      <a href="00-十五份HTML全面对比报告.html">返回总览</a>
+      <a href="03-Git版本控制-来源-Codex-CLI.html">下一张：Git →</a>
+    </nav>
+  </footer>
+</body>
+</html>

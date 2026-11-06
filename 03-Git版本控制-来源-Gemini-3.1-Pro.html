@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git 版本控制 - 学习地图</title>
+    <!-- 字体表不阻塞首屏：国内网络访问 Google Fonts 常超时，原来的写法会一直白屏到请求失败；现在先用系统字体显示，字体到了再换上 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet"></noscript>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'dark', fontFamily: 'Inter' });
+    </script>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: rgba(22, 27, 34, 0.6);
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #2ea043;
+            --accent-secondary: #f0883e;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(46, 160, 67, 0.08), transparent 30%),
+                radial-gradient(circle at 20% 80%, rgba(240, 136, 62, 0.08), transparent 30%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(to right, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+        h3 { color: var(--accent); font-size: 1.3rem; margin-top: 30px;}
+        p { color: var(--text-muted); font-size: 1.05rem; }
+        .mermaid {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 16px;
+            margin: 30px 0;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        .card strong { color: #fff; display: block; margin-bottom: 10px; font-size: 1.1rem; }
+        .summary-box {
+            background: linear-gradient(135deg, rgba(46, 160, 67, 0.1), rgba(240, 136, 62, 0.1));
+            border: 1px solid var(--accent);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 60px;
+            font-size: 1.2rem;
+        }
+        .summary-box .highlight-text {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 700;
+            display: block;
+            margin-top: 15px;
+        }
+        ul { list-style-type: none; padding: 0; }
+        li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Git 版本控制 (Version Control)</h1>
+
+        <h2>1. Essence (本质)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>What is it fundamentally?</strong>
+                <p>Git 本质上是一个“内容寻址文件系统(Content-addressable FS)”，之上构建了一个处理纯文本的“时间机器”和“平行宇宙生成器”。</p>
+            </div>
+            <div class="card">
+                <strong>Why does it exist?</strong>
+                <p>在多人协作、跨地域编写数百万行代码时，传统的“文件复制+重命名备份”会迅速导致混乱和覆写灾难。</p>
+            </div>
+            <div class="card">
+                <strong>What new possibilities does it create?</strong>
+                <p>让你能够毫无恐惧地进行破坏性实验：随时开启一个平行的历史分支去尝试新想法，失败则销毁，成功则完美合并回主干。</p>
+            </div>
+        </div>
+
+        <h2>2. World Model (世界模型)</h2>
+        <p>在 Git 的世界里，有三个核心的“空间”和不可变的历史“快照”。</p>
+        <div class="mermaid">
+            graph LR
+                Working[Working Directory<br>(你在编辑的文件)] -->|Stage| Staging[Staging Area / Index<br>(等待打包的草稿箱)]
+                Staging -->|Commit| LocalRepo[Local Repository<br>(不可变的历史快照)]
+                LocalRepo -->|Push| Remote[Remote Repository<br>(协作中心站)]
+                Remote -->|Fetch / Pull| LocalRepo
+                LocalRepo -->|Checkout| Working
+        </div>
+        <ul>
+            <li><strong>Objects (对象):</strong> Blob (文件内容), Tree (目录结构), Commit (特定时间的全局快照)。</li>
+            <li><strong>State changes (状态流转):</strong> 未修改 -> 已修改(Working) -> 已暂存(Staging) -> 已提交(Committed)。</li>
+        </ul>
+
+        <h2>3. Concept Map (概念图谱)</h2>
+        <div class="mermaid">
+            mindmap
+              root((Git 核心基石))
+                图结构
+                  DAG (有向无环图)
+                  Commit (历史的节点)
+                指针系统
+                  Branch (可移动的贴纸)
+                  HEAD (当前你所在的位置)
+                  Tag (不可移动的里程碑)
+                协作层
+                  Remote (远端镜像)
+                  Merge (历史交汇)
+                  Rebase (改写历史轨迹)
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Commit (提交快照)</strong>
+                <p>Action: 永久记录。Purpose: 为当前所有文件的状态拍一张相片，并赋予全球唯一的 SHA-1 校验码。一旦生成，不可变（只能追加或抛弃）。</p>
+            </div>
+            <div class="card">
+                <strong>Branch (分支)</strong>
+                <p>Action: 平行演化。Purpose: 本质上只是一个指向某个 Commit 的轻量级指针，让你在不影响主线的情况下独立工作。</p>
+            </div>
+        </div>
+
+        <h2>4. Decision Map (决策图谱)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Situation: 想要尝试一种新的代码架构方案，但不确定是否可行。</strong>
+                <p>Decision: 创建新 Branch。<br>Reason: 创建分支几乎是零成本的，它在平行宇宙中隔离风险。<br>Outcome: 实验成功则 Merge，失败则直接删除分支，主干代码毫发无损。</p>
+            </div>
+            <div class="card">
+                <strong>Situation: 已经提交了 10 个琐碎的 Commit，想推送到公共仓库。</strong>
+                <p>Decision: 交互式 Rebase (Squash)。<br>Reason: 本地历史是草稿，公共历史需要是清晰的里程碑。<br>Outcome: 将 10 个草稿合并为 1 个具有清晰逻辑的故事点。</p>
+            </div>
+        </div>
+
+        <h2>5. Search Space Expansion (认知空间拓展)</h2>
+        <ul>
+            <li><strong>Beginner (很少问的问题):</strong> “Staging Area (暂存区) 为什么存在？直接 Commit 不行吗？” (引出：暂存区让你能从大量杂乱修改中，挑选相关的部分逻辑打包成一个清晰的 Commit)</li>
+            <li><strong>Expert (专家关注):</strong> “底层的 DAG(有向无环图) 究竟是如何避免空间爆炸的？”</li>
+            <li><strong>Next to explore (值得探索):</strong> Hash 碰撞如果发生会怎样？Git 底层是如何对纯文本做差异分析(Diffing)和压缩的？</li>
+            <li><strong>Mastery (大师级):</strong> 重写历史的高级技巧 (Rebase -i, reflog)，即便“误删”，如何通过游离指针找回任何丢失的状态。</li>
+        </ul>
+
+        <h2>6. Ecosystem (生态系统)</h2>
+        <div class="mermaid">
+            graph TD
+                Git[Git 核心引擎] --> Platforms[托管平台: GitHub, GitLab]
+                Platforms --> CICD[CI/CD 流水线: 自动化测试与部署]
+                Platforms --> CodeReview[Pull Requests / Code Review]
+                Git --> UI[图形界面: SourceTree, GitKraken]
+        </div>
+        <ul>
+            <li><strong>Upstream:</strong> 纯文本代码文件、操作系统文件系统。</li>
+            <li><strong>Downstream:</strong> 自动化部署体系(CI/CD)、开源协作生态。</li>
+        </ul>
+
+        <h2>7. Transferable Principles (可迁移原则)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>1. 不可变性 (Immutability)与 Append-only 日志</strong>
+                <p>历史不容篡改。你看到的“修改历史”本质上是生成了新的历史并移动了指针。这种设计保证了极高的数据安全性与溯源能力。</p>
+            </div>
+            <div class="card">
+                <strong>2. 去中心化 (Decentralization)</strong>
+                <p>每个人的电脑上都拥有完整的历史数据库，即使中央服务器毁灭，任何一个开发者的机器都能瞬间重建整个系统。</p>
+            </div>
+        </div>
+
+        <h2>8. Minimum Mental Model (最小记忆模型)</h2>
+        <p>记住这张图景：</p>
+        <ul>
+            <li><strong>三区流转：</strong> <code>修改</code>(Working) -> 挑选<code>打包</code>(Staging) -> <code>定格入库</code>(Commit)。</li>
+            <li><strong>贴纸系统：</strong> Commit 是固定的石碑，Branch 是一张随时可以撕下来贴到新石碑上的便利贴。HEAD 是告诉系统“你现在正看着哪块石碑”的红外线。</li>
+            <li><strong>Merge：</strong> 将两条分叉的河流汇聚。</li>
+        </ul>
+
+        <h2>9. Common Misconceptions (常见误区)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Misconception: Git 存储的是文件每次修改的差异 (Diffs)。</strong>
+                <p><strong>Why:</strong> 许多早期的版本控制系统(如 SVN)确实是这样做的。<br><strong>Better Model:</strong> Git 存储的是每一次提交时的全局“完整快照 (Snapshot)”。如果文件没变，它只存一个指向前一版本的指针。</p>
+            </div>
+            <div class="card">
+                <strong>Misconception: Git 主要是用来“备份代码”的。</strong>
+                <p><strong>Why:</strong> 对于单人开发者，云端仓库起到了备份作用。<br><strong>Better Model:</strong> 备份只是副产品，Git 真正的灵魂是“并发协作的冲突解决协议”以及“项目演进的逻辑脉络表达”。</p>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <p>What I truly gain is not <strong>a file backup system</strong>, but</p>
+            <span class="highlight-text">Absolute freedom to experiment, fail, and collaborate without the fear of irreversible destruction.</span>
+            <p style="margin-top: 10px; color: var(--text-muted); font-size: 1rem;">(我真正获得的不是文件备份系统，而是在不惧怕造成不可逆破坏的前提下，自由试错、失败与协作的绝对自由。)</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Git 版本控制：面向 AI 时代的心智模型、世界模型与决策地图。">
+  <title>Git 版本控制｜AI 时代学习地图</title>
+  <link rel="stylesheet" href="assets/learning-map.css">
+  <script src="assets/learning-map.js" defer></script>
+  <style>
+    /* Inline SVG Visual Enhancements for Git Topic */
+    .visual-diagram-box {
+      background: var(--paper-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    .visual-diagram-box svg {
+      width: 100%;
+      height: auto;
+      min-width: 640px;
+      display: block;
+    }
+    .node-rect { fill: var(--paper); stroke: var(--accent); stroke-width: 2; rx: 6px; }
+    .node-title { fill: var(--ink); font-weight: bold; font-size: 14px; font-family: var(--body); }
+    .node-sub { fill: var(--ink-soft); font-size: 12px; font-family: var(--body); }
+    .edge-line { stroke: var(--line); stroke-width: 2; stroke-dasharray: 4,4; }
+    .edge-flow { stroke: var(--accent); stroke-width: 2.5; marker-end: url(#arrow-git); }
+    .commit-node { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2.5; r: 16; }
+    .commit-label { font-size: 11px; font-weight: bold; fill: var(--accent-ink); text-anchor: middle; font-family: var(--mono); }
+  </style>
+</head>
+<body class="topic-git">
+  <div class="reading-progress" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="atlas-hero" data-glyph="⎇">
+    <div class="hero-grid">
+      <p class="eyebrow">Learning map 03 · Git version control DAG</p>
+      <h1>Git 不是云端备份，而是不可变的代码时空图谱</h1>
+      <p class="hero-deck">在 AI 以百倍速度生成代码的时代，Git 是人类对软件系统的最终控制权与安全网：它提供可分叉的实验空间、可溯源的因果图与可校验的质量基线。</p>
+      <div class="hero-thesis">
+        <span>核心判断</span>
+        <strong>传统的理解把 Git 当成文件上传备份工具；AI 时代的理解把 Git 当成管理代码平行宇宙与快照图的不可变账本。</strong>
+      </div>
+    </div>
+  </header>
+
+  <nav class="atlas-nav" aria-label="章节导航">
+    <a class="home-link" href="00-十五份HTML全面对比报告.html">总览</a>
+    <a href="#essence">01 本质</a>
+    <a href="#world">02 世界</a>
+    <a href="#concepts">03 概念</a>
+    <a href="#decisions">04 决策</a>
+    <a href="#search">05 搜索空间</a>
+    <a href="#ecosystem">06 生态</a>
+    <a href="#principles">07 原则</a>
+    <a href="#minimum">08 最小模型</a>
+    <a href="#misconceptions">09 误区</a>
+    <a href="#summary">10 总结</a>
+  </nav>
+
+  <div class="atlas-shell">
+    <main id="main">
+      <!-- 01 本质 -->
+      <section class="chapter" id="essence">
+        <header class="chapter-head">
+          <span class="chapter-no">01</span>
+          <div>
+            <h2>本质：基于内容寻址的不可变快照有向无环图 (DAG)</h2>
+            <p class="chapter-intro">Git 的核心不是比较文件差异 (Diff)，而是在时间线上为全量代码库建立密码学保护的完整快照，并通过指针管理分支流动。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <p class="big-answer">它本质上是一个<mark>基于内容寻址的不可变有向无环图（Directed Acyclic Graph, DAG）</mark>。</p>
+          <div class="before-after">
+            <article>
+              <h3>为什么存在？</h3>
+              <p>软件开发是非线性的、高度易错的协同过程。人类需要一种无需中央锁死、容错率极高、能随时分支实验并在安全时合流的基底。</p>
+            </article>
+            <article>
+              <h3>解决什么根本问题？</h3>
+              <p>解决“如何在不破坏已知稳定状态的前提下进行大胆尝试，并能够精确复盘、回滚与审计每一次系统演进的因果关系”。</p>
+            </article>
+            <article>
+              <h3>没有它时人们怎么办？</h3>
+              <p>拷贝文件夹（如 `project_v1`, `project_final_final`），或者使用中央锁死的文件版本控制系统（如 SVN），一旦网络断开或版本冲突即陷入灾难。</p>
+            </article>
+            <article>
+              <h3>带来了哪些新的可能？</h3>
+              <p>在 AI 时代，Git 允许 AI 智能体在独立的分支中疯狂试错。人类只需审视 Commit Graph 与 Diff，即可轻松撤销 AI 的错误路径或一键合流高质量成果。</p>
+            </article>
+          </div>
+          <div class="callout">
+            <strong>AI 时代 Git 观：</strong>不要试图死记 `git rebase -i` 或 `git cherry-pick` 的复杂命令选项。你需要理解的核心是：<strong>代码库存储在 DAG 图中，HEAD 与分支只是指向特定 Commit 节点的可移动指针</strong>。
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 世界模型 -->
+      <section class="chapter" id="world">
+        <header class="chapter-head">
+          <span class="chapter-no">02</span>
+          <div>
+            <h2>世界模型：三大空间，四大对象，一张 Commit 图</h2>
+            <p class="chapter-intro">解构 Working Tree、Index/Staging Area 与 Repository 本地图谱之间的流动映射关系。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="visual-diagram-box" role="figure" aria-label="Git 世界模型与 Commit DAG 图谱">
+            <svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-git" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <!-- Three Area Boxes -->
+              <rect x="20" y="20" width="220" height="120" class="node-rect" stroke="var(--line)" />
+              <text x="35" y="45" class="node-title">1. Working Tree (工作区)</text>
+              <text x="35" y="65" class="node-sub">磁盘上的物理文件</text>
+              <text x="35" y="85" class="node-sub">AI 与人类直接编辑修改的空间</text>
+
+              <rect x="270" y="20" width="220" height="120" class="node-rect" stroke="var(--positive)" />
+              <text x="285" y="45" class="node-title">2. Index / Stage (暂存区)</text>
+              <text x="285" y="65" class="node-sub">下一次提交的二进制缓冲列表</text>
+              <text x="285" y="85" class="node-sub">选择性打包变化的决策枢纽</text>
+
+              <rect x="520" y="20" width="220" height="120" class="node-rect" stroke="var(--accent)" style="fill:var(--accent-soft);" />
+              <text x="535" y="45" class="node-title" fill="var(--accent-ink)">3. Repository (本地仓库)</text>
+              <text x="535" y="65" class="node-sub">Objects 对象库 + Commits</text>
+              <text x="535" y="85" class="node-sub">不可变快照 DAG 存储中心</text>
+
+              <!-- Arrow Flows between Areas -->
+              <path d="M 240 60 L 270 60" class="edge-flow" />
+              <text x="245" y="52" font-size="10" fill="var(--accent-ink)">add</text>
+
+              <path d="M 490 60 L 520 60" class="edge-flow" />
+              <text x="492" y="52" font-size="10" fill="var(--accent-ink)">commit</text>
+
+              <!-- Bottom Section: Commit DAG Visual Graph -->
+              <rect x="20" y="160" width="720" height="150" fill="none" stroke="var(--line)" stroke-dasharray="4" rx="8" />
+              <text x="35" y="185" font-size="13" font-weight="bold" fill="var(--accent-ink)">COMMIT DAG & POINTERS (提交历史图与指针演进)</text>
+
+              <!-- Main Line Commits -->
+              <circle cx="80" cy="230" class="commit-node" />
+              <text x="80" y="234" class="commit-label">C1</text>
+
+              <circle cx="200" cy="230" class="commit-node" />
+              <text x="200" y="234" class="commit-label">C2</text>
+
+              <circle cx="320" cy="230" class="commit-node" />
+              <text x="320" y="234" class="commit-label">C3</text>
+
+              <!-- Feature Branch Commits -->
+              <circle cx="440" cy="200" class="commit-node" stroke="var(--positive)" fill="var(--paper-deep)" />
+              <text x="440" y="204" class="commit-label">C4_AI</text>
+
+              <circle cx="560" cy="200" class="commit-node" stroke="var(--positive)" fill="var(--paper-deep)" />
+              <text x="560" y="204" class="commit-label">C5_AI</text>
+
+              <!-- Edges (Parent Pointers) -->
+              <path d="M 184 230 L 96 230" class="edge-flow" />
+              <path d="M 304 230 L 216 230" class="edge-flow" />
+              <path d="M 424 205 L 336 225" class="edge-flow" />
+              <path d="M 544 200 L 456 200" class="edge-flow" />
+
+              <!-- Branch Pointers -->
+              <rect x="300" y="270" width="65" height="25" class="tag-badge" />
+              <text x="332" y="287" class="tag-text" text-anchor="middle">main</text>
+
+              <rect x="530" y="270" width="100" height="25" class="tag-badge" style="fill:color-mix(in oklch, var(--positive) 20%, white);" />
+              <text x="580" y="287" class="tag-text" text-anchor="middle" fill="var(--positive)">feature/ai-work</text>
+
+              <rect x="640" y="270" width="55" height="25" class="tag-badge" style="fill:var(--ink); stroke:var(--ink);" />
+              <text x="667" y="287" class="tag-text" text-anchor="middle" fill="var(--paper)">HEAD</text>
+
+              <path d="M 332 270 L 320 248" class="edge-line" />
+              <path d="M 580 270 L 560 218" class="edge-line" />
+              <path d="M 640 282 L 632 282" class="edge-line" />
+            </svg>
+          </div>
+
+          <div class="system-map">
+            <div class="map-lane">
+              <div class="lane-label">Objects 核心对象</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>Blob</strong><small>无文件名的文件内容二进制二进制块</small></div>
+                <div class="map-node"><strong>Tree</strong><small>目录结构映射表，记录文件名、权限与 Blob/Tree 映射</small></div>
+                <div class="map-node"><strong>Commit</strong><small>指向根 Tree 的快照节点，包含作者、时间戳与父 Commit 指针</small></div>
+                <div class="map-node"><strong>Ref (Branch / Tag)</strong><small>存储 40 字符哈希值的可变文本指针文件</small></div>
+              </div>
+            </div>
+            <div class="map-lane">
+              <div class="lane-label">Three Areas 三大区域</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>Working Tree (工作区)</strong><small>磁盘上的物理目录，人类与 AI 编辑代码的场所</small></div>
+                <div class="map-node"><strong>Index / Stage (暂存区)</strong><small>准备构建下一个 Commit 快照的缓存清单</small></div>
+                <div class="map-node"><strong>Repository (本地仓库)</strong><small>完整存储 Commit DAG 图谱的 `.git` 目录</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 概念地图 -->
+      <section class="chapter" id="concepts">
+        <header class="chapter-head">
+          <span class="chapter-no">03</span>
+          <div>
+            <h2>概念地图：三层架构解构 Git 数据流</h2>
+            <p class="chapter-intro">从底层寻址、图结构演进到顶层指针操控，全面理清概念关联。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="concept-grid">
+            <article class="concept-card">
+              <span class="layer-tag">Layer 1 · 底层存储与内容寻址</span>
+              <h3>SHA Hash & Immutable Objects</h3>
+              <p><strong>Entity (名词):</strong> 基于 SHA-1/SHA-256 计算的内容哈希键与不可变对象库。</p>
+              <p><strong>Action (动词):</strong> 内容哈希寻址, 去重存储 (Deduplication), 完整性校验。</p>
+              <p><strong>Purpose (目的):</strong> 保证代码库中相同内容只存一份，且任何历史数据篡改都会导致哈希值改变。</p>
+              <p><strong>Relationship (关系):</strong> 文件内容被压缩为 Blob 对象，其文件名直接由内容的哈希值决定，构成根数据安全防线。</p>
+            </article>
+
+            <article class="concept-card">
+              <span class="layer-tag">Layer 2 · 图结构与历史拓扑</span>
+              <h3>Commit DAG & Parent Pointer</h3>
+              <p><strong>Entity (名词):</strong> 有向无环图节点与指向父级提交的链表指针。</p>
+              <p><strong>Action (动词):</strong> 分支派生 (Branch), 历史分叉, 3-Way 三路合并 (Merge), 图重构 (Rebase)。</p>
+              <p><strong>Purpose (目的):</strong> 支持多线程并行开发，精确记录每一份代码修改的前因后果历史图谱。</p>
+              <p><strong>Relationship (关系):</strong> 每个 Commit 都包含至少一个父指针；分叉后通过寻找共同祖先 (LCA) 进行智能代码合流。</p>
+            </article>
+
+            <article class="concept-card">
+              <span class="layer-tag">Layer 3 · 工作区与引用操控</span>
+              <h3>HEAD, Branch & Index</h3>
+              <p><strong>Entity (名词):</strong> HEAD 引用符号, 分支指针, 暂存区 Stage 状态机。</p>
+              <p><strong>Action (动词):</strong> 游标移动 (`checkout`/`switch`), 暂存打包 (`add`), 快照写入 (`commit`), 重置 (`reset`)。</p>
+              <p><strong>Purpose (目的):</strong> 给复杂的底层 DAG 节点赋予人性化的名字 (如 `main`, `dev`)，提供极低成本的时空切换能力。</p>
+              <p><strong>Relationship (关系):</strong> 移动 Branch 仅仅是修改一个 41 字节的文本文件；HEAD 则是永远指向“你当前身处何方”的游标。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 决策地图 -->
+      <section class="chapter" id="decisions">
+        <header class="chapter-head">
+          <span class="chapter-no">04</span>
+          <div>
+            <h2>决策地图：AI 开发场景下的 Git 工作流抉择</h2>
+            <p class="chapter-intro">针对高频 AI 生成代码场景，做出最契合工程规范的版本控制决策。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="decision-chain">
+            <div class="decision-card">
+              <div class="situation"><strong>Situation 场景：</strong>准备让 AI Agent 尝试一个存在较高风险的大范围功能模块改写。</div>
+              <div class="arrow">↓</div>
+              <div class="decision"><strong>Decision 决策：</strong>在操作前基于主干创建隔离的分支 (`git checkout -b feature/ai-experiment`)，并在改动后进行原子 Commit。</div>
+              <div class="arrow">↓</div>
+              <div class="reason"><strong>Reason 理由：</strong>分支创建成本接近零（仅生成一个指针），能将 AI 的风险完全锁死在平行时空中，不污染主线 `main`。</div>
+              <div class="arrow">↓</div>
+              <div class="outcome"><strong>Expected Outcome 期望结果：</strong>即使 AI 修改彻底失败，只需一秒切回 `main` 或删除分支即可彻底恢复无损状态。</div>
+            </div>
+
+            <div class="decision-card">
+              <div class="situation"><strong>Situation 场景：</strong>AI 生成的代码在系统运行几周后，突然发现出现了一个隐秘的性能退化崩溃。</div>
+              <div class="arrow">↓</div>
+              <div class="decision"><strong>Decision 决策：</strong>使用 `git bisect` (二分查找) 结合自动化测试脚本，快速定位引入异常的原始 Commit。</div>
+              <div class="arrow">↓</div>
+              <div class="reason"><strong>Reason 理由：</strong>面对数百个历史 Commit，人工阅读 Diff 成本极高；`git bisect` 利用 DAG 树的二分法能在对数级时间内精确定位罪魁祸首。</div>
+              <div class="arrow">↓</div>
+              <div class="outcome"><strong>Expected Outcome 期望结果：</strong>在几分钟内精准找到引入 Bug 的原始 AI 提交节点并完成精准修复。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 搜索空间扩展 -->
+      <section class="chapter" id="search">
+        <header class="chapter-head">
+          <span class="chapter-no">05</span>
+          <div>
+            <h2>搜索空间扩展：发掘 Git 图谱的高阶奥秘</h2>
+            <p class="chapter-intro">展开从日常使用到掌控分布式版本库深层原理的问题网格。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="search-grid">
+            <article class="search-box">
+              <h3>🌱 初学者极少问，但至关重要的问题</h3>
+              <ul>
+                <li>删除分支后，那个分支上的 Commit 和代码文件真的立刻从硬盘上消失了吗？（Garbage Collection 与 Reflog 救回机制）</li>
+                <li>为什么说 `.git` 文件夹下的每一个对象都是不可变的？要修改一个历史提交的 Log 实际上发生了什么？（生成全新的 Commit 节点并重定向指针）</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>🎯 专家真正关心的工程问题</h3>
+              <ul>
+                <li>在 AI 百倍提升代码产出量的背景下，如何规范 AI 生成的 Commit Message 与粒度，避免 Commit 历史变成乱七八糟的“垃圾流”？</li>
+                <li>`git rebase` 与 `git merge` 在长期团队协作中对拓扑历史演进的深层语义影响有何区别？</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>🚀 下一步值得深入探索的方向</h3>
+              <ul>
+                <li>Git 底层 Plumbing (管道命令, e.g. `cat-file`, `write-tree`, `commit-tree`) 与 Porcelain (瓷器/顶层命令) 的解耦。</li>
+                <li>Git LFS (Large File Storage) 大文件指针机制与 AI 多模态资产版本控制。</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>👑 决定该领域上限的根本问题</h3>
+              <ul>
+                <li>在以 Jujutsu (jj) / Sapling 为代表的新一代 Version Control System 演进中，如何重新定义无冲突快照与连续可变时空管理？</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 生态系统 -->
+      <section class="chapter" id="ecosystem">
+        <header class="chapter-head">
+          <span class="chapter-no">06</span>
+          <div>
+            <h2>生态系统：Git 在现代云原生与 AI 基础设施中的位置</h2>
+            <p class="chapter-intro">理解 Git 作为全行业事实上的代码与配置“单一信任源 (Single Source of Truth)”的位置。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="ecosystem-list">
+            <div class="eco-item">
+              <strong>上游依赖 (Upstream)</strong>
+              <p>操作系统文件系统 (Ext4, APFS, NTFS)、密码学哈希函数 (SHA-1, SHA-256)、Zlib 压缩算法。</p>
+            </div>
+            <div class="eco-item">
+              <strong>下游集成 (Downstream)</strong>
+              <p>代码托管平台 (GitHub, GitLab), GitOps 部署工具 (ArgoCD, Flux), CI/CD 构建流水线, AI PR Reviewer。</p>
+            </div>
+            <div class="eco-item">
+              <strong>替代方案 (Alternatives)</strong>
+              <p>Jujutsu (`jj`), Sapling, Mercurial (`hg`), Apache Subversion (SVN)。</p>
+            </div>
+            <div class="eco-item">
+              <strong>互补生态 (Complements)</strong>
+              <p>Git LFS, 终端 GUI 交互工具 (`lazygit`, `tig`), GitHub CLI (`gh`), Diff 渲染优化工具 (`delta`)。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 可迁移原则 -->
+      <section class="chapter" id="principles">
+        <header class="chapter-head">
+          <span class="chapter-no">07</span>
+          <div>
+            <h2>可迁移原则：区分不变的图拓扑原理与易变的命令行命令</h2>
+            <p class="chapter-intro">掌握数据结构不变性与指针抽象，轻松应付任何未来的版本控制工具。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="principles-grid">
+            <div class="p-card">
+              <h3>第一性原理 (First Principles)</h3>
+              <p><strong>Immutability & Pointer Indirection:</strong> 不可变的数据快照 + 可变的数据指针 = 彻底防错、可无限重置与自由时间旅行的系统。</p>
+            </div>
+            <div class="p-card">
+              <h3>可迁移的方法论 (Transferable Methodologies)</h3>
+              <p><strong>内容寻址与基线对比:</strong> 通过 Hash 索引数据；所有版本控制本质上都是寻找共同祖先 (LCA) 并做三路合并 (3-Way Merge)。</p>
+            </div>
+            <div class="p-card">
+              <h3>长期稳定的知识 (Stable Knowledge)</h3>
+              <p>Commit DAG 图拓扑、三大区域 (Working Tree/Stage/Repo)、HEAD 与 Branch 指针本质、3-Way Merge 原理。</p>
+            </div>
+            <div class="p-card">
+              <h3>容易变化的知识 (Changing Knowledge)</h3>
+              <p>`git checkout` 与 `git switch`/`git restore` 命令名称的语法演进、特定的 Git GUI 客户端按钮位置、托管网站 UI 面板。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 最小心智模型 -->
+      <section class="chapter" id="minimum">
+        <header class="chapter-head">
+          <span class="chapter-no">08</span>
+          <div>
+            <h2>最小心智模型：Git 版本控制最重要的 12 个核心概念</h2>
+            <p class="chapter-intro">记住这 12 个概念，你就能看透任何复杂的 Git 冲突与分支合并图谱。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <ol class="min-model-list">
+            <li><strong>Immutable Snapshot (不可变快照):</strong> Git 每次提交保存的是全量目录快照，而非仅记录文件 Diff。</li>
+            <li><strong>Content-Addressable Storage (内容寻址存储):</strong> 数据对象的存储位置与文件名由其内容的密码学哈希值计算得出。</li>
+            <li><strong>Commit DAG (提交有向无环图):</strong> 由一个个指向父节点的 Commit 构成的版本历史时间线拓扑图。</li>
+            <li><strong>Working Tree (工作区):</strong> 磁盘上人类与 AI 直接修改代码的物理目录。</li>
+            <li><strong>Index / Staging Area (暂存区):</strong> 缓冲将要写入下一个 Commit 快照的准备清单。</li>
+            <li><strong>HEAD Pointer (HEAD 游标指针):</strong> 指向当前所在分支或特定 Commit 节点的“你在这里”游标。</li>
+            <li><strong>Branch Pointer (分支指针):</strong> 一个仅包含 40 字符哈希值的可变文本文件，随新 Commit 自动前推。</li>
+            <li><strong>Detached HEAD (游离 HEAD 状态):</strong> HEAD 直接指向具体 Commit 哈希而非分支名时的只读探险状态。</li>
+            <li><strong>3-Way Merge (三路合并):</strong> 结合两个待合并节点及其最近共同祖先 (LCA) 进行的智能冲突判定算法。</li>
+            <li><strong>Fast-Forward Merge (快进合并):</strong> 当目标分支没有新提交时，合并仅表现为直接把分支指针向前推进。</li>
+            <li><strong>Rebase (变基/重构历史):</strong> 提取当前分支的改动，在另一个目标 Commit 节点之上重新播放 (Replay) 形成线性历史。</li>
+            <li><strong>Reflog (引用日志):</strong> 记录 HEAD 指针每一次变动的日志账本，是救回“误删分支”与丢失 Commit 的终极救命稻草。</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 09 常见误区 -->
+      <section class="chapter" id="misconceptions">
+        <header class="chapter-head">
+          <span class="chapter-no">09</span>
+          <div>
+            <h2>常见误区：破解关于 Git 的深层偏见</h2>
+            <p class="chapter-intro">纠正过时的记忆方式，建立真实的数据结构视角。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="misconception-card">
+            <h3>误区一：Git 每次提交保存的是各个文件的“增量变化 (Diff)”</h3>
+            <p class="why"><strong>产生原因：</strong>`git log -p` 或 GitHub 上经常以 + / - 的 Diff 形式展示修改。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>Git 每次提交保存的是代码库该时刻的“全量文件树快照”。Diff 只是 Git 在运行时实时计算给你看的；只有在打 Packfile 包时才会为了节省存储在底层做增量压缩。</p>
+          </div>
+
+          <div class="misconception-card">
+            <h3>误区二：创建分支会复制一份代码库文件夹，分支很重</h3>
+            <p class="why"><strong>产生原因：</strong>受传统文件备份思维限制，以为 Branch 就像复制粘贴了一个文件夹。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>在 Git 中，创建一个 Branch 只是在 `.git/refs/heads/` 目录写一个 41 字节的文本文件（包含 40 字符 Commit Hash 和一个换行符），耗时不到 1 毫秒。</p>
+          </div>
+
+          <div class="misconception-card">
+            <h3>误区三：如果不小心删除了分支或执行了错误重置，代码就永久丢失了</h3>
+            <p class="why"><strong>产生原因：</strong>在命令行中看到 `Deleted branch` 的提示后陷入恐慌。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>Git 的 Object Store 中的 Commit 节点是不可变的。除非垃圾回收 (`git gc`) 彻底运行，否则通过 `git reflog` 找到哈希值，一秒钟即可完整找回丢失的分支与快照。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 总结 -->
+      <section class="chapter" id="summary">
+        <header class="chapter-head">
+          <span class="chapter-no">10</span>
+          <div>
+            <h2>总结</h2>
+            <p class="chapter-intro">一句话完成对 Git 版本控制认知升级的凝练。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <blockquote class="summary-quote">
+            “在 AI 时代，我真正获得的不是<del>防守型背诵 Git 命令参数与解决冲突的手艺</del>，<br>
+            而是<mark>拥有了一套可分叉实验、可精确溯源因果、彻底容错的代码平行时空图谱管理能力</mark>。”
+          </blockquote>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="atlas-footer">
+    <p>AI 时代学习地图 · Git 版本控制 · 维护于 2026</p>
+  </footer>
+</body>
+</html>

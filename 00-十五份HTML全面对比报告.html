@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="三个主题、五种生成方式、十五份 AI 学习地图的内容与技术质量全面对比。">
+  <title>十五份 AI 学习地图 · 全面对比报告</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%231f2a27%22/><text x=%2232%22 y=%2241%22 text-anchor=%22middle%22 font-size=%2224%22 fill=%22%23f1eadc%22>15</text></svg>">
+  <style>
+    :root{
+      color-scheme:light;
+      --paper:#f1eadc;--ink:#20211e;--muted:#716b61;--line:#c9bdab;
+      --chat:#a64d34;--claude:#23594f;--codex:#314f7c;--gemini:#8a6125;--gemini31:#65546f;
+      --chat-soft:#ead1c7;--claude-soft:#c9ddd7;--codex-soft:#ced8e7;--gemini-soft:#e6d5ae;--gemini31-soft:#ddd3e1;
+      --serif:"Songti SC","STSong",Georgia,serif;
+      --sans:"Avenir Next","PingFang SC","Hiragino Sans GB",sans-serif;
+      --tap-min:2rem;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:5.5rem}
+    body{margin:0;color:var(--ink);background:
+      linear-gradient(rgb(68 57 43/.045) 1px,transparent 1px),var(--paper);
+      background-size:100% 30px;font:16px/1.75 var(--sans)}
+    a{color:inherit;text-underline-offset:.2em}
+    a:focus-visible,summary:focus-visible{outline:3px solid var(--codex);outline-offset:4px}
+    .top{position:sticky;z-index:20;top:0;border-bottom:1px solid var(--line);background:rgb(241 234 220/.94);backdrop-filter:blur(12px)}
+    .top-inner{display:flex;align-items:center;justify-content:space-between;width:min(94vw,1380px);min-height:4.5rem;margin:auto;gap:1rem}
+    .brand{font-family:var(--serif);font-weight:700;text-decoration:none}
+    nav{display:flex;overflow-x:auto;gap:.25rem;scrollbar-width:none}
+    nav a{min-height:44px;padding:.6rem .75rem;border-bottom:2px solid transparent;color:var(--muted);font-size:.8rem;text-decoration:none;white-space:nowrap}
+    nav a:hover{border-color:var(--ink);color:var(--ink)}
+    .wrap{width:min(92vw,1240px);margin:auto}
+    .hero{padding:clamp(5rem,10vw,9rem) 0 5rem;border-bottom:1px solid var(--ink)}
+    .kicker,.label{font-size:.72rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+    .kicker{display:inline-block;padding-bottom:.45rem;border-bottom:2px solid var(--ink)}
+    h1,h2,.thesis{font-family:var(--serif)}
+    h1{max-width:10ch;margin:1.5rem 0;font-size:clamp(3.2rem,8vw,7rem);font-weight:600;letter-spacing:-.055em;line-height:.96}
+    .lede{max-width:43rem;color:var(--muted);font-size:clamp(1.05rem,1.8vw,1.35rem)}
+    .hero-stats{display:grid;grid-template-columns:repeat(4,1fr);margin-top:3.5rem;border-top:1px solid var(--line)}
+    .stat{padding:1.1rem 1rem 0;border-right:1px solid var(--line)}
+    .stat:last-child{border-right:0}.stat b{display:block;font:2rem var(--serif)}.stat span{color:var(--muted);font-size:.78rem}
+    section{padding:clamp(4.5rem,8vw,7.5rem) 0;border-bottom:1px solid var(--line)}
+    .section-head{display:grid;grid-template-columns:4rem 1fr;margin-bottom:2.5rem;gap:1rem}
+    .num{color:var(--muted);font:2rem var(--serif)}
+    h2{max-width:19ch;margin:0 0 .45rem;font-size:clamp(2rem,4vw,3.8rem);font-weight:600;letter-spacing:-.035em;line-height:1.1}
+    .intro{max-width:48rem;margin:0;color:var(--muted)}
+    .verdict{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(1.5rem,4vw,4rem)}
+    .thesis{margin:0;font-size:clamp(1.8rem,3.2vw,3rem);line-height:1.35}
+    .thesis strong{color:var(--codex)}
+    .decision{padding:1.5rem;border:1px solid var(--line);background:rgb(255 255 255/.18)}
+    .decision p:last-child{margin-bottom:0}
+    .sources{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem}
+    .source{display:flex;grid-column:span 2;flex-direction:column;min-height:26rem;padding:1.5rem;border:1px solid var(--line)}
+    .source:nth-last-child(-n+2){grid-column:span 3}
+    .source.chat{--tone:var(--chat);--tone-soft:var(--chat-soft)}
+    .source.claude{--tone:var(--claude);--tone-soft:var(--claude-soft)}
+    .source.codex{--tone:var(--codex);--tone-soft:var(--codex-soft)}
+    .source.gemini{--tone:var(--gemini);--tone-soft:var(--gemini-soft)}
+    .source.gemini31{--tone:var(--gemini31);--tone-soft:var(--gemini31-soft)}
+    .source .label{color:var(--tone)}.source h3{margin:.8rem 0;font:1.55rem var(--serif)}
+    .source .score{display:inline-flex;align-items:baseline;gap:.3rem;margin:.25rem 0 1rem;color:var(--tone)}
+    .source .score b{font:2.5rem var(--serif)}.source ul{padding-left:1.2rem}.source .best{margin-top:auto;padding:.8rem;background:var(--tone-soft);color:color-mix(in srgb,var(--tone) 75%,#111);font-size:.84rem;font-weight:700}
+    .map{display:grid;grid-template-columns:8rem repeat(5,1fr);border-top:1px solid var(--ink)}
+    .cell{min-width:0;padding:1rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .cell:nth-child(6n){border-right:0}.cell.head{font-weight:800}.cell.theme{font-family:var(--serif);font-size:1.1rem}
+    .cell.chat{background:color-mix(in srgb,var(--chat-soft) 55%,transparent)}
+    .cell.claude{background:color-mix(in srgb,var(--claude-soft) 55%,transparent)}
+    .cell.codex{background:color-mix(in srgb,var(--codex-soft) 55%,transparent)}
+    .cell.gemini{background:color-mix(in srgb,var(--gemini-soft) 55%,transparent)}
+    .cell.gemini31{background:color-mix(in srgb,var(--gemini31-soft) 55%,transparent)}
+    .cell small{display:block;color:var(--muted);line-height:1.5}
+    .winner{display:inline-block;margin-top:.5rem;padding:.12rem .45rem;border:1px solid currentColor;border-radius:999px;font-size:.68rem;font-weight:800}
+    .metrics{width:100%;border-collapse:collapse;font-size:.83rem}
+    .metrics th,.metrics td{padding:.8rem .7rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    .metrics th{color:var(--muted);font-size:.7rem;letter-spacing:.05em;text-transform:uppercase}
+    .metrics tbody tr:hover{background:rgb(255 255 255/.22)}
+    .source-dot{display:inline-block;width:.55rem;aspect-ratio:1;margin-right:.4rem;border-radius:50%}
+    .source-dot.chat{background:var(--chat)}.source-dot.claude{background:var(--claude)}.source-dot.codex{background:var(--codex)}.source-dot.gemini{background:var(--gemini)}.source-dot.gemini31{background:var(--gemini31)}
+    .bar{display:grid;grid-template-columns:8rem 1fr 3rem;align-items:center;margin:.65rem 0;gap:.8rem}
+    .track{height:.55rem;background:#d9d0c2}.fill{height:100%;background:var(--tone);width:var(--value)}
+    .audit{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,4rem)}
+    .scoreboard{padding:1.4rem;border:1px solid var(--line)}
+    .scoreboard.chat{--tone:var(--chat)}.scoreboard.claude{--tone:var(--claude)}.scoreboard.codex{--tone:var(--codex)}.scoreboard.gemini{--tone:var(--gemini)}.scoreboard.gemini31{--tone:var(--gemini31)}
+    .scoreboard h3{display:flex;justify-content:space-between;margin-top:0;font-family:var(--serif)}
+    .findings{display:grid;gap:.65rem}
+    .finding{display:grid;grid-template-columns:3.8rem 1fr;padding:1rem;border-top:1px solid var(--line)}
+    .severity{font-size:.72rem;font-weight:900;letter-spacing:.08em}.p1{color:#9d3125}.p2{color:#8a5a20}.p3{color:var(--muted)}
+    .finding b{display:block}.finding p{margin:.25rem 0 0;color:var(--muted);font-size:.86rem}
+    .links{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .link-group{padding:1.3rem;border:1px solid var(--line)}.link-group h3{font-family:var(--serif)}
+    .link-group a{display:block;min-height:44px;padding:.45rem 0;border-bottom:1px solid var(--line);text-decoration:none}.link-group a:last-child{border-bottom:0}.link-group a:hover{color:var(--codex)}
+    details{border-top:1px solid var(--line)}summary{min-height:44px;padding:1rem 0;cursor:pointer;font-weight:800}
+    .note{color:var(--muted);font-size:.82rem}.footer{display:flex;justify-content:space-between;padding:2rem 0 4rem;gap:2rem;color:var(--muted);font-size:.78rem}
+    @media(max-width:1050px){.sources{grid-template-columns:repeat(2,1fr)}.source,.source:nth-last-child(-n+2){grid-column:auto}.map{grid-template-columns:1fr}.cell,.cell:nth-child(6n){border-right:0}.cell.head{display:none}.cell.theme{padding-top:2rem;border-bottom:2px solid var(--ink)}}
+    @media(max-width:900px){.sources,.links{grid-template-columns:1fr}.source{min-height:0}.verdict,.audit{grid-template-columns:1fr}.hero-stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:0}.metrics{display:block;overflow-x:auto;white-space:nowrap}}
+    @media(max-width:560px){.top-inner{align-items:flex-start;flex-direction:column;padding:.75rem 0 .3rem}.top-inner,.wrap{width:calc(100% - 2rem)}nav{width:100%}h1{max-width:10ch;font-size:3rem;line-height:1}.hero-stats{grid-template-columns:1fr 1fr}.section-head{grid-template-columns:2.5rem 1fr}.bar{grid-template-columns:6.5rem 1fr 2.5rem}.footer{flex-direction:column}}
+    @media(max-width:560px){.brand{display:flex;align-items:center;min-height:var(--tap-min)}p a{padding-block:calc(var(--tap-min)/3)}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+    @media print{.top{display:none}section{break-inside:avoid}.wrap{width:100%}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <a class="brand" href="#top">十五份学习地图 · 对比报告</a>
+      <nav aria-label="报告目录">
+        <a href="#verdict">结论</a><a href="#sources">五种方式</a><a href="#themes">逐主题</a>
+        <a href="#audit">技术审计</a><a href="#files">十五份入口</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="wrap">
+      <header class="hero">
+        <div class="kicker">3 topics × 5 generators / evidence review</div>
+        <h1>十五份报告，不是十五个冠军</h1>
+        <p class="lede">同一个 prompt 交给 Claude Code、ChatGPT 客户端、Codex CLI、Gemini 3.6 Flash 和 Gemini 3.1 Pro，得到五种稳定取向：深度长卷、决策地图、平衡主版本、结构化扩展与视觉摘要。</p>
+        <div class="hero-stats" aria-label="关键数字">
+          <div class="stat"><b>15/15</b><span>覆盖 10 个认知板块</span></div>
+          <div class="stat"><b>37</b><span>Codex 参数页覆盖的不同 flags</span></div>
+          <div class="stat"><b>710px</b><span>Gemini 3.6 三页在 390px 视口的实际宽度</span></div>
+          <div class="stat"><b>17</b><span>Gemini 3.1 Pro 运行时外部资源 URL</span></div>
+        </div>
+      </header>
+
+      <section id="verdict">
+        <div class="section-head"><div class="num">01</div><div><div class="label">Executive verdict</div><h2>没有绝对最好，只有角色分工</h2></div></div>
+        <div class="verdict">
+          <p class="thesis">把 <strong>Codex CLI</strong> 作为主版本；ChatGPT 复习，Gemini 3.1 Pro 摘要，Gemini 3.6 Flash 扩展，Claude Code 深挖。</p>
+          <div class="decision">
+            <div class="label">只保留一组</div>
+            <p><b>选 Codex CLI。</b>它在内容、证据、篇幅、语义结构、移动适配与可维护性之间最均衡。</p>
+            <p class="note">技术质量冠军：ChatGPT / Codex 并列。内容深度冠军：Claude Code。3.6 Flash 先修移动端，3.1 Pro 先补事实与离线能力。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="sources">
+        <div class="section-head"><div class="num">02</div><div><div class="label">Generator profiles</div><h2>五种生成方式的稳定性格</h2><p class="intro">这里的分数把“内容质量”和“技术健康”分开，避免视觉更华丽就自动获胜。</p></div></div>
+        <div class="sources">
+          <article class="source chat">
+            <div class="label">ChatGPT 客户端 · 快速版</div><h3>短、稳、决策清楚</h3>
+            <div class="score"><b>22</b><span>/25 内容</span></div>
+            <ul><li>每篇约 3,745–5,169 正文字符</li><li>决策地图与最小心智模型最直接</li><li>完全离线，390px 无溢出</li><li>Claude 权限边界解释最好</li></ul>
+            <div class="best">最适合：第一次快速建立框架、10 分钟复习</div>
+          </article>
+          <article class="source claude">
+            <div class="label">Claude Code · 深度版</div><h3>深、密、图示丰富</h3>
+            <div class="score"><b>20</b><span>/25 内容</span></div>
+            <ul><li>每篇约 15,710–18,131 正文字符</li><li>搜索空间与解释深度最高</li><li>Mermaid 图最多、叙事类比最强</li><li>移动溢出、外部依赖与维护成本较高</li></ul>
+            <div class="best">最适合：深度研读、作为主版本的补充材料</div>
+          </article>
+          <article class="source codex">
+            <div class="label">Codex CLI · 主版本</div><h3>结构、证据、篇幅最均衡</h3>
+            <div class="score"><b>23</b><span>/25 内容</span></div>
+            <ul><li>每篇约 4,661–6,500 正文字符</li><li>语义 landmarks 每页 16 个</li><li>参数页覆盖 37 个不同 flags</li><li>来源链接与世界模型组织最好</li></ul>
+            <div class="best">最适合：长期保留、正式讲解、作为统一主版本</div>
+          </article>
+          <article class="source gemini">
+            <div class="label">Gemini 3.6 Flash · 扩展版</div><h3>完整、展开、结构稳定</h3>
+            <div class="score"><b>21</b><span>/25 内容</span></div>
+            <ul><li>每篇约 5,508–6,539 正文字符</li><li>十个板块与三层概念组织完整</li><li>完全离线，标题层级与 landmarks 良好</li><li>三页移动端均宽到 710px</li></ul>
+            <div class="best">最适合：从主版本向专家问题扩展的第二视角</div>
+          </article>
+          <article class="source gemini31">
+            <div class="label">Gemini 3.1 Pro · 视觉摘要版</div><h3>最短、醒目、移动端友好</h3>
+            <div class="score"><b>17</b><span>/25 内容</span></div>
+            <ul><li>每篇约 2,521–2,849 正文字符</li><li>390px 无横向溢出，页面最短</li><li>核心隐喻和 Mermaid 关系图醒目</li><li>参数页仅 2 flags，且依赖外部资源</li></ul>
+            <div class="best">最适合：快速浏览、讲解后的视觉复盘</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="themes">
+        <div class="section-head"><div class="num">03</div><div><div class="label">Topic-by-topic</div><h2>三个主题，五种取向</h2><p class="intro">十五份都覆盖了相同的十个板块；差异来自信息密度、证据、认知负担和应用场景。</p></div></div>
+        <div class="map" role="group" aria-label="逐主题对比">
+          <div class="cell head">主题</div><div class="cell head chat">ChatGPT</div><div class="cell head claude">Claude Code</div><div class="cell head codex">Codex CLI</div><div class="cell head gemini">Gemini 3.6</div><div class="cell head gemini31">Gemini 3.1</div>
+          <div class="cell theme">01 命令行</div>
+          <div class="cell chat"><b>窄腰模型 + 15 概念</b><small>最短、决策边界最直接</small><span class="winner">快速建模</span></div>
+          <div class="cell claude"><b>命令生命周期 + 7 处图示</b><small>18,131 字符，深度最高</small><span class="winner">深度冠军</span></div>
+          <div class="cell codex"><b>六类对象 + 一条执行链</b><small>结构和标准资料最平衡</small><span class="winner">主版本</span></div>
+          <div class="cell gemini"><b>六类实体 + 数据管道</b><small>12 概念，展开完整</small><span class="winner">结构扩展</span></div>
+          <div class="cell gemini31"><b>可组合控制层</b><small>2,849 字符，移动端最短</small><span class="winner">视觉摘要</span></div>
+          <div class="cell theme">02 Claude 参数</div>
+          <div class="cell chat"><b>能力 ≠ 免确认</b><small>27 flags，安全决策最清楚</small><span class="winner">治理冠军</span></div>
+          <div class="cell claude"><b>AI 雇员工作合同</b><small>20 flags，类比最有记忆点</small><span class="winner">叙事冠军</span></div>
+          <div class="cell codex"><b>八个参数家族</b><small>37 flags，事实与来源最完整</small><span class="winner">事实冠军</span></div>
+          <div class="cell gemini"><b>四个运行边界</b><small>17 flags，契约结构清楚</small><span class="winner">结构扩展</span></div>
+          <div class="cell gemini31"><b>Engine / Directive / Context</b><small>仅 2 flags，不是事实索引</small><span class="winner">视觉摘要</span></div>
+          <div class="cell theme">03 Git</div>
+          <div class="cell chat"><b>给变化建立身份与因果</b><small>15 概念，复习效率最高</small><span class="winner">快速复习</span></div>
+          <div class="cell claude"><b>三棵树 + DAG + AI 角色迁移</b><small>17,039 字符、119 个标题</small><span class="winner">深度冠军</span></div>
+          <div class="cell codex"><b>内容寻址 + 提交图 + 远端视图</b><small>引用与结构最均衡</small><span class="winner">主版本</span></div>
+          <div class="cell gemini"><b>时空图谱 + 三空间四对象</b><small>结构完整，缺少来源链接</small><span class="winner">结构扩展</span></div>
+          <div class="cell gemini31"><b>安全试错 + 分支贴纸</b><small>最短，移动端适配最好</small><span class="winner">视觉摘要</span></div>
+        </div>
+      </section>
+
+      <section id="audit">
+        <div class="section-head"><div class="num">04</div><div><div class="label">Technical audit</div><h2>技术健康：两组优秀，三组各有短板</h2><p class="intro">分数采用 Accessibility、Performance、Theming、Responsive、Anti-patterns 五个维度，每项 4 分。</p></div></div>
+        <div class="audit">
+          <div>
+            <article class="scoreboard chat"><h3><span>ChatGPT 客户端</span><span>19/20</span></h3>
+              <div class="bar"><span>A11y</span><div class="track"><div class="fill" style="--value:75%"></div></div><b>3</b></div>
+              <div class="bar"><span>性能</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>主题</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>响应式</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>反模式</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+            </article>
+            <article class="scoreboard codex"><h3><span>Codex CLI</span><span>19/20</span></h3>
+              <div class="bar"><span>A11y</span><div class="track"><div class="fill" style="--value:75%"></div></div><b>3</b></div>
+              <div class="bar"><span>性能</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>主题</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>响应式</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>反模式</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+            </article>
+            <article class="scoreboard claude"><h3><span>Claude Code</span><span>13/20</span></h3>
+              <div class="bar"><span>A11y</span><div class="track"><div class="fill" style="--value:50%"></div></div><b>2</b></div>
+              <div class="bar"><span>性能</span><div class="track"><div class="fill" style="--value:75%"></div></div><b>3</b></div>
+              <div class="bar"><span>主题</span><div class="track"><div class="fill" style="--value:75%"></div></div><b>3</b></div>
+              <div class="bar"><span>响应式</span><div class="track"><div class="fill" style="--value:50%"></div></div><b>2</b></div>
+              <div class="bar"><span>反模式</span><div class="track"><div class="fill" style="--value:75%"></div></div><b>3</b></div>
+            </article>
+            <article class="scoreboard gemini"><h3><span>Gemini 3.6 Flash</span><span>16/20</span></h3>
+              <div class="bar"><span>A11y</span><div class="track"><div class="fill" style="--value:75%"></div></div><b>3</b></div>
+              <div class="bar"><span>性能</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>主题</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>响应式</span><div class="track"><div class="fill" style="--value:25%"></div></div><b>1</b></div>
+              <div class="bar"><span>反模式</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+            </article>
+            <article class="scoreboard gemini31"><h3><span>Gemini 3.1 Pro</span><span>13/20</span></h3>
+              <div class="bar"><span>A11y</span><div class="track"><div class="fill" style="--value:50%"></div></div><b>2</b></div>
+              <div class="bar"><span>性能</span><div class="track"><div class="fill" style="--value:50%"></div></div><b>2</b></div>
+              <div class="bar"><span>主题</span><div class="track"><div class="fill" style="--value:75%"></div></div><b>3</b></div>
+              <div class="bar"><span>响应式</span><div class="track"><div class="fill" style="--value:100%"></div></div><b>4</b></div>
+              <div class="bar"><span>反模式</span><div class="track"><div class="fill" style="--value:50%"></div></div><b>2</b></div>
+            </article>
+          </div>
+          <div class="findings">
+            <div class="finding"><div class="severity p1">P1</div><div><b>Gemini 3.6 三页移动端均宽到 710px</b><p>390px 视口必须横向拖动，属于整组响应式问题。</p></div></div>
+            <div class="finding"><div class="severity p1">P1</div><div><b>Claude 参数页移动端宽到 469px</b><p>390px 视口需要横向拖动，是 Claude 组最明显的响应式问题。</p></div></div>
+            <div class="finding"><div class="severity p2">P2</div><div><b>Claude 三页各有 4–5 次标题层级跳跃</b><p>文档大纲和屏幕阅读器导航弱于另外两组。</p></div></div>
+            <div class="finding"><div class="severity p2">P2</div><div><b>Claude 依赖 Mermaid CDN</b><p>每页一个外部资源，约 1.9 秒加载；离线时图示可能失效。</p></div></div>
+            <div class="finding"><div class="severity p2">P2</div><div><b>Gemini 3.1 Pro 依赖字体与 Mermaid CDN</b><p>2 个外部入口展开为约 17 个资源 URL；首次加载 0.6–2.8 秒。</p></div></div>
+            <div class="finding"><div class="severity p2">P2</div><div><b>Gemini 3.1 Pro 无 landmarks，参数页仅 2 flags</b><p>适合视觉复盘，但辅助导航和事实检索能力较弱。</p></div></div>
+            <div class="finding"><div class="severity p2">P2</div><div><b>交互目标普遍小于 44px</b><p>Codex 导航尤为集中，影响触屏点击精度。</p></div></div>
+            <div class="finding"><div class="severity p2">P2</div><div><b>Claude 缺少 meta description 与足够 landmarks</b><p>可发现性和辅助技术导航较弱。</p></div></div>
+            <div class="finding"><div class="severity p3">P3</div><div><b>Claude 01 首次加载出现 favicon 404</b><p>不影响正文，但 console 不完全干净。</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><div class="num">05</div><div><div class="label">Evidence table</div><h2>十五份文件量化明细</h2></div></div>
+        <table class="metrics">
+          <thead><tr><th>文件</th><th>大小</th><th>正文字符</th><th>标题</th><th>移动高度</th><th>移动宽度</th><th>外部资源</th></tr></thead>
+          <tbody>
+            <tr><td><span class="source-dot chat"></span>01 ChatGPT</td><td>19.8 KB</td><td>3,745</td><td>36</td><td>14,657px</td><td>390px</td><td>0</td></tr>
+            <tr><td><span class="source-dot claude"></span>01 Claude</td><td>88.1 KB</td><td>18,131</td><td>32</td><td>34,946px</td><td>390px</td><td>1</td></tr>
+            <tr><td><span class="source-dot codex"></span>01 Codex</td><td>25.4 KB</td><td>4,661</td><td>27</td><td>15,973px</td><td>390px</td><td>0</td></tr>
+            <tr><td><span class="source-dot gemini"></span>01 Gemini 3.6</td><td>26.7 KB</td><td>5,508</td><td>29</td><td>11,057px</td><td><b>710px</b></td><td>0</td></tr>
+            <tr><td><span class="source-dot gemini31"></span>01 Gemini 3.1</td><td>13.4 KB</td><td>2,849</td><td>10</td><td>9,178px</td><td>390px</td><td>2</td></tr>
+            <tr><td><span class="source-dot chat"></span>02 ChatGPT</td><td>22.3 KB</td><td>5,169</td><td>54</td><td>17,830px</td><td>390px</td><td>0</td></tr>
+            <tr><td><span class="source-dot claude"></span>02 Claude</td><td>76.2 KB</td><td>15,710</td><td>65</td><td>32,108px</td><td><b>469px</b></td><td>1</td></tr>
+            <tr><td><span class="source-dot codex"></span>02 Codex</td><td>29.7 KB</td><td>6,500</td><td>35</td><td>18,526px</td><td>390px</td><td>0</td></tr>
+            <tr><td><span class="source-dot gemini"></span>02 Gemini 3.6</td><td>26.2 KB</td><td>6,539</td><td>29</td><td>11,688px</td><td><b>710px</b></td><td>0</td></tr>
+            <tr><td><span class="source-dot gemini31"></span>02 Gemini 3.1</td><td>12.4 KB</td><td>2,595</td><td>10</td><td>8,486px</td><td>390px</td><td>2</td></tr>
+            <tr><td><span class="source-dot chat"></span>03 ChatGPT</td><td>20.8 KB</td><td>4,216</td><td>38</td><td>15,493px</td><td>390px</td><td>0</td></tr>
+            <tr><td><span class="source-dot claude"></span>03 Claude</td><td>83.5 KB</td><td>17,039</td><td>119</td><td>39,573px</td><td>394px</td><td>1</td></tr>
+            <tr><td><span class="source-dot codex"></span>03 Codex</td><td>26.7 KB</td><td>5,597</td><td>27</td><td>17,357px</td><td>390px</td><td>0</td></tr>
+            <tr><td><span class="source-dot gemini"></span>03 Gemini 3.6</td><td>27.6 KB</td><td>6,131</td><td>29</td><td>11,363px</td><td><b>710px</b></td><td>0</td></tr>
+            <tr><td><span class="source-dot gemini31"></span>03 Gemini 3.1</td><td>12.6 KB</td><td>2,521</td><td>10</td><td>8,410px</td><td>390px</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="files">
+        <div class="section-head"><div class="num">06</div><div><div class="label">Renamed library</div><h2>十五份报告已按来源统一命名</h2><p class="intro">每一组内部链接已同步更新。点击即可对照阅读。</p></div></div>
+        <div class="links">
+          <div class="link-group"><h3>01 · 命令行</h3>
+            <a href="01-命令行工具基础-来源-ChatGPT客户端.html">ChatGPT 客户端 · 快速版</a>
+            <a href="01-命令行工具基础-来源-Claude-Code.html">Claude Code · 深度版</a>
+            <a href="01-命令行工具基础-来源-Codex-CLI.html">Codex CLI · 主版本</a>
+            <a href="01-命令行工具基础-来源-Gemini-3.6-Flash.html">Gemini 3.6 Flash · 扩展版</a>
+            <a href="01-命令行工具基础-来源-Gemini-3.1-Pro.html">Gemini 3.1 Pro · 视觉摘要版</a>
+          </div>
+          <div class="link-group"><h3>02 · Claude 参数</h3>
+            <a href="02-Claude命令重要参数-来源-ChatGPT客户端.html">ChatGPT 客户端 · 治理版</a>
+            <a href="02-Claude命令重要参数-来源-Claude-Code.html">Claude Code · 叙事版</a>
+            <a href="02-Claude命令重要参数-来源-Codex-CLI.html">Codex CLI · 事实版</a>
+            <a href="02-Claude命令重要参数-来源-Gemini-3.6-Flash.html">Gemini 3.6 Flash · 契约版</a>
+            <a href="02-Claude命令重要参数-来源-Gemini-3.1-Pro.html">Gemini 3.1 Pro · 视觉摘要版</a>
+          </div>
+          <div class="link-group"><h3>03 · Git</h3>
+            <a href="03-Git版本控制-来源-ChatGPT客户端.html">ChatGPT 客户端 · 快速版</a>
+            <a href="03-Git版本控制-来源-Claude-Code.html">Claude Code · 深度版</a>
+            <a href="03-Git版本控制-来源-Codex-CLI.html">Codex CLI · 主版本</a>
+            <a href="03-Git版本控制-来源-Gemini-3.6-Flash.html">Gemini 3.6 Flash · 扩展版</a>
+            <a href="03-Git版本控制-来源-Gemini-3.1-Pro.html">Gemini 3.1 Pro · 视觉摘要版</a>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><div class="num">07</div><div><div class="label">Method & limits</div><h2>怎么得出这些结论</h2></div></div>
+        <details open><summary>测量方法</summary><p>静态扫描文件大小、正文字符、标题、语义标签、参数覆盖与来源链接；用本机 Chrome 在 1440×1000 和 390×844 下检查 HTTP、console、失败资源、横向溢出和运行时 Mermaid 错误；再做十五页视觉复核。</p></details>
+        <details><summary>来源归因限制</summary><p>ChatGPT 客户端及两个 Gemini 组由用户或当前任务历史确认。Codex CLI 与 Claude Code 两组依据创建时间、资产结构、命名方式和实现指纹，属于高置信归因。</p></details>
+        <details><summary>完整文字版</summary><p>更详细的逐项说明、问题影响与后续建议见 <a href="00-十五份HTML全面对比报告.md">Markdown 报告</a>。</p></details>
+      </section>
+
+      <footer class="footer"><span>更新于 2026-07-30 · 本地浏览器实测</span><span>未修改十五份报告正文，只做 Gemini 3.1 Pro 分类命名与对比更新</span></footer>
+    </div>
+  </main>
+</body>
+</html>

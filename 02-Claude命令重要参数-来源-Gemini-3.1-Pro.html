@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude CLI 参数与认知代理 - 学习地图</title>
+    <!-- 字体表不阻塞首屏：国内网络访问 Google Fonts 常超时，原来的写法会一直白屏到请求失败；现在先用系统字体显示，字体到了再换上 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet"></noscript>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'dark', fontFamily: 'Inter' });
+    </script>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: rgba(22, 27, 34, 0.6);
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #ff7b72;
+            --accent-secondary: #d2a8ff;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(210, 168, 255, 0.08), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(255, 123, 114, 0.08), transparent 30%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(to right, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+        h3 { color: var(--accent); font-size: 1.3rem; margin-top: 30px;}
+        p { color: var(--text-muted); font-size: 1.05rem; }
+        .mermaid {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 16px;
+            margin: 30px 0;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+        .card strong { color: #fff; display: block; margin-bottom: 10px; font-size: 1.1rem; }
+        .summary-box {
+            background: linear-gradient(135deg, rgba(255, 123, 114, 0.1), rgba(210, 168, 255, 0.1));
+            border: 1px solid var(--accent);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 60px;
+            font-size: 1.2rem;
+        }
+        .summary-box .highlight-text {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 700;
+            display: block;
+            margin-top: 15px;
+        }
+        ul { list-style-type: none; padding: 0; }
+        li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Claude 代理参数 (CLI Parameters)</h1>
+
+        <h2>1. Essence (本质)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>What is it fundamentally?</strong>
+                <p>CLI 里的参数并非简单的“设置选项”，而是你在为一个“自治认知引擎(Agent)”设定上下文边界、行为法则和能力范围。它们是控制大模型物理（Token）和精神（Persona）状态的杠杆。</p>
+            </div>
+            <div class="card">
+                <strong>Why does it exist?</strong>
+                <p>因为大模型本身是无边界、无状态的。必须通过参数显式注入工作记忆(Context)与边界(System Prompts)，它才能在特定任务空间中有效工作。</p>
+            </div>
+            <div class="card">
+                <strong>What problem does it solve?</strong>
+                <p>解决了模型幻觉、缺乏特定项目背景知识、以及认知漂移的问题。将宽泛的聊天机器，收束为精确的任务执行器。</p>
+            </div>
+        </div>
+
+        <h2>2. World Model (世界模型)</h2>
+        <p>理解 Agent CLI 的参数，就是在理解一个 AI 系统是如何被“初始化并置于世界中”的。</p>
+        <div class="mermaid">
+            graph TD
+                Parameters((CLI Parameters))
+                Parameters -->|System Prompt| Persona[行为准则 / Persona]
+                Parameters -->|Model/Temp| Engine[认知引擎 / 逻辑强度]
+                Parameters -->|Context/Files| Workspace[工作记忆 / 知识场]
+                Parameters -->|Tools| Actuators[执行工具 / 肢体]
+                
+                Persona --> Agent
+                Engine --> Agent
+                Workspace --> Agent
+                Actuators --> Agent
+                
+                Agent((Agent)) --> Action[环境状态变更 / Output]
+        </div>
+
+        <h2>3. Concept Map (概念图谱)</h2>
+        <div class="mermaid">
+            mindmap
+              root((Agent 核心约束))
+                身份层
+                  System Prompt (角色与元指令)
+                  Rules (限制边界)
+                认知层
+                  Model Selection (思考深度与速度)
+                  Temperature (发散思维 vs 聚合收敛)
+                记忆层
+                  Context Load (挂载上下文文件)
+                  Token Limit (注意力跨度)
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Memory (记忆层参数)</strong>
+                <p>Action: 将特定文件/信息挂载到 Context Window。Purpose: 给予 AI 解题所必须的背景知识（如代码库结构），消除信息差。</p>
+            </div>
+            <div class="card">
+                <strong>Identity (身份层参数)</strong>
+                <p>Action: 定义 System Prompt 规则。Purpose: 剥夺模型发散聊天的权限，将其行为框定在“资深工程师”或“严谨校对员”的范式内。</p>
+            </div>
+        </div>
+
+        <h2>4. Decision Map (决策图谱)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Situation: 需要修改一个横跨多个文件的复杂 Bug</strong>
+                <p>Decision: 宽上下文 + 慢思考模型 (High-tier Model) + 权限注入。<br>Reason: 需要建立庞大的代码依赖心理模型，并在本地真实环境迭代执行。<br>Outcome: 精准且一次成型的重构。</p>
+            </div>
+            <div class="card">
+                <strong>Situation: 编写一段纯粹的基础算法（如快排）</strong>
+                <p>Decision: 零上下文 + 快思考模型 (Fast-tier Model)。<br>Reason: 标准知识在模型预训练权重中已有完美映射，额外上下文只会增加噪音和延迟。<br>Outcome: 毫秒级输出标准解。</p>
+            </div>
+            <div class="card">
+                <strong>Situation: 创作营销文案或头脑风暴</strong>
+                <p>Decision: 调高 Temperature / 随机性参数。<br>Reason: 需要绕过高频词汇的常规路径，寻找概率分布长尾中的创造性组合。<br>Outcome: 内容的涌现和惊喜感。</p>
+            </div>
+        </div>
+
+        <h2>5. Search Space Expansion (认知空间拓展)</h2>
+        <ul>
+            <li><strong>Beginner (很少问的问题):</strong> “传给 AI 的文件，它是怎么看到的？” (引出 Token 化与注意力机制的概念)</li>
+            <li><strong>Expert (专家关注):</strong> “在这个上下文中，Signal-to-Noise Ratio (信噪比) 足够高吗？无用信息会不会稀释模型对关键指令的注意力？”</li>
+            <li><strong>Next to explore (值得探索):</strong> 工具调用(Tool Use/Function Calling) 参数是如何让 AI 突破文本界限，真实操作我的文件系统的？</li>
+            <li><strong>Mastery (大师级):</strong> 动态 Context 管理——在长会话中，如何让系统像人类一样遗忘无关细节，提纯并保留核心记忆。</li>
+        </ul>
+
+        <h2>6. Ecosystem (生态系统)</h2>
+        <ul>
+            <li><strong>Upstream (上游):</strong> LLM 供应商 (Anthropic, OpenAI)、本地模型 (Ollama)。</li>
+            <li><strong>Downstream (下游):</strong> IDE (VSCode, Cursor), 本地终端环境, 代码库状态。</li>
+            <li><strong>Complements (互补系统):</strong> 向量数据库 (RAG 检索增强)、静态代码分析工具 (生成精确上下文)。</li>
+        </ul>
+
+        <h2>7. Transferable Principles (可迁移原则)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>1. Context is King (上下文即一切)</strong>
+                <p>AI 的表现 90% 决于你通过参数挂载了什么上下文。不要指望它猜透你的未言之意。</p>
+            </div>
+            <div class="card">
+                <strong>2. 意图的显式降维 (Explicit Framing)</strong>
+                <p>System Prompt 参数本质上是将人类模糊的多维意图，降维锁定到一条清晰的单维准则线上。</p>
+            </div>
+            <div class="card">
+                <strong>3. 认知资源分配法则 (Cognitive Economics)</strong>
+                <p>Token 是有限且昂贵的认知资源。参数管理的本质就是 Token 的最优经济分配（给更多背景，还是留更多空间生成答案）。</p>
+            </div>
+        </div>
+
+        <h2>8. Minimum Mental Model (最小记忆模型)</h2>
+        <p>控制 AI 的黄金法则可以抽象为：</p>
+        <ul>
+            <li><strong>Engine (是谁思考):</strong> Model 参数决定了思考者的智力上限和响应速度。</li>
+            <li><strong>Directive (听谁指令):</strong> System Prompt 构成了不可违背的“第一定律”。</li>
+            <li><strong>Context (看什么资料):</strong> Files/Dir 参数将静态资料变为模型当前工作流的即时输入流。</li>
+        </ul>
+
+        <h2>9. Common Misconceptions (常见误区)</h2>
+        <div class="card-grid">
+            <div class="card">
+                <strong>Misconception: 传给 AI 的文件/信息越多越好。</strong>
+                <p><strong>Why:</strong> 人类习惯于“资料齐全”。<br><strong>Better Model:</strong> 模型的“注意力窗口”存在极限。过载的上下文会导致“中间丢失现象(Lost in the middle)”。精准的 Context 切片，胜过丢进去一整个仓库。</p>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <p>What I truly gain is not <strong>memorizing a list of terminal flags (--context, --model)</strong>, but</p>
+            <span class="highlight-text">The framework to orchestrate and bound autonomous cognitive labor.</span>
+            <p style="margin-top: 10px; color: var(--text-muted); font-size: 1rem;">(我真正获得的不是死记硬背终端参数，而是能够精密编排和约束自主认知劳动力(AI)的心智框架。)</p>
+        </div>
+    </div>
+</body>
+</html>

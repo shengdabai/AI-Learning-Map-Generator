@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="命令行工具基础的心智模型、世界模型、决策地图与生态系统。">
+  <title>命令行工具基础 · 心智模型地图</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%23b84a2d%22/><text x=%2232%22 y=%2240%22 text-anchor=%22middle%22 font-size=%2225%22 fill=%22%23f4f0e7%22>01</text></svg>">
+  <link rel="stylesheet" href="assets/learning-map.css">
+  <link rel="stylesheet" href="assets/mental-model-atlas.css">
+  <script src="assets/mental-model-atlas.js" defer></script>
+</head>
+<body data-theme="cli">
+  <div class="reading-progress" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="00-十五份HTML全面对比报告.html"><span class="brand-mark">AI</span><span>学习地图</span></a>
+      <nav class="page-nav" aria-label="三张学习地图">
+        <a href="01-命令行工具基础-来源-ChatGPT客户端.html" aria-current="page">01 命令行</a>
+        <a href="02-Claude命令重要参数-来源-ChatGPT客户端.html">02 Claude 参数</a>
+        <a href="03-Git版本控制-来源-ChatGPT客户端.html">03 Git</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="页内目录">
+      <div class="toc-label">Mental model / 01</div>
+      <ol>
+        <li><a href="#essence">本质</a></li>
+        <li><a href="#world">世界模型</a></li>
+        <li><a href="#concepts">概念地图</a></li>
+        <li><a href="#decisions">决策地图</a></li>
+        <li><a href="#search">搜索空间</a></li>
+        <li><a href="#ecosystem">生态系统</a></li>
+        <li><a href="#principles">可迁移原则</a></li>
+        <li><a href="#minimum">最小心智模型</a></li>
+        <li><a href="#misconceptions">常见误区</a></li>
+        <li><a href="#summary">总结</a></li>
+      </ol>
+    </aside>
+
+    <main>
+      <header class="masthead">
+        <div class="map-index">MAP 01 / SYSTEM LANGUAGE</div>
+        <h1>命令行不是黑窗口</h1>
+        <p class="deck">它是一种把意图交给操作系统、把输出交给下一步的通用协议。AI 可以替你敲命令，但你仍需理解动作、边界、状态和证据。</p>
+        <div class="masthead-meta">
+          <span>核心隐喻：系统的可组合语言</span>
+          <span>阅读时间：18 分钟</span>
+          <span>稳定度：原理高 / 具体工具中</span>
+        </div>
+      </header>
+
+      <section id="essence" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">01</div>
+          <div><div class="eyebrow">Essence</div><h2>本质：意图与机器能力之间的窄腰</h2><p class="section-intro">命令行把无数不同程序统一成同一种协作方式：接收输入、改变状态、产生输出、返回结果。</p></div>
+        </div>
+        <div class="essence">
+          <blockquote class="pullquote">命令行工具本质上是一个<strong>可组合的状态转换器</strong>：它接受上下文与输入，调用系统能力，再留下输出与退出状态。</blockquote>
+          <div class="before-after">
+            <div><div class="micro-label">Before</div><p>人依赖专用界面、手工重复动作、口头记录流程；软件之间很难直接传递结果。</p></div>
+            <div><div class="micro-label">Why it exists</div><p>用稳定的文本接口，把人、脚本、服务器、CI 与 AI 接入同一执行层。</p></div>
+            <div><div class="micro-label">New possibility</div><p>动作可以被组合、复现、审计、远程执行，也可以被 AI 可靠调用。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="world" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">02</div>
+          <div><div class="eyebrow">World model</div><h2>世界模型：谁在改变什么</h2><p class="section-intro">你看到的是一行文本；系统看到的是进程、资源、权限与状态变化。</p></div>
+        </div>
+        <div class="system-map" aria-label="命令行世界模型">
+          <div class="system-node"><b>意图</b><span>人或 AI 定义目标与约束</span></div>
+          <div class="system-node"><b>Shell</b><span>解释结构、连接程序、展开上下文</span></div>
+          <div class="system-node"><b>进程</b><span>程序在时间中运行的实例</span></div>
+          <div class="system-node"><b>资源</b><span>文件、网络、设备、环境变量</span></div>
+          <div class="system-node"><b>状态变化</b><span>创建、读取、修改、删除、传输</span></div>
+          <div class="system-node"><b>证据</b><span>标准输出、错误、退出码、日志</span></div>
+        </div>
+        <div class="search-grid">
+          <div class="search-quadrant"><h3>Objects · 对象</h3><p>命令、参数、流、文件、目录、进程、变量、权限、主机、远端服务。</p></div>
+          <div class="search-quadrant"><h3>Actors · 角色</h3><p>人、AI agent、shell、操作系统、程序、管理员、自动化调度器。</p></div>
+          <div class="search-quadrant"><h3>Workflow · 工作流</h3><p>表达意图 → 解释 → 执行 → 观察 → 判断 → 继续或回退。</p></div>
+          <div class="search-quadrant"><h3>Value · 价值</h3><p>规模化、可复现、跨机器、低界面成本，以及让工具彼此组合。</p></div>
+        </div>
+      </section>
+
+      <section id="concepts" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">03</div>
+          <div><div class="eyebrow">Concept map</div><h2>概念地图：三层，而不是一袋命令</h2><p class="section-intro">先分清表达层、运行层和治理层，具体命令才会各归其位。</p></div>
+        </div>
+        <div class="concept-layers">
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 1</span><b>表达与组合</b><small>把目标编码为数据流</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>命令 / Command</h3><p>实体：可调用程序。动作：请求能力。目的：把意图变成明确动作。</p><span class="relation">与参数共同形成一次调用</span></div>
+              <div class="concept"><h3>输入输出 / Streams</h3><p>实体：stdin、stdout、stderr。动作：传递数据。目的：让程序彼此连接。</p><span class="relation">程序之间的通用接口</span></div>
+              <div class="concept"><h3>组合 / Composition</h3><p>实体：管道、重定向、条件链。动作：编排。目的：用小能力形成大流程。</p><span class="relation">把结果变成下一步输入</span></div>
+            </div>
+          </article>
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 2</span><b>运行与状态</b><small>机器此刻正在发生什么</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>进程 / Process</h3><p>实体：运行中的程序。动作：消耗资源、产生副作用。目的：完成工作。</p><span class="relation">命令是请求，进程是实例</span></div>
+              <div class="concept"><h3>上下文 / Context</h3><p>实体：cwd、环境、用户、PATH。动作：解析与授权。目的：决定“在哪、以谁、找到谁”。</p><span class="relation">同一命令因上下文而不同</span></div>
+              <div class="concept"><h3>状态 / State</h3><p>实体：文件系统、服务、网络。动作：读取或改变。目的：让世界从 A 到 B。</p><span class="relation">副作用是风险的来源</span></div>
+            </div>
+          </article>
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 3</span><b>治理与证据</b><small>是否允许、是否成功、能否回退</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>权限 / Permission</h3><p>实体：用户、所有权、能力边界。动作：允许或拒绝。目的：限制影响半径。</p><span class="relation">能力不等于授权</span></div>
+              <div class="concept"><h3>退出状态 / Exit status</h3><p>实体：成功或失败信号。动作：传递结果。目的：让自动化可判断。</p><span class="relation">输出给人，状态给流程</span></div>
+              <div class="concept"><h3>幂等与回退</h3><p>实体：可重复动作、备份、事务。动作：控制副作用。目的：安全自动化。</p><span class="relation">决定失败是否可恢复</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="decisions" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">04</div>
+          <div><div class="eyebrow">Decision map</div><h2>决策地图：何时自然想到命令行</h2><p class="section-intro">不是“有没有按钮”，而是任务是否需要组合、规模、证据或远程性。</p></div>
+        </div>
+        <div class="decision-grid">
+          <article class="decision"><div><b>Situation</b><p>同一动作要处理很多对象</p></div><div><b>Decision</b><p>转为批处理模型</p></div><div><b>Reason</b><p>文本列表与程序天然可迭代</p></div><div><b>Outcome</b><p>规模增长不再等比例增加操作成本</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>多个工具的结果要串联</p></div><div><b>Decision</b><p>设计输入/输出边界</p></div><div><b>Reason</b><p>流比复制粘贴更可靠</p></div><div><b>Outcome</b><p>形成可复用、可观察的流水线</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>动作要在服务器、CI 或定时任务中发生</p></div><div><b>Decision</b><p>选择无界面执行方式</p></div><div><b>Reason</b><p>机器环境没有稳定 GUI</p></div><div><b>Outcome</b><p>流程跨时间与机器持续运行</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>风险高、影响面不明确</p></div><div><b>Decision</b><p>先只读观察、缩小范围、建立回退</p></div><div><b>Reason</b><p>命令行放大效率，也放大错误</p></div><div><b>Outcome</b><p>在获得证据后再授权改变</p></div></article>
+        </div>
+      </section>
+
+      <section id="search" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">05</div>
+          <div><div class="eyebrow">Search space expansion</div><h2>搜索空间：真正值得追问的事</h2><p class="section-intro">高手并不背更多命令，而是更早发现上下文、失败与可组合性的隐性问题。</p></div>
+        </div>
+        <div class="search-grid">
+          <article class="search-quadrant"><h3>初学者很少问</h3><ul class="question-list"><li>这个动作会改变哪些状态？</li><li>输出是给人看，还是给下一程序消费？</li><li>它依赖当前目录、身份或环境吗？</li><li>部分成功时，系统会留下什么？</li></ul></article>
+          <article class="search-quadrant"><h3>专家真正关心</h3><ul class="question-list"><li>失败语义是否清晰？</li><li>调用能否幂等、重试和取消？</li><li>权限是否是最小化的？</li><li>数据规模增大后，内存与并发如何变化？</li></ul></article>
+          <article class="search-quadrant"><h3>下一步探索</h3><ul class="question-list"><li>进程、信号与作业控制</li><li>标准流、结构化数据与管道</li><li>shell 与终端模拟器的区别</li><li>容器、远程 shell、CI 的共同模型</li></ul></article>
+          <article class="search-quadrant"><h3>定义精通的问题</h3><ul class="question-list"><li>能否设计一个可观测、可回退的自动化边界？</li><li>能否从结果反推真实系统状态？</li><li>能否让 AI 获得够用而不过量的能力？</li><li>能否把一次性动作提炼成稳定接口？</li></ul></article>
+        </div>
+      </section>
+
+      <section id="ecosystem" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">06</div>
+          <div><div class="eyebrow">Ecosystem</div><h2>生态系统：命令行位于哪里</h2><p class="section-intro">它不是 GUI 的反面，而是操作系统之上的通用连接层。</p></div>
+        </div>
+        <div class="ecosystem">
+          <article class="eco-zone"><h3>Upstream · 上游</h3><p>人的目标、AI 的计划、操作系统抽象、文件与网络协议。</p><div class="tag-cloud"><span class="tag">Intent</span><span class="tag">OS</span><span class="tag">POSIX</span><span class="tag">Permissions</span></div></article>
+          <article class="eco-zone"><h3>Downstream · 下游</h3><p>脚本、构建、部署、CI/CD、数据处理、服务器运维、agent 工具调用。</p><div class="tag-cloud"><span class="tag">Automation</span><span class="tag">CI</span><span class="tag">Agents</span><span class="tag">Observability</span></div></article>
+          <article class="eco-zone"><h3>Alternatives · 替代</h3><p>GUI、图形化自动化、IDE 操作、直接调用 API。它们常更易发现，但更难批量与组合。</p><div class="tag-cloud"><span class="tag">GUI</span><span class="tag">No-code</span><span class="tag">IDE</span><span class="tag">API clients</span></div></article>
+          <article class="eco-zone"><h3>Complements · 互补</h3><p>Git 提供历史，容器提供隔离，权限系统提供边界，日志与测试提供证据。</p><div class="tag-cloud"><span class="tag">Git</span><span class="tag">Containers</span><span class="tag">Tests</span><span class="tag">Logs</span></div></article>
+        </div>
+      </section>
+
+      <section id="principles" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">07</div>
+          <div><div class="eyebrow">Transferable principles</div><h2>可迁移原则：把长期知识与语法分开</h2></div>
+        </div>
+        <table class="principle-table">
+          <tbody>
+            <tr><th>第一性原理 <span class="stability">稳定</span></th><td>计算的价值来自状态转换；安全来自约束影响范围；自动化依赖机器可判断的成功与失败。</td></tr>
+            <tr><th>可迁移方法 <span class="stability">稳定</span></th><td>小工具组合、显式输入输出、先观察后改变、失败前设计恢复点、让结果可验证。</td></tr>
+            <tr><th>实现细节 <span class="stability">变化</span></th><td>某个 shell 的展开规则、某个工具的参数名、不同平台的路径与默认程序。</td></tr>
+            <tr><th>稳定知识 <span class="stability">长期</span></th><td>进程、文件、流、权限、环境、退出状态、可组合性、幂等性。</td></tr>
+            <tr><th>变化知识 <span class="stability">常复核</span></th><td>工具版本、默认选项、平台差异、第三方服务接口、安全策略。</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="minimum" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">08</div>
+          <div><div class="eyebrow">Minimum mental model</div><h2>只记住这 15 个概念</h2></div>
+        </div>
+        <div class="memory-grid">
+          <div class="memory"><span class="memory-index">01</span><b>意图</b><p>动作之前先定义目标。</p></div>
+          <div class="memory"><span class="memory-index">02</span><b>Shell</b><p>解释并连接程序的协调层。</p></div>
+          <div class="memory"><span class="memory-index">03</span><b>程序</b><p>可调用能力，不等于运行实例。</p></div>
+          <div class="memory"><span class="memory-index">04</span><b>进程</b><p>程序在时间中的一次运行。</p></div>
+          <div class="memory"><span class="memory-index">05</span><b>工作目录</b><p>相对路径与项目上下文的锚点。</p></div>
+          <div class="memory"><span class="memory-index">06</span><b>环境</b><p>影响程序行为的隐性输入。</p></div>
+          <div class="memory"><span class="memory-index">07</span><b>标准输入</b><p>程序接收数据的通道。</p></div>
+          <div class="memory"><span class="memory-index">08</span><b>标准输出</b><p>正常结果的通道。</p></div>
+          <div class="memory"><span class="memory-index">09</span><b>标准错误</b><p>诊断信息的独立通道。</p></div>
+          <div class="memory"><span class="memory-index">10</span><b>退出状态</b><p>供机器判断成功或失败。</p></div>
+          <div class="memory"><span class="memory-index">11</span><b>管道</b><p>前一步输出成为后一步输入。</p></div>
+          <div class="memory"><span class="memory-index">12</span><b>副作用</b><p>对外部世界留下的改变。</p></div>
+          <div class="memory"><span class="memory-index">13</span><b>权限</b><p>能力可以触及的边界。</p></div>
+          <div class="memory"><span class="memory-index">14</span><b>幂等</b><p>重复执行不会无限叠加影响。</p></div>
+          <div class="memory"><span class="memory-index">15</span><b>证据</b><p>状态、输出、日志与验收结果。</p></div>
+        </div>
+      </section>
+
+      <section id="misconceptions" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">09</div>
+          <div><div class="eyebrow">Common misconceptions</div><h2>常见误区：黑窗口制造的错觉</h2></div>
+        </div>
+        <div class="misconceptions">
+          <article class="misconception"><h3>误区 1</h3><p class="wrong">命令行就是背命令。</p><p>因为初学内容常从语法表开始。</p><p class="better">更好的模型：它是输入、状态转换、输出与组合的协议。</p></article>
+          <article class="misconception"><h3>误区 2</h3><p class="wrong">没有输出就是没发生。</p><p>因为人把可见文字当成唯一证据。</p><p class="better">更好的模型：要同时检查退出状态与目标系统状态。</p></article>
+          <article class="misconception"><h3>误区 3</h3><p class="wrong">AI 会操作，所以我不必理解命令行。</p><p>因为执行速度掩盖了权限与副作用。</p><p class="better">更好的模型：AI 负责动作，你负责作用域、风险与验收。</p></article>
+          <article class="misconception"><h3>误区 4</h3><p class="wrong">命令行一定比 GUI 高级。</p><p>因为工程文化常把工具偏好等同能力。</p><p class="better">更好的模型：发现与探索常适合 GUI，规模、组合与远程性常适合 CLI。</p></article>
+        </div>
+      </section>
+
+      <section id="summary" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">10</div>
+          <div><div class="eyebrow">Summary</div><h2>真正的收获</h2></div>
+        </div>
+        <p class="summary-line">我真正获得的不是<span class="blank">敲命令的速度</span>，而是<span class="blank">把意图变成受控、可组合、可验证系统变化的能力</span>。</p>
+        <p class="source-note">本页聚焦 POSIX/Unix 风格命令行的稳定通用模型，不替代具体 shell 与工具文档。具体语法、默认行为和平台差异属于变化知识。</p>
+        <footer class="footer"><span>AI 时代学习地图 · 01 / 03</span><a href="02-Claude命令重要参数-来源-ChatGPT客户端.html">下一张：Claude 命令重要参数 →</a></footer>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

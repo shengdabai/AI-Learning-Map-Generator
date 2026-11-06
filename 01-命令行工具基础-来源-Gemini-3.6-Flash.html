@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="命令行工具基础：面向 AI 时代的心智模型、世界模型与决策地图。">
+  <title>命令行工具基础｜AI 时代学习地图</title>
+  <link rel="stylesheet" href="assets/learning-map.css">
+  <script src="assets/learning-map.js" defer></script>
+  <style>
+    /* Inline SVG Diagram Visual Enhancements */
+    .visual-diagram-box {
+      background: var(--paper-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    .visual-diagram-box svg {
+      width: 100%;
+      height: auto;
+      min-width: 640px;
+      display: block;
+    }
+    .node-rect { fill: var(--paper); stroke: var(--accent); stroke-width: 2; rx: 6px; }
+    .node-title { fill: var(--ink); font-weight: bold; font-size: 14px; font-family: var(--body); }
+    .node-sub { fill: var(--ink-soft); font-size: 12px; font-family: var(--body); }
+    .edge-line { stroke: var(--line); stroke-width: 2; stroke-dasharray: 4,4; }
+    .edge-flow { stroke: var(--accent); stroke-width: 2.5; marker-end: url(#arrow); }
+    .tag-badge { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+    .tag-text { fill: var(--accent-ink); font-size: 11px; font-weight: bold; }
+  </style>
+</head>
+<body class="topic-cli">
+  <div class="reading-progress" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="atlas-hero" data-glyph="›_">
+    <div class="hero-grid">
+      <p class="eyebrow">Learning map 01 · Command line fundamentals</p>
+      <h1>命令行不是“黑窗口”，而是可组合的系统语言</h1>
+      <p class="hero-deck">当 AI 替你执行具体语法与命令时，你真正需要控制的，不是指令记忆，而是：对象如何流动、状态在哪里改变、边界如何声明、证据如何留存。</p>
+      <div class="hero-thesis">
+        <span>核心判断</span>
+        <strong>GUI 优化单点交互；命令行将单点操作抽象为可描述、可重复、可自动化的系统数据流协议。</strong>
+      </div>
+    </div>
+  </header>
+
+  <nav class="atlas-nav" aria-label="章节导航">
+    <a class="home-link" href="00-十五份HTML全面对比报告.html">总览</a>
+    <a href="#essence">01 本质</a>
+    <a href="#world">02 世界</a>
+    <a href="#concepts">03 概念</a>
+    <a href="#decisions">04 决策</a>
+    <a href="#search">05 搜索空间</a>
+    <a href="#ecosystem">06 生态</a>
+    <a href="#principles">07 原则</a>
+    <a href="#minimum">08 最小模型</a>
+    <a href="#misconceptions">09 误区</a>
+    <a href="#summary">10 总结</a>
+  </nav>
+
+  <div class="atlas-shell">
+    <main id="main">
+      <!-- 01 本质 -->
+      <section class="chapter" id="essence">
+        <header class="chapter-head">
+          <span class="chapter-no">01</span>
+          <div>
+            <h2>本质：把意图转换为可校验的系统状态变化</h2>
+            <p class="chapter-intro">命令行的核心不是文字界面，而是一种极窄而极其稳定的系统契约：输入意图参数，调度处理对象，输出流式数据，并通过状态码明确宣布成败。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <p class="big-answer">它本质上是<mark>人类/AI 与操作系统之间的窄腰协议（Narrow Waist Protocol）</mark>，也是各种自动化程序彼此组装的最小公共语言。</p>
+          <div class="before-after">
+            <article>
+              <h3>为什么存在？</h3>
+              <p>操作系统底层需要无歧义、低开销的进程调度；人类与 AI 需要一种能精确表达批量、条件、过滤与组合的工作媒介。命令行连接了这两端。</p>
+            </article>
+            <article>
+              <h3>解决什么根本问题？</h3>
+              <p>解决“过程如何抽象与复用”。它把复杂的操作路径打包为具名的可执行对象，使得任何工作流都可以被审计、被版本化、被机器代理。</p>
+            </article>
+            <article>
+              <h3>没有它时人们怎么办？</h3>
+              <p>早期依靠物理开关与打孔卡；图形时代依靠鼠标点击 GUI 菜单。GUI 虽然直观，但极难被脚本编排、极难跨机器批量执行，且无法被 AI Agent 高效读取。</p>
+            </article>
+            <article>
+              <h3>带来了哪些新的可能？</h3>
+              <p>在 AI 时代，命令行成为了 AI Agent 执行具体任务的最原生“手脚”。一个意图可以被 AI 翻译为 CLI 命令，由 OS 执行并返回标准流，构成确定性的代理闭环。</p>
+            </article>
+          </div>
+          <div class="callout">
+            <strong>AI 时代认知转变：</strong>你不必成为命令参数背诵专家，但你必须能判断：AI 正在对什么对象施加什么操作、改变什么持久化状态、具备什么权限边界、以及怎样的退出代码与日志证据才算成功。
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 世界模型 -->
+      <section class="chapter" id="world">
+        <header class="chapter-head">
+          <span class="chapter-no">02</span>
+          <div>
+            <h2>世界模型：六类实体，一条无缝数据管道</h2>
+            <p class="chapter-intro">命令行世界不是指令字典，而是对象、进程、数据流与权限边界之间的动态作用网。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="visual-diagram-box" role="figure" aria-label="命令行世界模型结构图">
+            <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <!-- Left Section: Actors -->
+              <rect x="20" y="30" width="160" height="260" fill="none" stroke="var(--line)" stroke-dasharray="4" rx="8" />
+              <text x="30" y="55" font-size="13" font-weight="bold" fill="var(--accent-ink)">ACTORS 交互角色</text>
+
+              <rect x="35" y="75" width="130" height="45" class="node-rect" />
+              <text x="45" y="95" class="node-title">Human Intent</text>
+              <text x="45" y="110" class="node-sub">人类意图与边界</text>
+
+              <rect x="35" y="135" width="130" height="45" class="node-rect" />
+              <text x="45" y="155" class="node-title">AI Agent</text>
+              <text x="45" y="170" class="node-sub">翻译与调用执行</text>
+
+              <rect x="35" y="195" width="130" height="45" class="node-rect" />
+              <text x="45" y="215" class="node-title">Shell Interpreter</text>
+              <text x="45" y="230" class="node-sub">解析/环境/管道</text>
+
+              <!-- Center Section: Core Execution Engine -->
+              <rect x="220" y="30" width="320" height="260" fill="none" stroke="var(--line)" rx="8" />
+              <text x="235" y="55" font-size="13" font-weight="bold" fill="var(--accent-ink)">SYSTEM PROCESS & STREAMS 进程与标准流</text>
+
+              <rect x="240" y="75" width="130" height="45" class="node-rect" />
+              <text x="250" y="95" class="node-title">STDIN (fd 0)</text>
+              <text x="250" y="110" class="node-sub">标准输入数据流</text>
+
+              <rect x="390" y="75" width="130" height="45" class="node-rect" stroke="var(--positive)" />
+              <text x="400" y="95" class="node-title">STDOUT (fd 1)</text>
+              <text x="400" y="110" class="node-sub">标准输出数据流</text>
+
+              <rect x="315" y="140" width="130" height="50" class="node-rect" style="stroke-width:2.5px;" />
+              <text x="325" y="162" class="node-title">Process (PID)</text>
+              <text x="325" y="178" class="node-sub">可执行命令程序</text>
+
+              <rect x="390" y="210" width="130" height="45" class="node-rect" stroke="var(--danger)" />
+              <text x="400" y="230" class="node-title">STDERR (fd 2)</text>
+              <text x="400" y="245" class="node-sub">带外日志与错误</text>
+
+              <!-- Right Section: System State Objects -->
+              <rect x="570" y="30" width="170" height="260" fill="none" stroke="var(--line)" stroke-dasharray="4" rx="8" />
+              <text x="580" y="55" font-size="13" font-weight="bold" fill="var(--accent-ink)">STATE OBJECTS 状态对象</text>
+
+              <rect x="585" y="75" width="140" height="45" class="node-rect" />
+              <text x="595" y="95" class="node-title">File System</text>
+              <text x="595" y="110" class="node-sub">文件/路径/持久存储</text>
+
+              <rect x="585" y="135" width="140" height="45" class="node-rect" />
+              <text x="595" y="155" class="node-title">Environment (ENV)</text>
+              <text x="595" y="170" class="node-sub">变量/上下文配置</text>
+
+              <rect x="585" y="195" width="140" height="45" class="node-rect" />
+              <text x="595" y="215" class="node-title">Exit Code ($?)</text>
+              <text x="595" y="230" class="node-sub">退出代码 (0 为成功)</text>
+
+              <!-- Arrows -->
+              <path d="M 165 157 L 220 157" class="edge-flow" />
+              <path d="M 305 120 L 330 140" class="edge-flow" />
+              <path d="M 445 165 L 570 97" class="edge-flow" />
+              <path d="M 445 185 L 570 217" class="edge-flow" />
+            </svg>
+          </div>
+
+          <div class="system-map">
+            <div class="map-lane">
+              <div class="lane-label">Objects 核心对象</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>文件与路径 (Path)</strong><small>持久化存储单元与定位坐标</small></div>
+                <div class="map-node"><strong>数据流 (Streams)</strong><small>STDIN / STDOUT / STDERR 文本管线</small></div>
+                <div class="map-node"><strong>进程 (Process)</strong><small>带有 PID、内存空间与 CPU 时间的运行实体</small></div>
+                <div class="map-node"><strong>环境变量 (Env)</strong><small>跨进程继承的全局配置与凭证上下文</small></div>
+              </div>
+            </div>
+            <div class="map-lane">
+              <div class="lane-label">Actors 关键角色</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>人类决策者</strong><small>定义目标、评估风险、核查最终证据</small></div>
+                <div class="map-node"><strong>AI Agent</strong><small>生成语法、调用工具、自愈修正错误</small></div>
+                <div class="map-node"><strong>Shell 解释器</strong><small>展开通配符、建立管道、管理子进程</small></div>
+                <div class="map-node"><strong>OS 内核</strong><small>分配内存、校验文件权限、响应系统调用</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 概念地图 -->
+      <section class="chapter" id="concepts">
+        <header class="chapter-head">
+          <span class="chapter-no">03</span>
+          <div>
+            <h2>概念地图：三层解构命令行体系</h2>
+            <p class="chapter-intro">将复杂命令行拆解为“数据流层”、“进程控制层”与“系统边界层”，明确每个名词、动词及其关系。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="concept-grid">
+            <article class="concept-card">
+              <span class="layer-tag">Layer 1 · 数据流与组合层</span>
+              <h3>STDIN / STDOUT / STDERR</h3>
+              <p><strong>Entity (名词):</strong> 文件描述符 0、1、2 对应的标准三流通道。</p>
+              <p><strong>Action (动词):</strong> 重定向 (`>`), 管道传递 (`|`), 拼接 (`>>`)。</p>
+              <p><strong>Purpose (目的):</strong> 保持程序间松耦合，使单个 CLI 工具聚焦于“做一件事并做好”。</p>
+              <p><strong>Relationship (关系):</strong> STDOUT 用于干净数据，STDERR 用于带外日志，二者分离保证管道链不污染。</p>
+            </article>
+
+            <article class="concept-card">
+              <span class="layer-tag">Layer 2 · 进程与环境层</span>
+              <h3>PID & Exit Code ($?)</h3>
+              <p><strong>Entity (名词):</strong> 进程唯一标识符 (PID) 与 0-255 的退出状态码。</p>
+              <p><strong>Action (动词):</strong> 派生 (Fork), 执行 (Exec), 发送信号 (Signal/Kill), 状态回传。</p>
+              <p><strong>Purpose (目的):</strong> 提供显式且可编程的成功/失败凭证，作为自动化逻辑分支的依据。</p>
+              <p><strong>Relationship (关系):</strong> AI Agent 依赖 Exit Code 0 确认前一步指令成功，若为非 0 则抓取 STDERR 进行自我纠错。</p>
+            </article>
+
+            <article class="concept-card">
+              <span class="layer-tag">Layer 3 · 权限与边界层</span>
+              <h3>CWD & Permissions (ACL)</h3>
+              <p><strong>Entity (名词):</strong> 当前工作目录 (CWD), 用户身份 (UID), 文件读写执行权限 (rwx)。</p>
+              <p><strong>Action (动词):</strong> 限制路径访问, 沙箱隔离 (Sandbox), 权限提升 (sudo)。</p>
+              <p><strong>Purpose (目的):</strong> 建立系统安全红线，防止自动化脚本或 AI 产生非预期的系统级破坏。</p>
+              <p><strong>Relationship (关系):</strong> CWD 决定相对路径解析起点；权限决定进程对底层文件系统的读写边界。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 决策地图 -->
+      <section class="chapter" id="decisions">
+        <header class="chapter-head">
+          <span class="chapter-no">04</span>
+          <div>
+            <h2>决策地图：真实场景下的意图抉择</h2>
+            <p class="chapter-intro">专业人士自然想到命令行的节点，不是背诵参数，而是面对特定工程挑战时的决策模式。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="decision-chain">
+            <div class="decision-card">
+              <div class="situation"><strong>Situation 场景：</strong>AI 需要对成千上万个日志文件进行多阶段文本提取与统计分析。</div>
+              <div class="arrow">↓</div>
+              <div class="decision"><strong>Decision 决策：</strong>使用 UNIX 管道组合轻量工具 (e.g. `rg | jq | sort | uniq -c`)，而非编写大段 Python 脚本。</div>
+              <div class="arrow">↓</div>
+              <div class="reason"><strong>Reason 理由：</strong>流式管道无需加载完整文件到内存，并行利用 CPU 内核，且零依赖开箱即用。</div>
+              <div class="arrow">↓</div>
+              <div class="outcome"><strong>Expected Outcome 期望结果：</strong>毫秒级处理大文件，过程低开销，中间数据无冗余落盘。</div>
+            </div>
+
+            <div class="decision-card">
+              <div class="situation"><strong>Situation 场景：</strong>AI 计划执行一个耗时较长、可能占用终端的部署或编译任务。</div>
+              <div class="arrow">↓</div>
+              <div class="decision"><strong>Decision 决策：</strong>将任务推送到后台异步执行 (`nohup` / `tmux` / `&`) 并将 STDOUT/STDERR 重定向至日志文件。</div>
+              <div class="arrow">↓</div>
+              <div class="reason"><strong>Reason 理由：</strong>解耦终端会话生命周期与后台进程生命周期，防止网络断开导致任务意外终止。</div>
+              <div class="arrow">↓</div>
+              <div class="outcome"><strong>Expected Outcome 期望结果：</strong>主进程可立即释放，AI 可通过轮询日志文件或 PID 评估任务状态。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 搜索空间扩展 -->
+      <section class="chapter" id="search">
+        <header class="chapter-head">
+          <span class="chapter-no">05</span>
+          <div>
+            <h2>搜索空间扩展：发掘“你不知道自己不知道”的领域</h2>
+            <p class="chapter-intro">从初学者容易忽略的盲区，到决定该领域最高水平的核心认知。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="search-grid">
+            <article class="search-box">
+              <h3>🌱 初学者极少问，但至关重要的问题</h3>
+              <ul>
+                <li>为什么有些命令在终端执行成功，但在脚本或 AI 环境变量中执行会报 命令未找到？（TTY 与 Interactive vs Non-interactive Login Shell 区别）</li>
+                <li>为什么数据输出到管道时没有实时显示？（Buffer 缓冲区 Flush 机制与 Block I/O 缓冲）</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>🎯 专家真正关心的工程问题</h3>
+              <ul>
+                <li>在并发调用 CLI 工具时，如何保证文件写入的原子性与幂等性？</li>
+                <li>当 AI 代理在后台批量执行命令时，如何防范 Shell Injection (Shell 脚本注入攻击) 与盲目权限提效？</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>🚀 下一步值得深入探索的方向</h3>
+              <ul>
+                <li>POSIX 标准与不同 Shell (Zsh, Bash, Fish) 之间的细微兼容性边界。</li>
+                <li>进程间的 UNIX Domain Sockets 与 命名管道 (Named Pipes / FIFO) 高级通信。</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>👑 决定该领域上限的根本问题</h3>
+              <ul>
+                <li>如何将具有无状态特性的命令行工具设计为符合 Linux 哲学的“可组合原语”？</li>
+                <li>在 AI-Native 操作系统演进中，CLI 的文本流接口会如何被结构化 JSON/Protobuf IPC 深度重构？</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 生态系统 -->
+      <section class="chapter" id="ecosystem">
+        <header class="chapter-head">
+          <span class="chapter-no">06</span>
+          <div>
+            <h2>生态系统：定位你在知识地图中的上下游</h2>
+            <p class="chapter-intro">理解命令行在操作系统、开发工具链与 AI 智能体应用架构中的承上启下关系。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="ecosystem-list">
+            <div class="eco-item">
+              <strong>上游依赖 (Upstream)</strong>
+              <p>POSIX 系统标准、OS Kernel 系统调用 (sys_fork, sys_exec, sys_read)、终端模拟器 (iTerm2, Alacritty, PTY 设备)。</p>
+            </div>
+            <div class="eco-item">
+              <strong>下游应用 (Downstream)</strong>
+              <p>自动化运维 Shell 脚本、CI/CD 自动化构建管线 (GitHub Actions)、AI Agent Tool-use 接口 (Bash Tool / MCP)。</p>
+            </div>
+            <div class="eco-item">
+              <strong>替代方案 (Alternatives)</strong>
+              <p>图形化桌面应用 (GUI)、REST API 请求、SDK 函数直连、Web 浏览器管理面板。</p>
+            </div>
+            <div class="eco-item">
+              <strong>互补原语 (Complements)</strong>
+              <p>现代高性能文本处理工具 (`rg`, `fd`, `jq`, `fzf`), 终端复用器 (`tmux`), 环境变量管理 (`dotenv`, `direnv`)。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 可迁移原则 -->
+      <section class="chapter" id="principles">
+        <header class="chapter-head">
+          <span class="chapter-no">07</span>
+          <div>
+            <h2>可迁移原则：区分不变的底层原理与易变的语法</h2>
+            <p class="chapter-intro">把精力放在十年不失效的核心原理上，把易变的语法记忆彻底交给 AI。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="principles-grid">
+            <div class="p-card">
+              <h3>第一性原理 (First Principles)</h3>
+              <p><strong>Universal Text Interface:</strong> 文本是跨语言、跨进程、跨操作系统、跨人类与 AI 的通用最小阻力表达接口。</p>
+            </div>
+            <div class="p-card">
+              <h3>可迁移的方法论 (Transferable Methodologies)</h3>
+              <p><strong>管道与正交组合:</strong> 大系统通过小而独立的专职原语组合而成；失败必须显式回传，成功应当保持缄默。</p>
+            </div>
+            <div class="p-card">
+              <h3>长期稳定的知识 (Stable Knowledge)</h3>
+              <p>进程生命周期模型、标准三流 (stdio)、绝对/相对路径解析、文件 ACL 权限模型。</p>
+            </div>
+            <div class="p-card">
+              <h3>容易变化的知识 (Changing Knowledge)</h3>
+              <p>特定命令行工具的小众 Flag 参数拼写、特定 Shell 的特殊语法糖、不同 OS 软件包管理器的命名习惯。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 最小心智模型 -->
+      <section class="chapter" id="minimum">
+        <header class="chapter-head">
+          <span class="chapter-no">08</span>
+          <div>
+            <h2>最小心智模型：AI 时代最重要的 12 个核心概念</h2>
+            <p class="chapter-intro">如果你只能记住 12 个概念，就是这 12 个。它们构成了你控制机器与评估 AI 命令质量的框架。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <ol class="min-model-list">
+            <li><strong>Process (进程):</strong> 内存与 CPU 调度中的可执行代码实例，一切操作的实体。</li>
+            <li><strong>STDIN / STDOUT / STDERR (标准三流):</strong> 进程与外部世界交互的入口、出口与带外日志管道。</li>
+            <li><strong>Pipe (`|` 管道):</strong> 将前一个进程的 STDOUT 无缝连接为后一个进程的 STDIN 的内存数据通道。</li>
+            <li><strong>Redirection (`>` / `<` 重定向):</strong> 修改进程默认数据流指向文件或设备的机制。</li>
+            <li><strong>Exit Code (`$?` 退出码):</strong> 进程结束后留下的 0（成功）或非零（失败错误类型）结果状态凭证。</li>
+            <li><strong>Environment Variable (`ENV` 环境变量):</strong> 父进程向子进程隐式传递上下文与凭证的字典表。</li>
+            <li><strong>Working Directory (`CWD` 工作目录):</strong> 当前进程解析相对路径时的物理空间基准点。</li>
+            <li><strong>Subshell (子shell):</strong> 独立的衍生执行环境，内部变量修改不会逆向污染父级环境。</li>
+            <li><strong>Signal (信号):</strong> 操作系统向运行中进程发送的异步通知（如 SIGINT 中断, SIGKILL 强制杀进程）。</li>
+            <li><strong>Path (环境变量 PATH):</strong> Shell 在输入简短命令名称时全局搜索可执行文件的目录列表。</li>
+            <li><strong>File Permission (权限 rwx):</strong> 操作系统在进程尝试访问文件时执行的身份与读写能力安全审计。</li>
+            <li><strong>Idempotency (幂等性):</strong> 重复执行相同指令不会引发非预期副作用的系统安全特性。</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 09 常见误区 -->
+      <section class="chapter" id="misconceptions">
+        <header class="chapter-head">
+          <span class="chapter-no">09</span>
+          <div>
+            <h2>常见误区：纠正过时的思维惯性</h2>
+            <p class="chapter-intro">破解传统技术学习中的典型偏见，建立适应 AI 时代的新视角。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="misconception-card">
+            <h3>误区一：命令行是属于硬核程序员的过时“黑窗口”</h3>
+            <p class="why"><strong>产生原因：</strong>被复杂没有 UI 的终端界面与古怪的缩写语法吓退。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>命令行是精准控制计算机系统的“API 直连通道”。GUI 是给人类眼睛看的，CLI 是给自动化程序与 AI 智能体高效调用的。</p>
+          </div>
+
+          <div class="misconception-card">
+            <h3>误区二：学习命令行就是记忆几百个具体命令与 Flag</h3>
+            <p class="why"><strong>产生原因：</strong>传统教程习惯从 `ls -l`, `tar -zxvf` 等具体参数拼写开始死记硬背。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>语法是最低价值的知识，AI 可以随时生成正确命令。真正的高价值知识是理解数据流向哪里、副作用发生在哪里。</p>
+          </div>
+
+          <div class="misconception-card">
+            <h3>误区三：STDERR 输出内容就代表程序发生了致命崩溃</h3>
+            <p class="why"><strong>产生原因：</strong>字面意思包含“ERROR”，且在许多终端中默认被渲染为红色。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>STDERR 是程序的带外 diagnostic 管道，进度条、调试日志都会走 STDERR，评估成败的唯一标准是 Exit Code。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 总结 -->
+      <section class="chapter" id="summary">
+        <header class="chapter-head">
+          <span class="chapter-no">10</span>
+          <div>
+            <h2>总结</h2>
+            <p class="chapter-intro">一句话完成对命令行工具基础认知升级的凝练。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <blockquote class="summary-quote">
+            “在 AI 时代，我真正获得的不是<del>死记硬背繁杂终端命令与 Flag 的手艺</del>，<br>
+            而是<mark>掌控意图、进程数据流、安全边界与系统状态演变的可组合表达能力</mark>。”
+          </blockquote>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="atlas-footer">
+    <p>AI 时代学习地图 · 命令行工具基础 · 维护于 2026</p>
+  </footer>
+</body>
+</html>

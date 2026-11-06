@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Claude Code claude 命令重要参数的心智模型、决策边界与生态系统。">
+  <title>Claude 命令重要参数 · 心智模型地图</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%2387563d%22/><text x=%2232%22 y=%2240%22 text-anchor=%22middle%22 font-size=%2225%22 fill=%22%23f4f0e7%22>02</text></svg>">
+  <link rel="stylesheet" href="assets/learning-map.css">
+  <link rel="stylesheet" href="assets/mental-model-atlas.css">
+  <script src="assets/mental-model-atlas.js" defer></script>
+</head>
+<body data-theme="claude">
+  <div class="reading-progress" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="00-十五份HTML全面对比报告.html"><span class="brand-mark">AI</span><span>学习地图</span></a>
+      <nav class="page-nav" aria-label="三张学习地图">
+        <a href="01-命令行工具基础-来源-ChatGPT客户端.html">01 命令行</a>
+        <a href="02-Claude命令重要参数-来源-ChatGPT客户端.html" aria-current="page">02 Claude 参数</a>
+        <a href="03-Git版本控制-来源-ChatGPT客户端.html">03 Git</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="页内目录">
+      <div class="toc-label">Mental model / 02</div>
+      <ol>
+        <li><a href="#essence">本质</a></li>
+        <li><a href="#world">世界模型</a></li>
+        <li><a href="#concepts">概念地图</a></li>
+        <li><a href="#decisions">决策地图</a></li>
+        <li><a href="#search">搜索空间</a></li>
+        <li><a href="#ecosystem">生态系统</a></li>
+        <li><a href="#principles">可迁移原则</a></li>
+        <li><a href="#minimum">最小心智模型</a></li>
+        <li><a href="#misconceptions">常见误区</a></li>
+        <li><a href="#summary">总结</a></li>
+      </ol>
+    </aside>
+
+    <main>
+      <header class="masthead">
+        <div class="map-index">MAP 02 / AGENT CONTROL PLANE</div>
+        <h1>参数不是开关清单</h1>
+        <p class="deck">它们是在 Claude Code 启动前声明一份运行契约：带什么上下文、能做什么、何时询问、投入多少、怎样交付结果。</p>
+        <div class="masthead-meta">
+          <span>核心隐喻：代理的运行策略面板</span>
+          <span>核对版本：Claude Code 2.1.220</span>
+          <span>资料日期：2026-07-29</span>
+        </div>
+      </header>
+
+      <section id="essence" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">01</div>
+          <div><div class="eyebrow">Essence</div><h2>本质：给代理设置初始边界</h2><p class="section-intro">prompt 告诉 Claude “想做什么”；参数决定这次运行“处于什么制度下”。</p></div>
+        </div>
+        <div class="essence">
+          <blockquote class="pullquote"><code>claude</code> 参数本质上是在配置一个<strong>有上下文、有能力、有预算、有权限的代理进程</strong>。</blockquote>
+          <div class="before-after">
+            <div><div class="micro-label">Without parameters</div><p>依赖项目和用户默认设置，适合日常交互，但边界可能只存在于隐含配置中。</p></div>
+            <div><div class="micro-label">Why parameters exist</div><p>让一次会话的关键策略可显式覆盖、可复现、可由脚本声明。</p></div>
+            <div><div class="micro-label">New possibility</div><p>同一代理可在探索、受控编辑、后台执行、结构化流水线等制度间切换。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="world" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">02</div>
+          <div><div class="eyebrow">World model</div><h2>世界模型：一次运行的六个控制面</h2><p class="section-intro">参数的真正对象不是“功能”，而是代理的运行状态。</p></div>
+        </div>
+        <div class="system-map" aria-label="Claude Code 参数控制面">
+          <div class="system-node"><b>上下文</b><span>目录、会话、系统提示、设置来源</span></div>
+          <div class="system-node"><b>能力</b><span>工具、MCP、插件、浏览器、agent</span></div>
+          <div class="system-node"><b>授权</b><span>何时询问、允许什么、拒绝什么</span></div>
+          <div class="system-node"><b>算力</b><span>模型、effort、轮次、预算</span></div>
+          <div class="system-node"><b>生命周期</b><span>交互、打印、后台、续接、分叉</span></div>
+          <div class="system-node"><b>交付</b><span>文本、JSON、流、schema、调试证据</span></div>
+        </div>
+        <div class="search-grid">
+          <div class="search-quadrant"><h3>Objects · 对象</h3><p>session、prompt、tool、permission rule、model、workspace、config、output event。</p></div>
+          <div class="search-quadrant"><h3>Actors · 角色</h3><p>你、Claude agent、子 agent、工具、MCP server、hooks、操作系统、CI。</p></div>
+          <div class="search-quadrant"><h3>State · 状态</h3><p>新会话/续接/分叉；手动/计划/自动/绕过；前台/后台；交互/非交互。</p></div>
+          <div class="search-quadrant"><h3>Value · 价值</h3><p>把“相信代理”改造成“声明边界、观察行为、验证结果”。</p></div>
+        </div>
+      </section>
+
+      <section id="concepts" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">03</div>
+          <div><div class="eyebrow">Concept map</div><h2>概念地图：三层运行契约</h2><p class="section-intro">最重要的不是参数数量，而是分清“上下文、行动策略、交付接口”。</p></div>
+        </div>
+        <div class="concept-layers">
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 1</span><b>身份与上下文</b><small>它是谁，记得什么，看见哪里</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>Session</h3><p><code>-c</code> 续接本目录最近会话；<code>-r</code> 选择特定会话；<code>--fork-session</code> 从历史分叉。</p><span class="relation">控制连续性，而不是能力</span></div>
+              <div class="concept"><h3>Scope</h3><p><code>--add-dir</code> 扩展可访问目录；<code>-w</code> 用 Git worktree 隔离工作现场。</p><span class="relation">可见范围与改动隔离不同</span></div>
+              <div class="concept"><h3>Instruction</h3><p><code>--system-prompt</code> 替换默认系统提示；<code>--append-system-prompt</code> 在默认提示后追加。</p><span class="relation">替换比追加更彻底，也更危险</span></div>
+            </div>
+          </article>
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 2</span><b>能力与治理</b><small>能做什么，何时需要许可</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>Capability</h3><p><code>--tools</code> 决定内置工具是否可用；<code>--disallowedTools</code> 明确禁用匹配工具。</p><span class="relation">能力集合是外边界</span></div>
+              <div class="concept"><h3>Permission</h3><p><code>--allowedTools</code> 让匹配动作免提示；<code>--permission-mode</code> 决定整体询问策略。</p><span class="relation">“可用”不等于“免确认”</span></div>
+              <div class="concept"><h3>Extensions</h3><p><code>--mcp-config</code>、<code>--plugin-dir</code>、<code>--agent</code> 注入额外能力或角色。</p><span class="relation">扩展能力也扩大信任面</span></div>
+            </div>
+          </article>
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 3</span><b>资源与接口</b><small>投入多少，如何进入与离开</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>Compute</h3><p><code>--model</code> 选择模型；<code>--effort</code> 选择思考投入；打印模式还能限制轮次与预算。</p><span class="relation">质量、速度、成本之间的契约</span></div>
+              <div class="concept"><h3>Lifecycle</h3><p>默认交互；<code>-p</code> 一次性打印；<code>--bg</code> 后台运行。</p><span class="relation">选择人机协作节奏</span></div>
+              <div class="concept"><h3>Output contract</h3><p><code>--output-format</code> 决定文本/JSON/流；<code>--json-schema</code> 约束结构。</p><span class="relation">把自然语言接入机器流程</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="decisions" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">04</div>
+          <div><div class="eyebrow">Decision map</div><h2>决策地图：先决定制度，再启动代理</h2><p class="section-intro">以下不是命令教程，而是专业人士启动前的判断顺序。</p></div>
+        </div>
+        <div class="decision-grid">
+          <article class="decision"><div><b>Situation</b><p>需要接着同一问题继续</p></div><div><b>Decision</b><p>续接最近或指定 session</p></div><div><b>Reason</b><p>保留上下文与已做决策</p></div><div><b>Outcome</b><p>减少重述，避免从错误起点重做</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>想从旧上下文探索新路线</p></div><div><b>Decision</b><p>分叉 session，必要时配合 worktree</p></div><div><b>Reason</b><p>对话分支与文件分支都需隔离</p></div><div><b>Outcome</b><p>保留原路线，同时让实验可比较</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>只需分析，不允许改动</p></div><div><b>Decision</b><p>限制工具并选择 plan/manual 制度</p></div><div><b>Reason</b><p>从能力层收窄比口头提醒更可靠</p></div><div><b>Outcome</b><p>代理可观察与推理，但影响面受控</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>结果要进入自动化流水线</p></div><div><b>Decision</b><p>使用 print + JSON/stream + schema</p></div><div><b>Reason</b><p>机器需要稳定接口，不是终端排版</p></div><div><b>Outcome</b><p>输出可验证、可消费、可监控</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>任务复杂但边界清楚</p></div><div><b>Decision</b><p>提高 effort，设置预算/轮次止损</p></div><div><b>Reason</b><p>更多推理不应等于无限运行</p></div><div><b>Outcome</b><p>质量投入与失败成本同时可控</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>配置、hook 或插件导致异常</p></div><div><b>Decision</b><p>用 safe mode 建立干净基线</p></div><div><b>Reason</b><p>先区分 Claude 核心与自定义层</p></div><div><b>Outcome</b><p>缩小故障搜索空间</p></div></article>
+        </div>
+      </section>
+
+      <section id="search" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">05</div>
+          <div><div class="eyebrow">Search space expansion</div><h2>搜索空间：参数背后的难题</h2></div>
+        </div>
+        <div class="search-grid">
+          <article class="search-quadrant"><h3>初学者很少问</h3><ul class="question-list"><li>能力边界与免确认规则有什么不同？</li><li>会话连续性会不会带入过时假设？</li><li>项目配置、用户配置与命令行覆盖谁优先？</li><li>非交互运行如何证明没有静默忽略错误配置？</li></ul></article>
+          <article class="search-quadrant"><h3>专家真正关心</h3><ul class="question-list"><li>这次运行的 trust boundary 在哪里？</li><li>输出是否有稳定 schema 与失败语义？</li><li>MCP、插件、hooks 扩大了哪些供应链风险？</li><li>成本、轮次、后台恢复与取消如何治理？</li></ul></article>
+          <article class="search-quadrant"><h3>下一步探索</h3><ul class="question-list"><li>permission rule syntax 与最小权限</li><li>settings source 的优先级</li><li>MCP 能力发现与严格配置</li><li>stream-json 事件模型与可观测性</li></ul></article>
+          <article class="search-quadrant"><h3>定义精通的问题</h3><ul class="question-list"><li>能否为任务选择恰当自治等级？</li><li>能否区分对话分叉、文件隔离与历史分支？</li><li>能否把 agent 运行变成可审计契约？</li><li>能否判断何时应提升能力，何时应缩小能力？</li></ul></article>
+        </div>
+      </section>
+
+      <section id="ecosystem" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">06</div>
+          <div><div class="eyebrow">Ecosystem</div><h2>生态系统：参数连接的上下游</h2></div>
+        </div>
+        <div class="ecosystem">
+          <article class="eco-zone"><h3>Upstream · 上游</h3><p>人的目标、项目规则、CLAUDE.md、settings、Git 工作区、身份与组织策略。</p><div class="tag-cloud"><span class="tag">Intent</span><span class="tag">Policy</span><span class="tag">Context</span><span class="tag">Git</span></div></article>
+          <article class="eco-zone"><h3>Downstream · 下游</h3><p>工具调用、文件变化、子 agent、流水线事件、JSON 结果、后台 session。</p><div class="tag-cloud"><span class="tag">Tools</span><span class="tag">Files</span><span class="tag">CI</span><span class="tag">Artifacts</span></div></article>
+          <article class="eco-zone"><h3>Alternatives · 替代</h3><p>交互式会话内切换模式、项目级设置、Claude Code SDK、其他 coding agent。</p><div class="tag-cloud"><span class="tag">Settings</span><span class="tag">SDK</span><span class="tag">IDE agents</span></div></article>
+          <article class="eco-zone"><h3>Complements · 互补</h3><p>Git worktree 提供文件隔离，容器提供系统隔离，测试提供验收，日志提供证据。</p><div class="tag-cloud"><span class="tag">Worktree</span><span class="tag">Sandbox</span><span class="tag">Tests</span><span class="tag">Observability</span></div></article>
+        </div>
+      </section>
+
+      <section id="principles" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">07</div>
+          <div><div class="eyebrow">Transferable principles</div><h2>可迁移原则：所有 agent 都有这些控制面</h2></div>
+        </div>
+        <table class="principle-table">
+          <tbody>
+            <tr><th>第一性原理 <span class="stability">稳定</span></th><td>自治系统必须同时定义目标、可见范围、能力、授权、资源上限和验收接口。</td></tr>
+            <tr><th>可迁移方法 <span class="stability">稳定</span></th><td>最小权限、显式上下文、运行隔离、结构化输出、预算止损、先基线后排障。</td></tr>
+            <tr><th>实现细节 <span class="stability">变化</span></th><td>参数名、可选 permission mode、模型别名、背景 agent 行为、版本新增功能。</td></tr>
+            <tr><th>稳定知识 <span class="stability">长期</span></th><td>session 连续性、capability 与 permission 的区别、交互与非交互接口、配置优先级。</td></tr>
+            <tr><th>变化知识 <span class="stability">常复核</span></th><td>本机 <code>claude --help</code>、官方 CLI reference、组织策略与插件/MCP 版本。</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="minimum" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">08</div>
+          <div><div class="eyebrow">Minimum mental model</div><h2>最重要的 15 组参数概念</h2><p class="section-intro">这是“什么时候想到它”的索引，不是让你背完整语法。</p></div>
+        </div>
+        <div class="flag-atlas">
+          <article class="flag-group"><h3>1 · 交互节奏</h3><p><code>-p / --print</code>：把对话变成一次性、可管道化调用。</p></article>
+          <article class="flag-group"><h3>2 · 会话连续性</h3><p><code>-c</code> 续最近；<code>-r</code> 选特定；<code>--fork-session</code> 另开历史分支。</p></article>
+          <article class="flag-group"><h3>3 · 会话可识别性</h3><p><code>-n / --name</code>：让长期任务可被人类识别和恢复。</p></article>
+          <article class="flag-group"><h3>4 · 文件现场隔离</h3><p><code>-w / --worktree</code>：为 Git 仓库创建独立工作现场。</p></article>
+          <article class="flag-group"><h3>5 · 权限制度</h3><p><code>--permission-mode</code>：在 manual、plan、acceptEdits、auto、dontAsk、bypassPermissions 之间选择。</p></article>
+          <article class="flag-group"><h3>6 · 可用能力</h3><p><code>--tools</code>：限制内置工具集合；这是“能不能”，不是“问不问”。</p></article>
+          <article class="flag-group"><h3>7 · 免确认白名单</h3><p><code>--allowedTools</code>：匹配的工具调用无需提示；不会自动成为唯一可用工具。</p></article>
+          <article class="flag-group"><h3>8 · 明确拒绝</h3><p><code>--disallowedTools</code>：禁止匹配工具；可用于补足 MCP 等能力边界。</p></article>
+          <article class="flag-group"><h3>9 · 额外目录</h3><p><code>--add-dir</code>：扩展可访问目录；相当于扩大数据与改动范围。</p></article>
+          <article class="flag-group"><h3>10 · 模型与投入</h3><p><code>--model</code> 选能力配置；<code>--effort</code> 选本次推理投入。</p></article>
+          <article class="flag-group"><h3>11 · 非交互止损</h3><p><code>--max-turns</code> 与 <code>--max-budget-usd</code>：为 print 模式设置资源上限。</p></article>
+          <article class="flag-group"><h3>12 · 输出契约</h3><p><code>--output-format</code> 选 text/json/stream-json；<code>--json-schema</code> 约束结构。</p></article>
+          <article class="flag-group"><h3>13 · 扩展面</h3><p><code>--mcp-config</code>、<code>--strict-mcp-config</code>、<code>--plugin-dir</code> 控制外部能力来源。</p></article>
+          <article class="flag-group"><h3>14 · 提示策略</h3><p><code>--append-system-prompt</code> 保留默认能力；<code>--system-prompt</code> 是整体替换。</p></article>
+          <article class="flag-group"><h3>15 · 故障隔离</h3><p><code>--safe-mode</code> 关闭自定义层建立基线；<code>--debug</code>/<code>--verbose</code> 增加证据。</p></article>
+          <article class="flag-group danger"><h3>高风险边界</h3><p><code>--dangerously-skip-permissions</code> 绕过所有权限提示。它不是“更强”，而是移除人机闸门；官方仅建议在无网络沙箱等严格隔离环境中使用。</p></article>
+        </div>
+      </section>
+
+      <section id="misconceptions" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">09</div>
+          <div><div class="eyebrow">Common misconceptions</div><h2>常见误区：参数名容易制造的错觉</h2></div>
+        </div>
+        <div class="misconceptions">
+          <article class="misconception"><h3>误区 1</h3><p class="wrong"><code>--allowedTools</code> 等于只允许这些工具。</p><p>“allowed” 容易被理解为能力白名单。</p><p class="better">更好的模型：它主要控制免提示规则；用 <code>--tools</code> 限制内置能力集合。</p></article>
+          <article class="misconception"><h3>误区 2</h3><p class="wrong">恢复 session 等于恢复文件现场。</p><p>对话记忆与工作区状态看起来同时连续。</p><p class="better">更好的模型：session 管上下文，Git/worktree 管文件历史与隔离。</p></article>
+          <article class="misconception"><h3>误区 3</h3><p class="wrong">提高 model/effort 总会得到更好结果。</p><p>推理投入常被误当成目标清晰度。</p><p class="better">更好的模型：边界、上下文和验收不清时，更多算力只会更深入地跑偏。</p></article>
+          <article class="misconception"><h3>误区 4</h3><p class="wrong">跳过权限只是省掉确认。</p><p>交互摩擦比影响半径更可见。</p><p class="better">更好的模型：它删除了一层治理，只应由外部隔离补偿。</p></article>
+          <article class="misconception"><h3>误区 5</h3><p class="wrong"><code>--system-prompt</code> 只是多加一句要求。</p><p>名称没有突出“替换默认提示”。</p><p class="better">更好的模型：需要保留默认行为时，优先理解追加与整体替换的区别。</p></article>
+          <article class="misconception"><h3>误区 6</h3><p class="wrong">参数表是长期稳定知识。</p><p>CLI 文档像静态手册。</p><p class="better">更好的模型：控制面稳定，具体 flags 与 choices 必须按版本复核。</p></article>
+        </div>
+      </section>
+
+      <section id="summary" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">10</div>
+          <div><div class="eyebrow">Summary</div><h2>真正的收获</h2></div>
+        </div>
+        <p class="summary-line">我真正获得的不是<span class="blank">一张 Claude 参数速查表</span>，而是<span class="blank">为代理运行选择上下文、自治、能力、资源与交付契约的判断力</span>。</p>
+        <p class="source-note">变化知识核对：本机 Claude Code <code>2.1.220</code> 的 <code>claude --help</code>；官方 <a href="https://code.claude.com/docs/en/cli-reference">CLI reference</a> 与 <a href="https://code.claude.com/docs/en/permission-modes">permission modes</a>，访问日期 2026-07-29。具体参数请以你当前安装版本为准。</p>
+        <footer class="footer"><a href="01-命令行工具基础-来源-ChatGPT客户端.html">← 上一张：命令行</a><a href="03-Git版本控制-来源-ChatGPT客户端.html">下一张：Git 版本控制 →</a></footer>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

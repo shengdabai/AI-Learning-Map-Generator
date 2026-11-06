@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Git 版本控制的心智模型、世界模型、决策地图与生态系统。">
+  <title>Git 版本控制 · 心智模型地图</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%2327635a%22/><text x=%2232%22 y=%2240%22 text-anchor=%22middle%22 font-size=%2225%22 fill=%22%23f4f0e7%22>03</text></svg>">
+  <link rel="stylesheet" href="assets/learning-map.css">
+  <link rel="stylesheet" href="assets/mental-model-atlas.css">
+  <script src="assets/mental-model-atlas.js" defer></script>
+</head>
+<body data-theme="git">
+  <div class="reading-progress" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="00-十五份HTML全面对比报告.html"><span class="brand-mark">AI</span><span>学习地图</span></a>
+      <nav class="page-nav" aria-label="三张学习地图">
+        <a href="01-命令行工具基础-来源-ChatGPT客户端.html">01 命令行</a>
+        <a href="02-Claude命令重要参数-来源-ChatGPT客户端.html">02 Claude 参数</a>
+        <a href="03-Git版本控制-来源-ChatGPT客户端.html" aria-current="page">03 Git</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="页内目录">
+      <div class="toc-label">Mental model / 03</div>
+      <ol>
+        <li><a href="#essence">本质</a></li>
+        <li><a href="#world">世界模型</a></li>
+        <li><a href="#concepts">概念地图</a></li>
+        <li><a href="#decisions">决策地图</a></li>
+        <li><a href="#search">搜索空间</a></li>
+        <li><a href="#ecosystem">生态系统</a></li>
+        <li><a href="#principles">可迁移原则</a></li>
+        <li><a href="#minimum">最小心智模型</a></li>
+        <li><a href="#misconceptions">常见误区</a></li>
+        <li><a href="#summary">总结</a></li>
+      </ol>
+    </aside>
+
+    <main>
+      <header class="masthead">
+        <div class="map-index">MAP 03 / COLLABORATIVE HISTORY GRAPH</div>
+        <h1>Git 不是云端备份</h1>
+        <p class="deck">它把工作中的每次有意义变化组织成一张内容寻址的历史图，让人和 AI 能比较路线、审查证据、并行探索与安全回退。</p>
+        <div class="masthead-meta">
+          <span>核心隐喻：可协商的历史图</span>
+          <span>本机 Git：2.54.0</span>
+          <span>稳定度：数据模型高 / 平台流程中</span>
+        </div>
+      </header>
+
+      <section id="essence" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">01</div>
+          <div><div class="eyebrow">Essence</div><h2>本质：给变化建立身份与因果</h2><p class="section-intro">Git 的关键不是“保存旧文件”，而是让每个项目状态有身份、每次演化有父子关系。</p></div>
+        </div>
+        <div class="essence">
+          <blockquote class="pullquote">Git 本质上是一个<strong>内容寻址的快照图数据库</strong>，外加一套移动指针与交换历史的协作协议。</blockquote>
+          <div class="before-after">
+            <div><div class="micro-label">Before</div><p>复制“最终版-2-真的最终版”，共享文件夹互相覆盖，用邮件解释谁改了什么。</p></div>
+            <div><div class="micro-label">Why it exists</div><p>在分布式协作中，让历史可验证、路线可分叉、合并可讨论、失败可回退。</p></div>
+            <div><div class="micro-label">New possibility</div><p>人和多个 AI agent 可以在隔离路线中并行工作，再按证据集成。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="world" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">02</div>
+          <div><div class="eyebrow">World model</div><h2>世界模型：从文件变化到共享历史</h2><p class="section-intro">Git 管的不是“文件是否保存”，而是工作状态如何被选择、命名、连接与交换。</p></div>
+        </div>
+        <div class="system-map" aria-label="Git 生命周期">
+          <div class="system-node"><b>工作区</b><span>此刻可见、可编辑的文件状态</span></div>
+          <div class="system-node"><b>索引</b><span>下一次提交要包含的精确快照草案</span></div>
+          <div class="system-node"><b>Commit</b><span>带作者、时间、父关系的不可变快照</span></div>
+          <div class="system-node"><b>Branch / Ref</b><span>指向某条路线最新节点的可移动名字</span></div>
+          <div class="system-node"><b>Remote</b><span>另一个仓库及其历史视图</span></div>
+          <div class="system-node"><b>Integration</b><span>评审、合并、发布与回退</span></div>
+        </div>
+        <div class="search-grid">
+          <div class="search-quadrant"><h3>Objects · 对象</h3><p>blob、tree、commit、tag、branch/ref、index、working tree、repository、remote。</p></div>
+          <div class="search-quadrant"><h3>Actors · 角色</h3><p>作者、审阅者、AI agent、CI、托管平台、发布系统、未来的维护者。</p></div>
+          <div class="search-quadrant"><h3>State · 状态</h3><p>未跟踪、已修改、已暂存、已提交、已共享、已集成、已发布、已回退。</p></div>
+          <div class="search-quadrant"><h3>Value · 价值</h3><p>可比较、可归因、可并行、可审查、可恢复，以及让变化成为协作对象。</p></div>
+        </div>
+      </section>
+
+      <section id="concepts" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">03</div>
+          <div><div class="eyebrow">Concept map</div><h2>概念地图：对象、指针与协作</h2><p class="section-intro">Git 最难的部分，往往来自把三个层次混在一起。</p></div>
+        </div>
+        <div class="concept-layers">
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 1</span><b>内容对象</b><small>不可变的事实</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>Blob / Tree</h3><p>实体：文件内容与目录结构。动作：按内容计算身份。目的：复用与验证。</p><span class="relation">快照的物质基础</span></div>
+              <div class="concept"><h3>Commit</h3><p>实体：tree + 元数据 + 父提交。动作：固化状态。目的：建立因果节点。</p><span class="relation">保存的是项目快照，不只是 diff</span></div>
+              <div class="concept"><h3>Graph</h3><p>实体：由 parent 连接的 DAG。动作：表达分叉与汇合。目的：保存演化关系。</p><span class="relation">历史不是直线，而是有向图</span></div>
+            </div>
+          </article>
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 2</span><b>工作与命名</b><small>当前在做什么、哪条路线叫什么</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>Working tree</h3><p>实体：可编辑文件。动作：试验与修改。目的：承载尚未定案的工作。</p><span class="relation">现实现场，不等于历史</span></div>
+              <div class="concept"><h3>Index</h3><p>实体：下一快照的草案。动作：选择变更。目的：定义提交边界。</p><span class="relation">把“我改了”变成“这次要讲什么”</span></div>
+              <div class="concept"><h3>Ref / Branch</h3><p>实体：指向 commit 的名字。动作：随新提交移动。目的：命名一条工作路线。</p><span class="relation">分支很轻，因为它主要是指针</span></div>
+            </div>
+          </article>
+          <article class="concept-layer">
+            <div class="layer-title"><span>Layer 3</span><b>同步与协商</b><small>不同仓库如何交换与整合事实</small></div>
+            <div class="layer-items">
+              <div class="concept"><h3>Remote</h3><p>实体：另一个 Git 仓库。动作：获取与发布对象。目的：分布式协作。</p><span class="relation">GitHub 是托管平台，不是 Git 本身</span></div>
+              <div class="concept"><h3>Merge / Rebase</h3><p>实体：两条历史关系。动作：汇合或重述。目的：形成可理解的集成历史。</p><span class="relation">都处理关系，语义不同</span></div>
+              <div class="concept"><h3>Review / CI</h3><p>实体：差异、检查、讨论。动作：验证与批准。目的：让共享历史获得信任。</p><span class="relation">Git 提供证据，团队决定政策</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="decisions" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">04</div>
+          <div><div class="eyebrow">Decision map</div><h2>决策地图：专业人士何时想到 Git</h2><p class="section-intro">核心判断是：这次变化需要怎样的隔离、证据、共享与恢复。</p></div>
+        </div>
+        <div class="decision-grid">
+          <article class="decision"><div><b>Situation</b><p>准备开始一条独立改动路线</p></div><div><b>Decision</b><p>建立清晰分支；并发时隔离 worktree</p></div><div><b>Reason</b><p>路线身份与文件现场都需独立</p></div><div><b>Outcome</b><p>实验互不覆盖，易比较与集成</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>工作中混入多种不相关变化</p></div><div><b>Decision</b><p>按意图选择提交边界</p></div><div><b>Reason</b><p>commit 应表达一个可审查主张</p></div><div><b>Outcome</b><p>未来可理解、可回退、可复用</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>需要并入他人或 AI 的路线</p></div><div><b>Decision</b><p>先审查差异和测试，再整合历史</p></div><div><b>Reason</b><p>合并是信任决策，不是机械同步</p></div><div><b>Outcome</b><p>共享分支只接收有证据的变化</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>共享历史中的改动需要撤销</p></div><div><b>Decision</b><p>优先新增反向变化，而非改写已共享事实</p></div><div><b>Reason</b><p>他人可能已经基于旧节点工作</p></div><div><b>Outcome</b><p>历史诚实，协作者可安全同步</p></div></article>
+          <article class="decision"><div><b>Situation</b><p>本地私有路线杂乱、尚未共享</p></div><div><b>Decision</b><p>在共享前整理叙事</p></div><div><b>Reason</b><p>私有历史可塑，共享历史是公共接口</p></div><div><b>Outcome</b><p>审查者看到清晰因果而非操作噪声</p></div></article>
+        </div>
+      </section>
+
+      <section id="search" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">05</div>
+          <div><div class="eyebrow">Search space expansion</div><h2>搜索空间：从“怎么提交”走向“如何治理变化”</h2></div>
+        </div>
+        <div class="search-grid">
+          <article class="search-quadrant"><h3>初学者很少问</h3><ul class="question-list"><li>一次 commit 在向未来维护者主张什么？</li><li>工作区、索引、HEAD 各代表哪个世界？</li><li>为什么远程分支只是本地记录的远端视图？</li><li>冲突是文本问题，还是意图问题？</li></ul></article>
+          <article class="search-quadrant"><h3>专家真正关心</h3><ul class="question-list"><li>历史是否能支持审计与故障定位？</li><li>分支策略是否匹配发布与风险模型？</li><li>哪些历史可以重写，哪些已经成为公共契约？</li><li>CI 验证的是 commit，还是漂移中的环境？</li></ul></article>
+          <article class="search-quadrant"><h3>下一步探索</h3><ul class="question-list"><li>内容寻址与对象存储</li><li>三路合并与冲突语义</li><li>worktree、submodule、monorepo 的边界</li><li>签名、供应链与 provenance</li></ul></article>
+          <article class="search-quadrant"><h3>定义精通的问题</h3><ul class="question-list"><li>能否设计既支持并行又限制集成风险的流程？</li><li>能否从历史图恢复一次决策的因果？</li><li>能否在不破坏公共历史的前提下修复错误？</li><li>能否让 AI 的每次改动都可归因、可验证、可回退？</li></ul></article>
+        </div>
+      </section>
+
+      <section id="ecosystem" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">06</div>
+          <div><div class="eyebrow">Ecosystem</div><h2>生态系统：Git 只是协作栈的一层</h2></div>
+        </div>
+        <div class="ecosystem">
+          <article class="eco-zone"><h3>Upstream · 上游</h3><p>文件系统、内容哈希、作者意图、项目结构、身份与时间。</p><div class="tag-cloud"><span class="tag">Filesystem</span><span class="tag">Hash</span><span class="tag">Intent</span><span class="tag">Identity</span></div></article>
+          <article class="eco-zone"><h3>Downstream · 下游</h3><p>代码审查、CI/CD、发布、变更日志、审计、故障回退、知识追踪。</p><div class="tag-cloud"><span class="tag">Review</span><span class="tag">CI/CD</span><span class="tag">Release</span><span class="tag">Audit</span></div></article>
+          <article class="eco-zone"><h3>Alternatives · 替代</h3><p>集中式版本控制、云盘版本、文件快照、数据库历史。它们对分布式分叉与离线协作的取舍不同。</p><div class="tag-cloud"><span class="tag">SVN</span><span class="tag">Cloud history</span><span class="tag">Snapshots</span></div></article>
+          <article class="eco-zone"><h3>Complements · 互补</h3><p>GitHub/GitLab 提供协作界面；测试提供正确性证据；制品库保存构建结果；备份应对仓库级灾难。</p><div class="tag-cloud"><span class="tag">GitHub</span><span class="tag">Tests</span><span class="tag">Artifact store</span><span class="tag">Backup</span></div></article>
+        </div>
+      </section>
+
+      <section id="principles" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">07</div>
+          <div><div class="eyebrow">Transferable principles</div><h2>可迁移原则：历史是团队的接口</h2></div>
+        </div>
+        <table class="principle-table">
+          <tbody>
+            <tr><th>第一性原理 <span class="stability">稳定</span></th><td>不可变事实 + 可移动名字 + 显式关系，能同时支持验证、分叉与汇合。</td></tr>
+            <tr><th>可迁移方法 <span class="stability">稳定</span></th><td>按意图切分变化、隔离并行现场、共享前审查、公共历史追加修复、用自动检查保护集成点。</td></tr>
+            <tr><th>实现细节 <span class="stability">变化</span></th><td>托管平台菜单、默认分支名、merge queue、保护规则、某个团队的分支策略。</td></tr>
+            <tr><th>稳定知识 <span class="stability">长期</span></th><td>对象、commit DAG、ref、index、working tree、remote、三路合并、公共与私有历史。</td></tr>
+            <tr><th>变化知识 <span class="stability">常复核</span></th><td>Git 版本行为、平台权限、CI 配置、签名与供应链政策、组织发布流程。</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="minimum" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">08</div>
+          <div><div class="eyebrow">Minimum mental model</div><h2>只记住这 15 个概念</h2></div>
+        </div>
+        <div class="memory-grid">
+          <div class="memory"><span class="memory-index">01</span><b>仓库</b><p>对象、引用与配置的本地世界。</p></div>
+          <div class="memory"><span class="memory-index">02</span><b>工作区</b><p>此刻可编辑的文件现场。</p></div>
+          <div class="memory"><span class="memory-index">03</span><b>索引</b><p>下一快照的精确草案。</p></div>
+          <div class="memory"><span class="memory-index">04</span><b>快照</b><p>项目某一时刻的完整结构。</p></div>
+          <div class="memory"><span class="memory-index">05</span><b>Commit</b><p>带父关系与元数据的快照节点。</p></div>
+          <div class="memory"><span class="memory-index">06</span><b>内容寻址</b><p>身份由内容决定，可验证且可复用。</p></div>
+          <div class="memory"><span class="memory-index">07</span><b>HEAD</b><p>当前工作路线与节点的定位。</p></div>
+          <div class="memory"><span class="memory-index">08</span><b>Branch</b><p>指向路线末端的可移动名字。</p></div>
+          <div class="memory"><span class="memory-index">09</span><b>DAG</b><p>分叉与汇合构成的历史图。</p></div>
+          <div class="memory"><span class="memory-index">10</span><b>Diff</b><p>两个状态之间的可审查差异。</p></div>
+          <div class="memory"><span class="memory-index">11</span><b>Remote</b><p>另一个仓库，不是中央真理。</p></div>
+          <div class="memory"><span class="memory-index">12</span><b>Merge</b><p>保留路线并建立汇合关系。</p></div>
+          <div class="memory"><span class="memory-index">13</span><b>Rebase</b><p>在新基点上重述一条私有历史。</p></div>
+          <div class="memory"><span class="memory-index">14</span><b>Worktree</b><p>同一仓库的多个隔离文件现场。</p></div>
+          <div class="memory"><span class="memory-index">15</span><b>公共历史</b><p>他人已依赖，不应轻率重写。</p></div>
+        </div>
+      </section>
+
+      <section id="misconceptions" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">09</div>
+          <div><div class="eyebrow">Common misconceptions</div><h2>常见误区：文件思维遮住了图思维</h2></div>
+        </div>
+        <div class="misconceptions">
+          <article class="misconception"><h3>误区 1</h3><p class="wrong">Git 保存的是一串文件差异。</p><p>界面最常展示 diff。</p><p class="better">更好的模型：commit 指向完整项目快照，diff 是两个快照的比较结果。</p></article>
+          <article class="misconception"><h3>误区 2</h3><p class="wrong">Branch 是文件夹副本。</p><p>传统“复制目录”经验很强。</p><p class="better">更好的模型：branch 主要是指向 commit 的轻量可移动引用。</p></article>
+          <article class="misconception"><h3>误区 3</h3><p class="wrong">GitHub 就是 Git。</p><p>多数人从托管平台界面第一次接触 Git。</p><p class="better">更好的模型：Git 是分布式版本模型；GitHub 是围绕它构建的协作平台。</p></article>
+          <article class="misconception"><h3>误区 4</h3><p class="wrong">Git 就是备份。</p><p>它确实能找回历史版本。</p><p class="better">更好的模型：Git 保护已记录历史；未提交文件、凭据与仓库灾难仍需要其他保护。</p></article>
+          <article class="misconception"><h3>误区 5</h3><p class="wrong">冲突说明 Git 出错。</p><p>系统无法自动选择让人感觉像故障。</p><p class="better">更好的模型：冲突是两种意图无法自动合成，需要人或 AI 明确语义。</p></article>
+          <article class="misconception"><h3>误区 6</h3><p class="wrong">有 AI 后 commit 可以随便写。</p><p>AI 能快速总结 diff。</p><p class="better">更好的模型：提交边界是协作与回退单位，仍需由目标与验证定义。</p></article>
+        </div>
+      </section>
+
+      <section id="summary" class="content-section">
+        <div class="section-heading">
+          <div class="section-number">10</div>
+          <div><div class="eyebrow">Summary</div><h2>真正的收获</h2></div>
+        </div>
+        <p class="summary-line">我真正获得的不是<span class="blank">保存旧版本的按钮</span>，而是<span class="blank">把变化组织成可审查、可并行、可协商、可恢复历史的能力</span>。</p>
+        <p class="source-note">概念依据：<a href="https://git-scm.com/docs">Git 官方文档</a>与 <a href="https://git-scm.com/book/en/v2">Pro Git</a>。本页强调稳定数据模型；平台菜单、团队策略与版本行为属于变化知识。</p>
+        <footer class="footer"><a href="02-Claude命令重要参数-来源-ChatGPT客户端.html">← 上一张：Claude 参数</a><a href="00-十五份HTML全面对比报告.html">返回总览 README →</a></footer>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

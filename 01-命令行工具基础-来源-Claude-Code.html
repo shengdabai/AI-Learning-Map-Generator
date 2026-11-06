@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>命令行工具基础 · AI 时代学习地图 01</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<style>
+:root{
+  --bg:#0B0E14; --surface:#141A26; --surface2:#1A2234; --border:#26304A;
+  --text:#E8ECF4; --muted:#92A0B8; --accent:#4ADE80;
+  --accent-dim:rgba(74,222,128,0.12);
+  --accent-line:rgba(74,222,128,0.35);
+  --warn:#FBBF24; --danger:#F87171; --info:#60A5FA; --violet:#A78BFA;
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC","Microsoft YaHei","Helvetica Neue",sans-serif;
+  --mono:"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{
+  background:var(--bg); color:var(--text); font-family:var(--font);
+  line-height:1.75; font-size:16px; -webkit-font-smoothing:antialiased;
+  letter-spacing:0.01em;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+a{color:var(--accent);text-decoration:none}
+code,.mono{font-family:var(--mono);font-size:0.9em}
+code{
+  background:var(--surface2);border:1px solid var(--border);
+  padding:1px 6px;border-radius:5px;color:var(--accent);
+}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;overflow:hidden;
+  padding:96px 0 72px;
+  border-bottom:1px solid var(--border);
+  background:
+    radial-gradient(900px 400px at 15% -10%, rgba(74,222,128,0.13), transparent 60%),
+    radial-gradient(700px 340px at 95% 10%, rgba(96,165,250,0.08), transparent 60%),
+    var(--bg);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:56px 56px;opacity:0.10;
+  mask-image:linear-gradient(180deg,#000,transparent 78%);
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 78%);
+}
+.hero .wrap{position:relative;z-index:1}
+.badge{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--accent-dim);border:1px solid var(--accent-line);
+  color:var(--accent);font-family:var(--mono);font-size:12.5px;letter-spacing:0.08em;
+  padding:7px 15px;border-radius:999px;margin-bottom:26px;
+}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+h1.title{
+  font-size:clamp(40px,7vw,68px);line-height:1.1;font-weight:800;
+  letter-spacing:-0.02em;margin-bottom:26px;
+}
+h1.title .cursor{
+  display:inline-block;width:0.5em;height:0.86em;background:var(--accent);
+  vertical-align:-0.06em;margin-left:8px;
+  animation:blink 1.15s steps(1) infinite;box-shadow:0 0 16px var(--accent);
+}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.essence{
+  font-size:clamp(17px,2.2vw,21px);color:var(--text);max-width:800px;
+  border-left:3px solid var(--accent);padding-left:20px;margin-bottom:32px;
+}
+.essence b{color:var(--accent);font-weight:600}
+.meta{display:flex;flex-wrap:wrap;gap:10px}
+.meta span{
+  font-family:var(--mono);font-size:12.5px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--border);
+  padding:6px 13px;border-radius:8px;
+}
+
+/* ============ NAV ============ */
+nav.sticky{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,14,20,0.86);backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+nav.sticky .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:9px;padding-bottom:9px;scrollbar-width:none}
+nav.sticky .wrap::-webkit-scrollbar{display:none}
+nav a{
+  flex:0 0 auto;font-size:13px;color:var(--muted);
+  padding:7px 12px;border-radius:8px;border:1px solid transparent;
+  white-space:nowrap;transition:all .16s ease;
+}
+nav a .n{font-family:var(--mono);color:var(--border);margin-right:6px;font-size:11.5px}
+nav a:hover{color:var(--accent);background:var(--accent-dim);border-color:var(--accent-line)}
+nav a:hover .n{color:var(--accent)}
+
+/* ============ SECTION ============ */
+section{padding:82px 0 8px;position:relative}
+section+section{border-top:1px solid var(--border)}
+.sec-head{margin-bottom:38px;position:relative}
+.sec-num{
+  font-family:var(--mono);font-size:clamp(64px,11vw,104px);font-weight:800;
+  color:var(--accent);opacity:0.09;line-height:0.85;letter-spacing:-0.04em;
+  display:block;margin-bottom:-24px;user-select:none;
+}
+.sec-head h2{font-size:clamp(26px,4vw,36px);font-weight:750;letter-spacing:-0.01em}
+.sec-head .sub{
+  font-family:var(--mono);font-size:13px;color:var(--accent);
+  letter-spacing:0.12em;text-transform:uppercase;margin-top:8px;
+}
+.lead{font-size:17px;color:var(--muted);max-width:840px;margin-bottom:30px}
+.lead strong{color:var(--text);font-weight:600}
+p{margin-bottom:16px}
+p strong{color:var(--text);font-weight:600}
+.muted{color:var(--muted)}
+
+/* ============ CARD PRIMITIVES ============ */
+.grid{display:grid;gap:16px;margin-bottom:26px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px;transition:all .18s ease;
+}
+.card:hover{border-color:var(--accent-line);background:var(--surface2);transform:translateY(-2px)}
+.card h4{
+  font-size:15.5px;font-weight:650;margin-bottom:10px;
+  display:flex;align-items:center;gap:9px;
+}
+.card h4 .ico{
+  width:26px;height:26px;flex:0 0 26px;border-radius:7px;
+  background:var(--accent-dim);border:1px solid var(--accent-line);
+  display:grid;place-items:center;font-size:13px;color:var(--accent);
+  font-family:var(--mono);
+}
+.card p{font-size:14.5px;color:var(--muted);margin-bottom:0}
+.card p+p{margin-top:10px}
+.card .kicker{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.1em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:8px;display:block;
+}
+
+/* ============ LAYER DIAGRAM ============ */
+.stack{margin:8px 0 30px}
+.layer{
+  display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:center;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px 20px;margin-bottom:10px;
+  position:relative;transition:all .18s ease;
+}
+.layer:hover{border-color:var(--accent-line);background:var(--surface2)}
+.layer .tag{
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  padding:7px 10px;border-radius:8px;text-align:center;
+  border:1px solid var(--border);background:var(--bg);
+}
+.layer .body b{display:block;font-size:15px;margin-bottom:4px}
+.layer .body span{font-size:14px;color:var(--muted)}
+.layer.l1 .tag{color:var(--accent);border-color:var(--accent-line);background:var(--accent-dim)}
+.layer.l2 .tag{color:var(--info);border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.10)}
+.layer.l3 .tag{color:var(--violet);border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.10)}
+.layer.l4 .tag{color:var(--warn);border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.10)}
+.arrow-down{
+  text-align:center;color:var(--border);font-size:15px;
+  line-height:1;margin:-3px 0 7px;font-family:var(--mono);
+}
+
+/* ============ FLOW STRIP ============ */
+.flow{
+  display:flex;align-items:stretch;gap:0;flex-wrap:wrap;
+  margin-bottom:26px;
+}
+.flow .step{
+  flex:1 1 150px;background:var(--surface);border:1px solid var(--border);
+  padding:15px 16px;position:relative;
+}
+.flow .step:first-child{border-radius:12px 0 0 12px}
+.flow .step:last-child{border-radius:0 12px 12px 0}
+.flow .step+.step{border-left:none}
+.flow .step .i{
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  letter-spacing:0.1em;display:block;margin-bottom:6px;
+}
+.flow .step b{font-size:14px;display:block;margin-bottom:4px}
+.flow .step span{font-size:12.5px;color:var(--muted);line-height:1.55;display:block}
+.flow .step::after{
+  content:"›";position:absolute;right:-8px;top:50%;transform:translateY(-50%);
+  color:var(--accent);font-size:20px;z-index:2;background:var(--bg);
+  width:16px;text-align:center;line-height:1;
+}
+.flow .step:last-child::after{display:none}
+
+/* ============ CONCEPT LAYER BLOCKS ============ */
+.tier{
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;margin-bottom:16px;background:var(--surface);
+}
+.tier-head{
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
+  padding-bottom:14px;border-bottom:1px dashed var(--border);
+}
+.tier-head .lvl{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.1em;
+  padding:5px 10px;border-radius:6px;
+  background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-line);
+}
+.tier-head b{font-size:17px}
+.tier-head span{font-size:13px;color:var(--muted);margin-left:auto;font-family:var(--mono)}
+.concept{
+  display:grid;grid-template-columns:150px 1fr;gap:16px;
+  padding:13px 0;border-bottom:1px solid rgba(38,48,74,0.6);
+}
+.concept:last-child{border-bottom:none;padding-bottom:0}
+.concept .name{font-weight:650;font-size:14.5px}
+.concept .name em{
+  display:block;font-family:var(--mono);font-style:normal;
+  font-size:11.5px;color:var(--muted);margin-top:3px;
+}
+.concept .desc{font-size:14px;color:var(--muted)}
+.concept .desc .r{
+  display:block;margin-top:6px;font-size:12.5px;color:var(--accent);
+  font-family:var(--mono);opacity:0.9;
+}
+
+/* ============ DECISION CARDS ============ */
+.dec{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;transition:all .18s ease;
+}
+.dec:hover{border-color:var(--accent-line);transform:translateY(-2px)}
+.dec .sit{
+  background:var(--surface2);padding:14px 18px;
+  border-bottom:1px solid var(--border);
+  font-size:14.5px;font-weight:600;display:flex;gap:10px;align-items:flex-start;
+}
+.dec .sit .q{
+  font-family:var(--mono);color:var(--warn);flex:0 0 auto;font-size:13px;
+}
+.dec .rows{padding:16px 18px}
+.dec .row{display:grid;grid-template-columns:76px 1fr;gap:12px;padding:7px 0;align-items:start}
+.dec .row .k{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.06em;
+  color:var(--accent);padding-top:3px;
+}
+.dec .row.reason .k{color:var(--info)}
+.dec .row.out .k{color:var(--violet)}
+.dec .row .v{font-size:14px;color:var(--muted)}
+.dec .row .v b{color:var(--text);font-weight:600}
+
+/* ============ QUESTION LISTS ============ */
+.qbox{
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--surface);padding:22px;
+}
+.qbox .qh{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.qbox .qh .b{
+  font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:6px;
+  border:1px solid var(--border);color:var(--muted);
+}
+.qbox .qh b{font-size:15.5px}
+.qbox ul{list-style:none}
+.qbox li{
+  font-size:14px;color:var(--muted);padding:9px 0 9px 26px;position:relative;
+  border-bottom:1px dashed rgba(38,48,74,0.55);
+}
+.qbox li:last-child{border-bottom:none}
+.qbox li::before{
+  content:"?";position:absolute;left:0;top:9px;
+  font-family:var(--mono);color:var(--accent);opacity:0.7;font-size:13px;
+}
+.qbox li b{color:var(--text);font-weight:600}
+.qbox.lv1 .qh .b{color:var(--accent);border-color:var(--accent-line);background:var(--accent-dim)}
+.qbox.lv2 .qh .b{color:var(--info);border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.10)}
+.qbox.lv3 .qh .b{color:var(--violet);border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.10)}
+.qbox.lv4 .qh .b{color:var(--warn);border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.10)}
+
+/* ============ TWO-COL COMPARE ============ */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.col{
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--surface);padding:22px;
+}
+.col.stable{border-color:var(--accent-line)}
+.col.volatile{border-color:rgba(248,113,113,0.32)}
+.col .ch{
+  display:flex;align-items:center;gap:10px;margin-bottom:6px;
+}
+.col .ch b{font-size:16.5px}
+.col .ch .pill{
+  font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:999px;
+  letter-spacing:0.07em;
+}
+.col.stable .ch .pill{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-line)}
+.col.volatile .ch .pill{background:rgba(248,113,113,0.12);color:var(--danger);border:1px solid rgba(248,113,113,0.32)}
+.col .sh{font-size:13px;color:var(--muted);margin-bottom:16px;font-family:var(--mono)}
+.col ul{list-style:none}
+.col li{
+  font-size:14px;padding:10px 0 10px 22px;position:relative;color:var(--muted);
+  border-bottom:1px dashed rgba(38,48,74,0.55);
+}
+.col li:last-child{border-bottom:none}
+.col li b{color:var(--text);display:block;margin-bottom:2px;font-weight:600}
+.col.stable li::before{content:"▪";position:absolute;left:2px;top:10px;color:var(--accent)}
+.col.volatile li::before{content:"▫";position:absolute;left:2px;top:10px;color:var(--danger)}
+
+/* ============ RANKED CARDS ============ */
+.ranked{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.rk{
+  display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px;transition:all .18s ease;
+}
+.rk:hover{border-color:var(--accent-line);background:var(--surface2);transform:translateX(3px)}
+.rk .num{
+  font-family:var(--mono);font-size:21px;font-weight:700;color:var(--accent);
+  opacity:0.55;line-height:1.2;text-align:center;
+}
+.rk b{display:block;font-size:15px;margin-bottom:5px}
+.rk span{font-size:13.5px;color:var(--muted);line-height:1.6}
+.rk.tier-a{border-left:3px solid var(--accent)}
+.rk.tier-b{border-left:3px solid var(--info)}
+.rk.tier-c{border-left:3px solid var(--violet)}
+
+/* ============ MISCONCEPTION ============ */
+.mis{
+  border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;margin-bottom:14px;background:var(--surface);
+}
+.mis .wrong{
+  padding:15px 20px;background:rgba(248,113,113,0.07);
+  border-bottom:1px solid var(--border);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.mis .wrong .x{
+  font-family:var(--mono);color:var(--danger);flex:0 0 auto;
+  font-size:14px;font-weight:700;
+}
+.mis .wrong b{font-size:15px;color:var(--danger);font-weight:650}
+.mis .inner{padding:18px 20px}
+.mis .why{font-size:14px;color:var(--muted);margin-bottom:14px}
+.mis .why em{
+  font-style:normal;font-family:var(--mono);font-size:11px;
+  letter-spacing:0.08em;color:var(--warn);display:block;margin-bottom:5px;
+}
+.mis .right{
+  background:var(--accent-dim);border:1px solid var(--accent-line);
+  border-radius:10px;padding:14px 16px;font-size:14.5px;
+}
+.mis .right em{
+  font-style:normal;font-family:var(--mono);font-size:11px;
+  letter-spacing:0.08em;color:var(--accent);display:block;margin-bottom:5px;
+}
+.mis .right b{color:var(--accent);font-weight:650}
+
+/* ============ MERMAID ============ */
+.diagram{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:26px 20px;margin-bottom:26px;
+  overflow-x:auto;
+}
+.diagram .cap{
+  font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  letter-spacing:0.08em;text-align:center;margin-top:16px;
+}
+.mermaid{display:flex;justify-content:center;min-height:60px}
+
+/* ============ CALLOUT ============ */
+.callout{
+  border-left:3px solid var(--accent);background:var(--accent-dim);
+  border-radius:0 12px 12px 0;padding:18px 22px;margin:8px 0 26px;
+}
+.callout .t{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.1em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:8px;
+}
+.callout p{font-size:15px;margin-bottom:0;color:var(--text)}
+.callout p+p{margin-top:10px}
+.callout.info{border-left-color:var(--info);background:rgba(96,165,250,0.09)}
+.callout.info .t{color:var(--info)}
+.callout.warn{border-left-color:var(--warn);background:rgba(251,191,36,0.09)}
+.callout.warn .t{color:var(--warn)}
+
+/* ============ TERMINAL BLOCK ============ */
+.term{
+  background:#080B10;border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;margin-bottom:24px;
+}
+.term .bar{
+  background:var(--surface2);padding:9px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:7px;
+}
+.term .bar i{width:10px;height:10px;border-radius:50%;display:block}
+.term .bar i:nth-child(1){background:#FF5F57}
+.term .bar i:nth-child(2){background:#FEBC2E}
+.term .bar i:nth-child(3){background:#28C840}
+.term .bar span{
+  font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-left:8px;
+}
+.term pre{
+  padding:16px 18px;font-family:var(--mono);font-size:13px;
+  line-height:1.85;color:var(--text);overflow-x:auto;white-space:pre;
+}
+.term .p{color:var(--accent)}
+.term .c{color:var(--muted)}
+.term .o{color:var(--info)}
+
+/* ============ SUMMARY ============ */
+.summary-box{
+  border:1px solid var(--accent-line);border-radius:18px;
+  background:linear-gradient(160deg,rgba(74,222,128,0.09),var(--surface) 55%);
+  padding:38px 34px;margin-bottom:26px;
+}
+.summary-box .fill{
+  font-size:clamp(19px,3vw,26px);line-height:1.75;font-weight:600;
+}
+.summary-box .fill .not{
+  color:var(--muted);text-decoration:line-through;
+  text-decoration-color:rgba(248,113,113,0.5);text-decoration-thickness:2px;
+}
+.summary-box .fill .is{
+  color:var(--accent);border-bottom:2px solid var(--accent-line);
+}
+.summary-box .tail{
+  font-size:15.5px;color:var(--muted);margin-top:24px;
+  padding-top:22px;border-top:1px dashed var(--border);
+}
+.summary-box .tail b{color:var(--text)}
+
+/* ============ FOOTER ============ */
+footer{
+  border-top:1px solid var(--border);margin-top:70px;
+  padding:38px 0 56px;
+}
+footer .wrap{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:16px;flex-wrap:wrap;
+}
+footer .s{font-family:var(--mono);font-size:13px;color:var(--muted)}
+footer .s b{color:var(--accent);font-weight:600}
+footer .d{font-family:var(--mono);font-size:12px;color:var(--border)}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:860px){
+  .g2,.g3,.g4,.compare,.ranked{grid-template-columns:1fr}
+  .layer{grid-template-columns:1fr;gap:10px}
+  .layer .tag{text-align:left;display:inline-block}
+  .concept{grid-template-columns:1fr;gap:6px}
+  .flow .step{flex:1 1 100%;border-radius:12px !important;border-left:1px solid var(--border) !important;margin-bottom:8px}
+  .flow .step::after{display:none}
+  .hero{padding:64px 0 52px}
+  section{padding:60px 0 8px}
+  .summary-box{padding:26px 22px}
+}
+@media (max-width:560px){
+  body{font-size:15px}
+  .wrap{padding:0 18px}
+  .dec .row{grid-template-columns:1fr;gap:3px}
+}
+
+/* 系统设置「减少动态效果」时停掉循环动画、入场过渡直接到位（WCAG 2.2.2；2026-10-24 W7） */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="badge"><span class="dot"></span>AI 时代学习地图 · 01</div>
+    <h1 class="title">命令行工具基础<span class="cursor"></span></h1>
+    <div class="essence">
+      CLI 的本质不是“一堆要背的命令”，而是<b>用纯文本与计算机对话的通用协议</b>——一切皆文本，于是一切可组合、可记录、可重放、可验证。这也正是它成为 <b>AI agent 双手</b>的根本原因：纯文本是 LLM 的母语。
+    </div>
+    <div class="meta">
+      <span>MENTAL MODEL / WORLD MODEL</span>
+      <span>2026-07</span>
+      <span>面向 AI 委派者，不面向手动操作者</span>
+      <span>Why &gt; How</span>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== NAV ==================== -->
+<nav class="sticky">
+  <div class="wrap">
+    <a href="#s1"><span class="n">01</span>本质</a>
+    <a href="#s2"><span class="n">02</span>世界模型</a>
+    <a href="#s3"><span class="n">03</span>概念地图</a>
+    <a href="#s4"><span class="n">04</span>决策地图</a>
+    <a href="#s5"><span class="n">05</span>搜索空间</a>
+    <a href="#s6"><span class="n">06</span>生态系统</a>
+    <a href="#s7"><span class="n">07</span>可迁移原则</a>
+    <a href="#s8"><span class="n">08</span>最小心智模型</a>
+    <a href="#s9"><span class="n">09</span>常见误区</a>
+    <a href="#s10"><span class="n">10</span>总结</a>
+  </div>
+</nav>
+
+<!-- ==================== 01 本质 ==================== -->
+<section id="s1">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>本质</h2>
+      <div class="sub">Essence · 它到底是什么</div>
+    </div>
+
+    <p class="lead">
+      如果只能记住一句话：<strong>CLI 是一份关于“如何用文本表达意图、并让机器精确执行”的通用协议。</strong>
+      终端窗口、黑底白字、那些奇怪的缩写命令——全都是这份协议的<em>表象</em>，不是它的本体。理解本体，你才知道什么时候该想到它；只记表象，你只会背命令。
+    </p>
+
+    <div class="grid g2">
+      <div class="card">
+        <span class="kicker">它解决的根本问题</span>
+        <h4><span class="ico">⊙</span>意图的精确表达</h4>
+        <p>
+          自然语言天然模糊：“把那些旧文件整理一下”——哪些算旧？整理成什么样？图形界面用“你点哪儿我就动哪儿”回避了模糊，但代价是<strong>意图消失了</strong>——点击不留下任何可复述的痕迹。CLI 逼你把意图<strong>写成一句话</strong>:
+          范围、条件、动作、目标，全部显式。写下来的那一刻，意图就变成了可以被检查、被复用、被交给别人(或 AI)执行的东西。
+        </p>
+      </div>
+      <div class="card">
+        <span class="kicker">它带来的新能力</span>
+        <h4><span class="ico">∞</span>组合爆炸</h4>
+        <p>
+          GUI 的功能是<strong>封闭集合</strong>：软件作者想到什么，菜单里就有什么；没想到的，你永远做不了。
+          CLI 是<strong>开放集合</strong>：每个小工具只做一件事，但可以任意串联。
+          20 个工具两两组合就是 400 种能力，三三组合是 8000 种——而这些组合都不需要任何人预先设计。你今天遇到的怪需求，大概率能由昨天就存在的几个工具拼出来。
+        </p>
+      </div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <h4><span class="ico">◱</span>可复制性</h4>
+        <p>一条命令可以被复制、粘贴、邮件转发、存进文档、贴进对话框。一串鼠标点击不能。这个差别看似琐碎，实际决定了知识能否在人与人、人与 AI 之间传递。</p>
+      </div>
+      <div class="card">
+        <h4><span class="ico">↺</span>可重放性</h4>
+        <p>你昨天做过的事，今天原样再做一遍——CLI 里这是 0 成本(向上箭头 / 存成脚本);
+        GUI 里这是全额成本(把整套点击重做一遍，还可能点错)。</p>
+      </div>
+      <div class="card">
+        <h4><span class="ico">◈</span>可观测性</h4>
+        <p>命令有输出、有错误信息、有退出码。每一步都留下文本痕迹。这意味着<strong>可以事后审计，也可以让程序自动判断成败</strong>——GUI 的“操作成功”弹窗程序读不懂。</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:19px;font-weight:650;margin:34px 0 16px">没有 CLI 的世界是什么样</h3>
+    <div class="grid g2">
+      <div class="card">
+        <h4><span class="ico">✋</span>手动的天花板</h4>
+        <p>
+          纯 GUI 世界里，你的产能上限 = 你的手速 × 你的清醒时长。要处理 3 个文件，点几下；要处理 3000 个文件，这件事直接从“麻烦”变成“不可能”。
+          <strong>量变卡死了质变</strong>：很多本可以做的事，只因为“点不过来”就永远没做。
+        </p>
+        <p>
+          更隐蔽的损失是：因为“太麻烦”，你根本不会去想那些需要重复 1000 次才有价值的事。能力边界悄悄塑造了你的想象力边界。
+        </p>
+      </div>
+      <div class="card">
+        <h4><span class="ico">◌</span>知识无法沉淀</h4>
+        <p>
+          GUI 操作的知识只能以“教程截图”形式存在，而截图会随版本更新失效，且无法被机器执行。你花两小时摸索出的操作路径，明天换台电脑要重来，换个人要重讲一遍。<strong>经验没有载体，就永远是个人的、易失的。</strong>
+        </p>
+        <p>
+          CLI 里，同样的经验就是一行命令或一个脚本文件——它<em>本身就是文档，同时又是可执行的</em>。
+        </p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="t">AI 时代的重估</div>
+      <p>
+        过去二十年，“命令行 vs 图形界面”被当作一场品味之争，GUI 在大众市场里赢麻了。但 2023 年之后棋盘被掀翻了：<strong>LLM 不会点鼠标，它只会读写文本。</strong>
+      </p>
+      <p>
+        于是那些让 CLI 一直不受大众欢迎的特性——纯文本、无视觉、必须精确、输出全是字——恰好一一对应成了 AI agent 的理想接口：<strong>可生成、可解析、可验证、可回放</strong>。
+        Claude Code、Codex 这类工具的存在前提，就是操作系统上早已铺好一层完备的文本控制面。你今天学 CLI，不是为了自己敲得快，而是为了<strong>看懂 AI 在你机器上做什么、并有能力验收</strong>。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 02 世界模型 ==================== -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>世界模型</h2>
+      <div class="sub">World Model · 这个世界里有什么、谁在动、怎么变</div>
+    </div>
+
+    <p class="lead">
+      要真正“想到”该用 CLI，你需要一张关于计算机内部的地图：<strong>有哪些东西(Objects)、谁在操作它们(Actors)、什么会变(State)、事情按什么顺序发生(Workflow)、这些东西住在哪一层(Systems)</strong>。这张地图比任何命令表都值钱。
+    </p>
+
+    <div class="grid g2">
+      <div class="card">
+        <span class="kicker">Objects · 世界里的名词</span>
+        <h4><span class="ico">▣</span>四类基本对象</h4>
+        <p>
+          <strong>文件</strong>——一串字节 + 一个名字 + 一组权限。Unix 世界里，磁盘上的文档是文件，硬盘设备是文件，网络连接是文件，甚至“黑洞”(丢弃一切写入)也是文件。“一切皆文件”不是修辞，是设计决定：<em>只要长得像文件，就能用同一套工具操作</em>。
+        </p>
+        <p>
+          <strong>进程</strong>——正在运行的程序实例。有编号(PID)、有父子关系、有自己的内存和打开的文件。
+          <strong>流</strong>——进程与外界之间的字节通道，不关心内容是什么。
+          <strong>环境变量</strong>——挂在进程身上的一组“键=值”标签，会被子进程继承，是最轻量的配置传递方式。
+        </p>
+      </div>
+      <div class="card">
+        <span class="kicker">Actors · 谁在动</span>
+        <h4><span class="ico">◉</span>四类行动者</h4>
+        <p>
+          <strong>你(人)</strong>——发出意图，越来越少亲手敲。<br>
+          <strong>Shell</strong>——把你的一行字翻译成“启动哪个程序、带什么参数、流怎么接”。它是解释器，不是操作者。<br>
+          <strong>内核</strong>——真正干活的那个：分配内存、读写磁盘、调度 CPU、管权限。程序想碰硬件，必须请它代劳。<br>
+          <strong>AI agent</strong>——2023 年后新增的一类行动者。它站在“你”的位置发出命令，但速度快几百倍、不会累、也不会脸红着承认自己删错了东西。这正是<em>可观测、可验证</em>变得比过去重要得多的原因。
+        </p>
+      </div>
+    </div>
+
+    <h3 style="font-size:19px;font-weight:650;margin:34px 0 16px">Systems · 三层结构(最容易搞混的地方)</h3>
+    <div class="stack">
+      <div class="layer l1">
+        <div class="tag">终端模拟器</div>
+        <div class="body">
+          <b>Terminal Emulator —你看到的那个窗口</b>
+          <span>Ghostty / iTerm2 / Terminal.app / VS Code 内置终端。它只负责三件事：显示字符、接收键盘、管理标签页与配色。它<strong>完全不理解任何命令</strong>，只是一块会转发按键的玻璃。换终端软件不会改变任何命令的行为。</span>
+        </div>
+      </div>
+      <div class="arrow-down">↓ 键盘输入 / 字符输出</div>
+      <div class="layer l2">
+        <div class="tag">Shell</div>
+        <div class="body">
+          <b>Shell —解释你意图的那个程序</b>
+          <span>zsh / bash / fish。它读你输入的那行字，做三件事：<strong>展开</strong>(通配符、变量、引号)、
+          <strong>拆解</strong>(哪个是命令、哪些是参数、管道怎么连)、<strong>调度</strong>(叫内核启动进程)。你的配置文件、别名、PATH、提示符——全属于这一层。换 shell 会改变语法，但不改变被调用的程序本身。</span>
+        </div>
+      </div>
+      <div class="arrow-down">↓ 系统调用(fork / exec / pipe / open)</div>
+      <div class="layer l3">
+        <div class="tag">内核</div>
+        <div class="body">
+          <b>Kernel —真正掌握资源的那个</b>
+          <span>创建进程、分配内存、管理文件描述符、执行权限检查、调度 CPU。
+          <strong>所有“真实发生的事”都发生在这一层</strong>。权限被拒(Permission denied)、文件不存在(No such file)、进程被杀——这些都是内核在说话，不是 shell 的意见。</span>
+        </div>
+      </div>
+      <div class="arrow-down">↓ 读写 / 调度</div>
+      <div class="layer l4">
+        <div class="tag">资源</div>
+        <div class="body">
+          <b>文件系统 · 进程表 · 网络 · 设备</b>
+          <span>状态最终沉淀的地方。命令跑完之后<em>世界上真正改变了什么</em>，只看这一层。终端里的输出只是过程的回声，不是结果本身——<strong>验收要看这里，不要看屏幕滚过什么</strong>。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="t">为什么这三层必须分清</div>
+      <p>
+        它决定你出问题时往哪儿找：<strong>颜色不对、字体乱码、复制粘贴怪 → 终端层</strong>;
+        <strong>命令找不到、通配符没展开、引号出问题、变量是空的 → shell 层</strong>;
+        <strong>权限拒绝、文件不存在、进程被杀、磁盘满 → 内核层</strong>。分不清三层的人，会在改字体的时候去研究 bash 语法，在权限出错的时候去换终端软件。
+      </p>
+    </div>
+
+    <h3 style="font-size:19px;font-weight:650;margin:34px 0 16px">Workflow · 一条命令的一生</h3>
+    <div class="flow">
+      <div class="step">
+        <span class="i">01 READ</span>
+        <b>读入一行</b>
+        <span>Shell 拿到你(或 AI)输入的整行文本。此刻它还只是一串字符。</span>
+      </div>
+      <div class="step">
+        <span class="i">02 EXPAND</span>
+        <b>展开与拆解</b>
+        <span>通配符变成实际文件名、变量替换成值、引号规则生效、管道与重定向被识别。<strong>这一步全在 shell 内部完成</strong>。</span>
+      </div>
+      <div class="step">
+        <span class="i">03 FORK/EXEC</span>
+        <b>创建进程</b>
+        <span>Shell 请内核复制出一个新进程，再把目标程序装进去。参数、环境变量、工作目录一并交接。</span>
+      </div>
+      <div class="step">
+        <span class="i">04 STREAM</span>
+        <b>流动起来</b>
+        <span>程序从 stdin 读、往 stdout 写正常结果、往 stderr 写错误。管道就是把上一个的 stdout 接到下一个的 stdin。</span>
+      </div>
+      <div class="step">
+        <span class="i">05 EXIT</span>
+        <b>退出并报数</b>
+        <span>进程结束，留下一个退出码：<code>0</code> 代表成功，非零代表失败。这是机器判断成败的<strong>唯一权威信号</strong>。</span>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <span class="kicker">State · 什么在变</span>
+        <h4><span class="ico">⧗</span>四种状态，两种寿命</h4>
+        <p>
+          <strong>会话内状态(命令结束就没了或只影响当前窗口)</strong>：当前工作目录、环境变量、
+          shell 变量、上一条命令的退出码。这解释了一个高频困惑——
+          <em>为什么在脚本里 cd 了，脚本跑完你还在原地？</em> 因为脚本跑在子进程里，子进程的状态死了不回传给父进程。
+        </p>
+        <p>
+          <strong>持久状态(真正改变了世界)</strong>：文件系统的内容、正在运行的进程、安装的软件、网络上发出去的请求。<strong>只有这一类才是“结果”</strong>。验收 AI 的工作，永远是去看这一类，而不是相信它说“我改好了”。
+        </p>
+      </div>
+      <div class="card">
+        <span class="kicker">Value · 它创造什么价值</span>
+        <h4><span class="ico">△</span>把一次性劳动变成资产</h4>
+        <p>
+          手动做一件事，价值随时间归零。写成一条可复现的命令，它就成了<strong>资产</strong>:
+          可以被存档、被改良、被组合进更大的流程、被交给定时器每天自动跑、被交给 AI 当作工具调用。
+        </p>
+        <p>
+          对一人公司尤其关键：你无法雇十个人，但你可以让一台机器把你写下的意图重复十万次。
+          <strong>CLI 是“个人产能杠杆”最短的那根杠杆。</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 03 概念地图 ==================== -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>概念地图</h2>
+      <div class="sub">Concept Map · 三层概念与它们的关系</div>
+    </div>
+
+    <p class="lead">
+      概念不是平铺的词汇表，而是有<strong>依赖层级</strong>的：底层概念解释中层为什么这样设计，中层概念解释生态层为什么能成立。跳过底层直接学中层，就是背语法；理解了底层，中层几乎不用记。
+    </p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart TD
+    A["进程 Process"] --> B["文件描述符 0 1 2"]
+    B --> C["stdin 标准输入"]
+    B --> D["stdout 标准输出"]
+    B --> E["stderr 标准错误"]
+    A --> F["退出码 Exit Code"]
+    D --> G["管道 Pipe"]
+    C --> G
+    D --> H["重定向 Redirect"]
+    E --> H
+    H --> I["文件系统"]
+    G --> J["组合能力 Composability"]
+    F --> K["条件执行与错误处理"]
+    L["Shell"] --> A
+    L --> M["通配符展开"]
+    L --> N["变量与环境"]
+    N --> O["PATH 查找程序"]
+    O --> A
+    M --> A
+    J --> P["脚本 Script"]
+    K --> P
+    P --> Q["自动化与定时任务"]
+    P --> R["AI Agent 工具调用"]
+    I --> S["版本控制 git"]
+    A --> T["远程执行 ssh"]
+      </pre>
+      <div class="cap">图 1 · 从底层机制到生态能力的依赖链条</div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-head">
+        <span class="lvl">LAYER 1</span>
+        <b>底层机制</b>
+        <span>操作系统给的原语，几乎永不改变</span>
+      </div>
+      <div class="concept">
+        <div class="name">进程<em>Process</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：一个正在运行的程序实例，有独立内存、独立环境、独立的打开文件表。
+          <strong>Action</strong>：被创建(fork)、被替换成目标程序(exec)、被等待、被终止。
+          <strong>Purpose</strong>：隔离——一个程序崩溃不拖垮别人。
+          <span class="r">Relationship → 进程是一切的容器；流挂在它身上，退出码是它的遗言</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">流与文件描述符<em>Stream / FD</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：每个进程默认拿到三个编号通道——0 是输入，1 是正常输出，2 是错误输出。
+          <strong>Purpose</strong>：让程序不必知道对面是键盘、文件、网络还是另一个程序。
+          <strong>关键洞察</strong>：正常输出和错误输出<em>分开两条通道</em>，所以你可以只把结果存进文件、让错误照常显示在屏幕上——这是管道能安全串联的前提。
+          <span class="r">Relationship → 管道和重定向都只是“重新接线”，没有第三种魔法</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">退出码<em>Exit Code</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：进程结束时返回的一个 0-255 的整数。<code>0</code> = 成功，非零 = 某种失败。
+          <strong>Purpose</strong>：给机器一个<em>不依赖读懂文字</em>的成败判据。
+          <strong>为什么它极其重要</strong>：自动化流程、CI 门禁、AI 验收循环，全部建立在这个数字上。屏幕上打印“Done!”但退出码非零 = 失败；什么都没打印但退出码为 0 = 成功。
+          <span class="r">Relationship → 是条件执行、脚本错误处理、循环退出条件的唯一硬判据</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">文件与权限<em>File / Permission</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：字节序列 + 元数据(所有者、读写执行权限、时间戳)。
+          <strong>Purpose</strong>：用同一种抽象覆盖磁盘、设备、管道、网络。
+          <strong>Action</strong>：打开、读、写、关闭——四个动作管住整个世界。
+          <span class="r">Relationship → “一切皆文件”是组合性的地基：工具只需会处理文件，就能处理一切</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-head">
+        <span class="lvl">LAYER 2</span>
+        <b>Shell 层</b>
+        <span>人机接口的规则，语法细节会随 shell 变化</span>
+      </div>
+      <div class="concept">
+        <div class="name">Shell 本身<em>zsh / bash</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：一个专门用来“读一行文本 → 启动程序”的程序。它自己也是普通程序，可以换。
+          <strong>Purpose</strong>：在“人的意图”和“系统调用”之间做翻译。
+          <strong>常见误解</strong>：以为 shell 在执行命令——不，它只负责<em>安排</em>，真正干活的是被它启动的那些程序。
+          <span class="r">Relationship → 上接终端，下接内核；是唯一会做“展开”的一层</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">管道<em>Pipe</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：把 A 的 stdout 直接接到 B 的 stdin 的一条内存通道。
+          <strong>Purpose</strong>：让“小工具组合”成为可能，而无需任何工具知道彼此的存在。
+          <strong>深层含义</strong>：管道两端<em>同时运行</em>，不是先跑完 A 再跑 B——所以处理海量数据时内存不会爆。
+          <span class="r">Relationship → 这是 Unix 哲学最核心的物理实现，组合性的来源</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">重定向<em>Redirect</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：把某条流的另一端换成文件(而不是另一个程序)。
+          <strong>Purpose</strong>：留档、分流、静音。
+          <strong>实践价值</strong>：让长任务的输出落盘可审计，让错误信息单独收集——这是<em>让 AI 跑批量任务时你还能事后追责</em>的关键。
+          <span class="r">Relationship → 和管道同源，都是“改接线”，区别只在另一端是文件还是进程</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">环境变量与 PATH<em>Environment</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：一组随进程继承的键值对。<code>PATH</code> 是其中最重要的一个：它是一串目录，
+          shell 按顺序在里面找你输入的命令名。
+          <strong>Purpose</strong>：不改代码就能改行为(配置外置)；不写全路径就能调用程序。
+          <strong>高频故障源</strong>:“命令找不到”九成是 PATH 问题，不是软件没装。
+          <span class="r">Relationship → 决定了同名命令谁生效；也是密钥、代理、语言设置的传递通道</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">通配符与引号<em>Glob / Quoting</em></div>
+        <div class="desc">
+          <strong>Entity</strong>:<code>*</code> <code>?</code> 这类模式，以及单双引号的转义规则。
+          <strong>关键事实</strong>：通配符<strong>由 shell 展开，程序根本看不见星号</strong>——它收到的是已经变成一长串真实文件名的参数。
+          <strong>Purpose</strong>：批量选择；引号则用来<em>关闭</em>展开，保护含空格或特殊字符的内容。
+          <span class="r">Relationship → 是“命令在这个目录能跑、换个目录就炸”这类怪事的根因</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">工作目录<em>CWD</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：每个进程都有一个“我现在站在哪里”的位置。相对路径全部相对于它解析。
+          <strong>Purpose</strong>：让命令简短。
+          <strong>陷阱</strong>：它是<em>进程级</em>状态，不是全局的。所以脚本里 <code>cd</code> 不影响调用者；后台任务、定时任务的起始目录常常不是你以为的那个。
+          <span class="r">Relationship → 与相对路径、脚本可移植性、定时任务失败强相关</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-head">
+        <span class="lvl">LAYER 3</span>
+        <b>生态层</b>
+        <span>建立在前两层之上的工具与实践</span>
+      </div>
+      <div class="concept">
+        <div class="name">脚本<em>Script</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：把多条命令写进一个文件，加上判断和循环。
+          <strong>Purpose</strong>：把“一次性的正确操作”固化成“可重复的资产”。
+          <strong>心智要点</strong>：脚本不是“高级编程”，它就是<em>你昨天手敲的那几行，存起来</em>。门槛低到几乎不存在，价值却是指数级的。
+          <span class="r">Relationship → 是自动化、定时任务、CI、AI 工具调用的共同基座</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">包管理器<em>Package Manager</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：管理“装什么、装哪个版本、依赖谁”的工具(Homebrew / npm / pip 等)。
+          <strong>Purpose</strong>：把“安装软件”从一次手工探险变成一条可复现的声明。
+          <strong>心智要点</strong>：装软件的动作本身也应该是<em>可记录、可重放</em>的——否则换台电脑你就得重新探险一遍。
+          <span class="r">Relationship → 是环境可复现性的入口；版本冲突是最常见的“昨天还好好的”根因</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">远程执行<em>SSH</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：在另一台机器上执行命令的加密通道。
+          <strong>关键洞察</strong>：因为接口是纯文本，所以<strong>本地和远程的操作方式完全一样</strong>。
+          GUI 时代“远程控制”需要传输整个屏幕画面；CLI 时代只需要传输几百字节的文字。
+          <span class="r">Relationship → 让“一台机器”扩展成“一群机器”，且心智模型完全不变</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">定时与守护<em>cron / launchd</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：让命令在你不在场时按时执行的系统机制。
+          <strong>Purpose</strong>：把“我记得每天要做 X”从记忆负担变成基础设施。
+          <strong>经典陷阱</strong>：定时任务的环境变量和工作目录<em>与你交互式终端完全不同</em>,
+          “手动跑得好好的、定时就失败”几乎总是这个原因。
+          <span class="r">Relationship → 依赖脚本的幂等性；强依赖环境显式化</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">现代 CLI 工具<em>Modern Tooling</em></div>
+        <div class="desc">
+          <strong>Entity</strong>：近十年重写的一批工具，更快、默认彩色、支持结构化输出(如 JSON)。
+          <strong>心智要点</strong>：重点不是“新工具更酷”，而是<strong>结构化输出让机器解析更可靠</strong>——让 AI 处理命令结果时不必去猜空格对齐的列。
+          <span class="r">Relationship → 纯文本协议的现代化演进，方向就是“更适合被程序消费”</span>
+        </div>
+      </div>
+      <div class="concept">
+        <div class="name">AI Agent 工具层<em>Agent Tooling</em></div>
+        <div class="desc">
+          <strong>Entity</strong>:Claude Code 这类工具把“执行命令 + 读取输出 + 判断退出码”包装成 LLM 可调用的能力。
+          <strong>Purpose</strong>：让自然语言意图落到可执行、可验证的操作上。
+          <strong>为什么它落在 CLI 而不是 GUI</strong>：因为 CLI 天生满足 agent 循环的三个必要条件——
+          <em>可生成(文本)、可执行(确定)、可验证(退出码 + 输出)</em>。
+          <span class="r">Relationship → 生态链的最新一环，也是本页存在的理由</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 04 决策地图 ==================== -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>决策地图</h2>
+      <div class="sub">Decision Map · 什么时候该想到它</div>
+    </div>
+
+    <p class="lead">
+      心智模型的价值，最终体现在<strong>触发时机</strong>上：遇到什么情形，脑子里该“叮”一下。下面 8 个场景不是教程，是<em>识别信号</em>——认出信号，剩下的具体命令交给 AI 就行。
+    </p>
+
+    <div class="grid g2">
+      <div class="dec">
+        <div class="sit"><span class="q">▸</span>这件事我这个月已经做过第三次了</div>
+        <div class="rows">
+          <div class="row"><span class="k">DECISION</span><span class="v">停手，先把它<b>写成一条命令或一个脚本</b>，再执行。</span></div>
+          <div class="row reason"><span class="k">REASON</span><span class="v">第三次是分水岭：它说明这件事不是偶发，而是模式。手动的成本是线性累加的，固化的成本只付一次。</span></div>
+          <div class="row out"><span class="k">OUTCOME</span><span class="v">下次耗时从“十分钟 + 出错风险”降到“一行命令 + 零风险”，而且可以交给别人或 AI。</span></div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <div class="sit"><span class="q">▸</span>要处理的对象超过 20 个</div>
+        <div class="rows">
+          <div class="row"><span class="k">DECISION</span><span class="v">不要点鼠标。<b>描述“哪些”和“做什么”，让机器去遍历</b>。</span></div>
+          <div class="row reason"><span class="k">REASON</span><span class="v">人对重复操作的出错率随次数上升；机器是恒定的。而且“20 个”和“20000 个”对命令来说成本几乎一样。</span></div>
+          <div class="row out"><span class="k">OUTCOME</span><span class="v">规模不再是障碍。你会开始考虑那些“以前想都不敢想因为太麻烦”的事。</span></div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <div class="sit"><span class="q">▸</span>我要让 AI 替我干活</div>
+        <div class="rows">
+          <div class="row"><span class="k">DECISION</span><span class="v">优先给它<b>CLI 环境</b>，而不是让它写一段“你自己去点”的说明。</span></div>
+          <div class="row reason"><span class="k">REASON</span><span class="v">CLI 的每一步都产生可读输出和退出码，AI 能自己判断成败并纠错；GUI 操作它既做不了，也无法验证。</span></div>
+          <div class="row out"><span class="k">OUTCOME</span><span class="v">从“AI 给建议、你执行”升级为“AI 执行、你验收”——这是产能差别最大的一次跃迁。</span></div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <div class="sit"><span class="q">▸</span>这个功能只有图形界面才有</div>
+        <div class="rows">
+          <div class="row"><span class="k">DECISION</span><span class="v">先假设<b>存在 CLI 等价物</b>并去找：官方 CLI、API、配置文件、底层数据库。</span></div>
+          <div class="row reason"><span class="k">REASON</span><span class="v">绝大多数 GUI 只是某套底层能力的外壳。找到那层能力，你就获得了自动化的可能；找不到，再回头点鼠标也不迟。</span></div>
+          <div class="row out"><span class="k">OUTCOME</span><span class="v">找到了 = 解锁自动化；没找到 = 你至少确认了边界，不再无谓纠结。</span></div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <div class="sit"><span class="q">▸</span>AI 给了我一条看不懂的命令</div>
+        <div class="rows">
+          <div class="row"><span class="k">DECISION</span><span class="v">执行前先问三件事：<b>它碰哪些文件？可逆吗？有没有 dry-run(先看不改)?</b></span></div>
+          <div class="row reason"><span class="k">REASON</span><span class="v">CLI 的危险不在于“黑屏”，而在于它<em>不问第二遍</em>。删除没有回收站，覆盖没有撤销。风险全部集中在“不可逆”这一个维度上。</span></div>
+          <div class="row out"><span class="k">OUTCOME</span><span class="v">养成“先看后改”的默认动作。你不需要会写命令，只需要会问这三个问题。</span></div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <div class="sit"><span class="q">▸</span>“手动跑没问题，自动跑就失败”</div>
+        <div class="rows">
+          <div class="row"><span class="k">DECISION</span><span class="v">先怀疑<b>环境差异</b>:PATH、工作目录、环境变量、权限身份——而不是怀疑逻辑写错了。</span></div>
+          <div class="row reason"><span class="k">REASON</span><span class="v">交互式终端会加载你的配置文件，定时任务和后台进程不会。同一条命令在两个世界里看到的“环境”根本不同。</span></div>
+          <div class="row out"><span class="k">OUTCOME</span><span class="v">十分钟定位，而不是两小时乱改。这类问题的诊断路径是高度固定的。</span></div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <div class="sit"><span class="q">▸</span>我需要向别人(或未来的自己)说明怎么做</div>
+        <div class="rows">
+          <div class="row"><span class="k">DECISION</span><span class="v">给<b>命令</b>，不要给截图教程。</span></div>
+          <div class="row reason"><span class="k">REASON</span><span class="v">命令同时是文档和可执行物，不会因界面改版失效，且可以被 AI 直接理解与改写。截图三个月就过期。</span></div>
+          <div class="row out"><span class="k">OUTCOME</span><span class="v">知识第一次真正具备了复利属性——写一次，长期有效，还能被机器复用。</span></div>
+        </div>
+      </div>
+
+      <div class="dec">
+        <div class="sit"><span class="q">▸</span>任务跑了很久，我不确定它到底做成了没有</div>
+        <div class="rows">
+          <div class="row"><span class="k">DECISION</span><span class="v">不看屏幕上滚过什么，去<b>检查退出码 + 直接看结果状态</b>(文件真的存在吗？内容真的对吗？)</span></div>
+          <div class="row reason"><span class="k">REASON</span><span class="v">输出是过程的回声，状态才是结果。程序打印“Success”不代表它真的成功了，这一点在 AI 代跑时尤其致命。</span></div>
+          <div class="row out"><span class="k">OUTCOME</span><span class="v">形成“证据优先于声明”的验收习惯，这是委派 AI 的人最需要的一条纪律。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="t">反向信号：什么时候不该用 CLI</div>
+      <p>
+        <strong>需要视觉判断的事</strong>(挑图、调色、看排版好不好看)、
+        <strong>真正只做一次且探索性强的事</strong>(第一次摸索某个陌生软件)、
+        <strong>本质是沟通的事</strong>(和人商量方案)。把一切都命令行化是另一种教条。判据很简单：<em>这件事会重复吗？需要被验证吗？需要交给机器吗？</em>
+        三个都是“否”，鼠标挺好。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 05 搜索空间扩展 ==================== -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>搜索空间扩展</h2>
+      <div class="sub">Search Space Expansion · 你还不知道自己该问什么</div>
+    </div>
+
+    <p class="lead">
+      学习的真正瓶颈不是“找不到答案”，而是<strong>想不到该问什么问题</strong>。有了 AI，答案几乎零成本；<em>问题的质量</em>成了唯一稀缺的东西。下面四层问题，按“你现在能不能想到”排序——越往后，越决定你的上限。
+    </p>
+
+    <div class="grid g2">
+      <div class="qbox lv1">
+        <div class="qh"><span class="b">LEVEL 1</span><b>初学者想不到要问的</b></div>
+        <ul>
+          <li>命令跑完之后，<b>机器怎么知道它成功了</b>?(退出码存在的意义)</li>
+          <li>为什么<b>任意两个程序都能用管道连起来</b>？它们又不认识彼此。</li>
+          <li>终端、shell、命令行——这三个词<b>指的是同一个东西吗</b>?</li>
+          <li>我输入 <code>*</code>，到底是<b>谁</b>把它变成了一串文件名——是程序还是 shell?</li>
+          <li>为什么脚本里 <code>cd</code> 到别处，脚本结束后我还在原地？</li>
+          <li>“命令找不到”到底是<b>软件没装</b>，还是<b>系统不知道去哪找</b>？这两者的排查方式完全不同。</li>
+          <li>正常输出和错误输出为什么要<b>分成两条通道</b>？混在一起会怎样？</li>
+          <li>同样一条命令，为什么在我电脑上能跑、在服务器上不能？</li>
+        </ul>
+      </div>
+
+      <div class="qbox lv2">
+        <div class="qh"><span class="b">LEVEL 2</span><b>行家真正关心的</b></div>
+        <ul>
+          <li><b>幂等性</b>：这条命令跑两遍，结果和跑一遍一样吗？(不一样的话，自动重试就是灾难)</li>
+          <li><b>TTY 检测</b>：程序知道自己是“对着人”还是“对着管道”，因而会改变输出格式——这就是为什么手动看着正常、被脚本捕获后格式全变了。</li>
+          <li><b>错误处理边界</b>：管道里中间某一环失败了，整条管道的退出码是什么？默认行为往往不是你以为的那个。</li>
+          <li><b>结构化输出</b>：什么时候该要 JSON 而不是给人看的表格？(答案：只要下游是程序或 AI)</li>
+          <li><b>可组合性设计</b>：我写的这个脚本，能被别人当成管道中的一环用吗？还是它只能自己单干？</li>
+          <li><b>状态泄漏</b>：这条命令有没有依赖某些“恰好当前环境里有”的东西？换个环境还成立吗？</li>
+          <li><b>并发安全</b>：两个进程同时写同一个文件会怎样？自动化跑起来后这不是理论问题。</li>
+          <li><b>可中断与可恢复</b>：跑到一半被打断，重跑时能不能跳过已完成的部分？</li>
+        </ul>
+      </div>
+
+      <div class="qbox lv3">
+        <div class="qh"><span class="b">LEVEL 3</span><b>下一步值得探索的</b></div>
+        <ul>
+          <li>如何把一个常用流程<b>沉淀成 AI 可调用的工具</b>，而不是每次重新描述一遍？</li>
+          <li>如何给 AI 设计<b>可验证的任务边界</b>——让它自己知道做完没做完，而不是问你？</li>
+          <li>如何用<b>版本控制</b>把“环境本身”也管起来，让新机器几条命令就还原全套配置？</li>
+          <li>如何设计<b>安全护栏</b>：哪些操作允许 AI 自动执行，哪些必须人工确认？边界怎么用机器表达？</li>
+          <li>日志与可观测性：长期跑的自动化，<b>出问题时你有没有足够的痕迹</b>去还原现场？</li>
+          <li>从“一台机器”到“多台机器”，心智模型需要增加什么？(答案比想象中少)</li>
+          <li>什么样的任务应该<b>写成脚本</b>，什么样的应该<b>每次让 AI 现场生成</b>？这个分界线在哪？</li>
+        </ul>
+      </div>
+
+      <div class="qbox lv4">
+        <div class="qh"><span class="b">LEVEL 4</span><b>决定领域上限的</b></div>
+        <ul>
+          <li>当执行成本趋近于零，<b>瓶颈转移到哪里</b>?(意图表达的精确度、以及验收的能力)</li>
+          <li>如果 AI 能写任何命令，人还需要懂什么？<b>——懂“什么值得做”和“怎么确认做对了”</b>。</li>
+          <li>纯文本接口会被什么取代？还是说，<b>它恰恰因为最简单所以最持久</b>?</li>
+          <li>当自动化规模上去之后，<b>信任从哪里来</b>？可复现性、可审计性、可回滚性，哪个最关键？</li>
+          <li>个人的产能上限，最终是被<b>技术</b>限制，还是被<b>你能清晰表达的意图数量</b>限制？</li>
+          <li>把工作交给机器之后，<b>理解债</b>(comprehension debt)如何偿还——你还看得懂自己的系统吗？</li>
+          <li>一个非科班的人，在这个领域的天花板到底由什么决定？<b>是记忆量，还是模型的准确度？</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="t">怎么用这四层</div>
+      <p>
+        Level 1 的问题，直接扔给 AI 要答案，一小时能全部搞懂——它们只是<em>没人告诉过你</em>而已。
+        Level 2 的问题，值得在真实任务里踩一次坑再回来看。
+        Level 3 是你未来三个月的路线图。
+        Level 4 不是用来回答的，是<strong>用来定期重新问自己的</strong>——答案会随你的位置变化。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 06 生态系统 ==================== -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>生态系统</h2>
+      <div class="sub">Ecosystem · 它从哪来、通向哪、旁边站着谁</div>
+    </div>
+
+    <p class="lead">
+      任何工具都不是孤立的。理解 CLI 在生态里的<strong>位置</strong>，你才知道什么时候用它、什么时候用别的、以及为什么它在 AI 时代突然从“老古董”变成了“基础设施”。
+    </p>
+
+    <div class="diagram">
+      <pre class="mermaid">
+flowchart LR
+    U1["Unix 哲学 1970s"] --> CLI["命令行接口"]
+    U2["POSIX 标准"] --> CLI
+    U3["电传打字机与终端历史"] --> CLI
+    CLI --> D1["脚本自动化"]
+    CLI --> D2["CI CD 持续交付"]
+    CLI --> D3["服务器与云运维"]
+    CLI --> D4["AI Agent 工具调用"]
+    C1["git 版本控制"] -.协同.-> CLI
+    C2["ssh 远程执行"] -.协同.-> CLI
+    C3["包管理器"] -.协同.-> CLI
+    C4["Claude Code 等 Agent"] -.协同.-> CLI
+    A1["图形界面 GUI"] -.替代.-> CLI
+    A2["低代码平台"] -.替代.-> CLI
+    A3["自然语言直接委派"] -.替代.-> CLI
+      </pre>
+      <div class="cap">图 2 · CLI 的生态位：上游血统、下游应用、协同伙伴与替代方案</div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <span class="kicker">Upstream · 它从哪里来</span>
+        <h4><span class="ico">↰</span>三条血脉</h4>
+        <p>
+          <strong>Unix 哲学(1970 年代)</strong>——“一个程序只做一件事并做好；程序之间用文本流通信”。这不是技术限制，是<em>刻意的设计价值观</em>。今天所有组合能力都源于这条选择。
+        </p>
+        <p>
+          <strong>POSIX 标准</strong>——把这套约定固化成跨系统的规范。它的价值是：你在 Mac 上学的东西，在 Linux 服务器上大体照样成立。
+          <strong>知识的可迁移性，是标准化换来的。</strong>
+        </p>
+        <p>
+          <strong>终端硬件史</strong>——最早的终端是真实的打字机，一行一行往外吐纸。今天“终端窗口”“行”“光标”这些概念，全是那段历史留下的化石。知道这一点你就不会奇怪为什么界面这么“原始”——它<em>不是没进化，是不需要进化</em>。
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="kicker">Downstream · 它撑起了什么</span>
+        <h4><span class="ico">↳</span>四层应用</h4>
+        <p>
+          <strong>脚本自动化</strong>——最直接的下游。个人层面的定时任务、批处理、日常流程固化。
+        </p>
+        <p>
+          <strong>CI/CD</strong>——现代软件的交付流水线，本质上就是“在一台干净机器上按顺序跑一串命令，任何一条退出码非零就停下”。整个行业的质量门禁建立在退出码这个 8 位整数上。
+        </p>
+        <p>
+          <strong>服务器与云</strong>——世界上绝大多数服务器没有图形界面。不是因为省资源，而是因为<em>运维本身就该是可脚本化的</em>。
+        </p>
+        <p>
+          <strong>AI agent 工具调用</strong>——最新也最重要的一层。
+          Claude Code 之所以能“动手”，是因为它下面有一个完整的、文本可驱动的操作系统控制面。
+          <strong>CLI 是 agent 时代的执行层。</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <span class="kicker">Alternatives · 替代方案与它们的边界</span>
+        <h4><span class="ico">⇄</span>三个竞争者</h4>
+        <p>
+          <strong>图形界面</strong>——在<em>探索性</em>和<em>视觉判断</em>上完胜。第一次接触陌生软件、挑选图片、调整版式，GUI 是对的选择。它的边界在于：不可组合、不可复制、不可自动化、机器读不懂。
+        </p>
+        <p>
+          <strong>低代码 / 自动化平台</strong>——用拖拽搭流程。优势是可视化和托管；代价是被平台锁定、能力被平台想象力封顶、且调试时你看不到底层发生了什么。适合标准化的商业流程，不适合“没人做过的事”。
+        </p>
+        <p>
+          <strong>自然语言直接委派</strong>——最像“未来”的那个。但要注意：<em>它不是 CLI 的替代品，而是 CLI 的前端</em>。你说人话，AI 翻译成命令去执行。取代的是“你亲手敲”，不是“命令这件事本身”。
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="kicker">Complements · 协同放大它的东西</span>
+        <h4><span class="ico">⊕</span>四个伙伴</h4>
+        <p>
+          <strong>git</strong>——给文件系统加上时间维度。有了它，“改坏了”从灾难变成一条撤销命令。这是让人(和 AI)敢于大胆操作的<em>心理安全网</em>。
+        </p>
+        <p>
+          <strong>ssh</strong>——把同一套心智模型无成本地投射到任意远端机器。你在本机学的一切，在服务器上一比一成立。
+        </p>
+        <p>
+          <strong>包管理器</strong>——让“环境”本身也变成可声明、可复现的东西，而不是一台机器一段独特的历史。
+        </p>
+        <p>
+          <strong>AI agent 本身</strong>——这是新的、也是最强的那个补充。它把 CLI 最大的短板(需要记忆大量语法)直接抹平，只留下优点。
+          <strong>CLI 和 LLM 是彼此的最佳补品：一个提供确定的执行，一个提供模糊的意图翻译。</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="t">生态位判断：为什么 CLI 不会消失</div>
+      <p>
+        一个接口能否长存，看它是否处在<strong>“不可绕过”的位置</strong>。
+        GUI 可以被更好的 GUI 取代，低代码平台可以倒闭，但“程序如何精确地告诉操作系统做什么”这件事必须有一个确定的、文本化的表达——而那个表达就是 CLI。
+      </p>
+      <p>
+        自然语言在上层越强大，底层就越需要一个<em>无歧义的落点</em>。
+        <strong>模糊的意图必须落到确定的执行上，而 CLI 就是那个落点。</strong>
+        所以 AI 越强，CLI 越重要，而不是相反。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 07 可迁移原则 ==================== -->
+<section id="s7">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <h2>可迁移原则</h2>
+      <div class="sub">Transferable Principles · 什么值得记，什么不值得</div>
+    </div>
+
+    <p class="lead">
+      学习投入应该按<strong>保质期</strong>分配。有些东西二十年不变，值得刻进骨头；有些东西每两年翻新一遍，记了就是浪费——那部分正好交给 AI。分清楚它们，是“学得快”的真正秘诀。
+    </p>
+
+    <div class="compare">
+      <div class="col stable">
+        <div class="ch"><b>长期稳定</b><span class="pill">保质期 20 年+</span></div>
+        <div class="sh">// 值得理解到能给别人讲清楚</div>
+        <ul>
+          <li>
+            <b>第一性原理：文本是通用接口</b>
+            任何两个系统，只要都能读写文本，就能对接。这条原理超出 CLI 范围——
+            API 用 JSON、配置用 YAML、AI 用自然语言，本质都是同一个选择：
+            <em>用最低共同标准换取最大互通性</em>。
+          </li>
+          <li>
+            <b>第一性原理：小工具组合 &gt; 大而全</b>
+            与其造一个能做 100 件事的巨物，不如造 20 个各做一件事的小物件让它们互相拼接。这条原理迁移到：软件架构、团队分工、个人技能组合、甚至商业模式设计。
+          </li>
+          <li>
+            <b>第一性原理：状态必须显式</b>
+            隐含的、藏在某处的状态是所有诡异 bug 的温床。凡是“它怎么突然不工作了”的问题，九成是某个你没意识到自己依赖的隐式状态变了。
+          </li>
+          <li>
+            <b>方法论：管道思维</b>
+            把复杂任务拆成“上一步的输出正好是下一步的输入”的链条。这套思维在写作(素材→提纲→初稿→润色)、教学设计、内容生产上一比一适用。
+          </li>
+          <li>
+            <b>方法论：幂等设计</b>
+            让操作“多做几次和做一次结果一样”。这是所有自动化、所有重试机制、所有可靠系统的地基。也是<em>放心让 AI 反复尝试</em>的前提。
+          </li>
+          <li>
+            <b>方法论：先看后改(dry-run)</b>
+            高风险操作前先跑一个“只报告不执行”的版本。这不是 CLI 特有技巧，是所有不可逆决策的通用护栏。
+          </li>
+          <li>
+            <b>方法论：证据优先于声明</b>
+            不信“我改好了”，只信“文件确实变成了这样”。
+            AI 时代这条从美德升级成了必需品。
+          </li>
+        </ul>
+      </div>
+
+      <div class="col volatile">
+        <div class="ch"><b>易变细节</b><span class="pill">保质期 2-5 年</span></div>
+        <div class="sh">// 知道有这回事就行，具体交给 AI</div>
+        <ul>
+          <li>
+            <b>各种命令的具体参数与缩写</b>
+            同一个功能在不同工具里叫法完全不同，还经常改版。背这些的边际收益在 2023 年之后已经趋近于零。
+          </li>
+          <li>
+            <b>zsh 与 bash 的语法差异</b>
+            数组下标从 0 还是 1 开始、通配符的边界行为、某些扩展是否可用——真遇到问题再查，平时不必占用记忆。
+          </li>
+          <li>
+            <b>具体工具的选型</b>
+            哪个搜索工具更快、哪个包管理器更受欢迎——每隔几年就洗一次牌。理解“它们在解决什么问题”比记住名字重要得多。
+          </li>
+          <li>
+            <b>各家 CLI 的输出格式</b>
+            列宽、颜色、有没有 JSON 模式——版本升级就可能变。所以解析输出时要尽量要结构化格式，而不是数第几列。
+          </li>
+          <li>
+            <b>安装与配置步骤</b>
+            系统版本一升级就可能失效。这类知识的正确存放位置是
+            <em>脚本文件，不是你的大脑</em>。
+          </li>
+          <li>
+            <b>特定平台的路径与惯例</b>
+            macOS 和各 Linux 发行版的目录约定、配置文件位置都不同。知道“存在差异”这件事，比记住差异内容有用。
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="t">分配建议(针对 AI 委派者)</div>
+      <p>
+        把<strong>90% 的学习精力</strong>放在左栏——它们决定你能想到什么、能判断什么、能验收什么，而这三样 AI 替不了你。右栏的东西<strong>一律外包</strong>：遇到就问，用完就忘，重要的存进脚本而不是记忆。
+      </p>
+      <p>
+        判断某个知识属于哪一栏，有个简单测试：<em>“如果换一套工具/换个系统/过五年，这条还成立吗？”</em>
+        成立的进左栏，不成立的进右栏。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 08 最小心智模型 ==================== -->
+<section id="s8">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <h2>最小心智模型</h2>
+      <div class="sub">Minimum Mental Model · 14 个概念，按重要性排序</div>
+    </div>
+
+    <p class="lead">
+      如果只能装 14 个概念进脑子，就装这些。它们按<strong>“不知道会付出多大代价”</strong>排序，不是按学习顺序。前 5 个决定你能不能看懂正在发生什么，后面的决定你能走多远。
+    </p>
+
+    <div class="ranked">
+      <div class="rk tier-a">
+        <div class="num">01</div>
+        <div>
+          <b>一切皆文本</b>
+          <span>输入是文本，输出是文本，配置是文本，程序间通信也是文本。正因如此，任意两个工具都能对接，人和 AI 都能读懂。这是整座大厦的地基。</span>
+        </div>
+      </div>
+      <div class="rk tier-a">
+        <div class="num">02</div>
+        <div>
+          <b>终端 ≠ shell ≠ 内核</b>
+          <span>窗口只管显示，shell 负责翻译，内核真正执行。分不清这三层，你会在错误的层里找问题，浪费的时间以小时计。</span>
+        </div>
+      </div>
+      <div class="rk tier-a">
+        <div class="num">03</div>
+        <div>
+          <b>退出码是唯一的成败信号</b>
+          <span><code>0</code> 成功，非零失败。所有自动化、CI 门禁、AI 自我验证都靠它。屏幕上打印什么都不算数，这个数字才算。</span>
+        </div>
+      </div>
+      <div class="rk tier-a">
+        <div class="num">04</div>
+        <div>
+          <b>stdin / stdout / stderr 三条通道</b>
+          <span>输入、正常输出、错误输出各走各的路。知道它们分开，你才明白为什么能“只存结果、错误照常显示”，以及为什么管道不会被错误信息污染。</span>
+        </div>
+      </div>
+      <div class="rk tier-a">
+        <div class="num">05</div>
+        <div>
+          <b>管道 = 把上一个的输出接到下一个的输入</b>
+          <span>组合能力的物理实现。它让 20 个小工具变成成千上万种能力，而且两端同时运行，处理超大数据也不占内存。</span>
+        </div>
+      </div>
+      <div class="rk tier-b">
+        <div class="num">06</div>
+        <div>
+          <b>进程是隔离的世界</b>
+          <span>每个进程有自己的环境、自己的工作目录、自己的内存。子进程继承父进程的这些东西，但反向不成立——这解释了大量“改了没生效”的困惑。</span>
+        </div>
+      </div>
+      <div class="rk tier-b">
+        <div class="num">07</div>
+        <div>
+          <b>工作目录是进程级的</b>
+          <span>相对路径全部相对于“当前站在哪”。脚本里换目录不影响调用者；定时任务的起始目录常常出乎意料。
+          <em>脚本里尽量用绝对路径</em>就是这条推出来的。</span>
+        </div>
+      </div>
+      <div class="rk tier-b">
+        <div class="num">08</div>
+        <div>
+          <b>环境变量随进程继承</b>
+          <span>最轻量的配置传递方式。改代码之外的另一个改行为的旋钮。密钥、代理、语言设置都走这条路——也因此，<em>它是最容易泄漏秘密的地方</em>。</span>
+        </div>
+      </div>
+      <div class="rk tier-b">
+        <div class="num">09</div>
+        <div>
+          <b>PATH 决定命令去哪找</b>
+          <span>一串目录，按顺序搜索。“命令找不到”和“跑的不是我以为的那个版本”,
+          九成源于此。这也是自动化任务最常见的失败原因。</span>
+        </div>
+      </div>
+      <div class="rk tier-b">
+        <div class="num">10</div>
+        <div>
+          <b>通配符由 shell 展开，程序看不见星号</b>
+          <span>你写 <code>*</code>，程序收到的是一长串真实文件名。知道这点，你才理解为什么文件数量太多时会出怪事，以及为什么有时候必须加引号阻止展开。</span>
+        </div>
+      </div>
+      <div class="rk tier-b">
+        <div class="num">11</div>
+        <div>
+          <b>重定向 = 把流的另一端换成文件</b>
+          <span>和管道同源，只是接到文件而非进程。用来留档、分流、静音。长任务的输出落盘，是事后能追查的前提。</span>
+        </div>
+      </div>
+      <div class="rk tier-c">
+        <div class="num">12</div>
+        <div>
+          <b>引号控制“要不要展开”</b>
+          <span>单引号完全保护原样，双引号保留变量替换。含空格的文件名、含特殊符号的内容，不加引号就会被拆散——这是最高频的“命令看起来对但结果诡异”的来源。</span>
+        </div>
+      </div>
+      <div class="rk tier-c">
+        <div class="num">13</div>
+        <div>
+          <b>权限与 sudo 是真实的边界</b>
+          <span>不是提示框，是内核强制执行的规则。
+          <code>sudo</code> 意味着越过所有保护——所以它同时是“能干成事”和“能毁掉一切”的开关。看到 AI 给的命令带 sudo，那是<em>该停下来看一眼</em>的信号。</span>
+        </div>
+      </div>
+      <div class="rk tier-c">
+        <div class="num">14</div>
+        <div>
+          <b>删除不可逆，没有回收站</b>
+          <span>命令行的危险不在“黑屏吓人”，而在它<em>不问第二遍</em>。所有风险都收敛到“这一步可逆吗”这一个问题上。可逆的随便跑，不可逆的先备份、先 dry-run、先让 AI 解释它到底碰什么。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i><span>mental-model —自检</span></div>
+<pre><span class="c"># 检验你是否真的建立了模型:下面每句你能不能用一句话解释"为什么"?</span>
+
+<span class="p">›</span> 为什么脚本里换了目录,脚本结束后我还在原地?
+<span class="p">›</span> 为什么手动跑得好好的命令,放进定时任务就失败?
+<span class="p">›</span> 为什么程序"看起来成功了"但自动化流程判定它失败?
+<span class="p">›</span> 为什么同一条命令在两台机器上行为不同?
+<span class="p">›</span> 为什么文件名里有空格会把命令搞崩?
+
+<span class="o">全部答得上来 → 你不需要背任何命令,剩下的交给 AI 就行。</span>
+<span class="o">答不上来的那条 → 那就是你下一个该问 AI 的问题。</span>
+</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 09 常见误区 ==================== -->
+<section id="s9">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <h2>常见误区</h2>
+      <div class="sub">Common Misconceptions · 错在哪、为什么会错、正确的模型是什么</div>
+    </div>
+
+    <p class="lead">
+      误区的价值不在于“改正错误答案”，而在于<strong>它们暴露了心智模型的结构性缺陷</strong>。每一条误解背后，都有一个可以被替换掉的错误图式。
+    </p>
+
+    <div class="mis">
+      <div class="wrong"><span class="x">✕</span><b>误解 1：终端就是 shell，命令行就是那个黑窗口</b></div>
+      <div class="inner">
+        <div class="why">
+          <em>为什么会这样想</em>
+          因为你只见过它们捆在一起出现。打开“终端”应用，里面就有个 shell 在等你输入——两个东西从未分开露过面，自然被当成一个东西。而且日常口语里“命令行”“终端”“shell”经常混用。
+        </div>
+        <div class="right">
+          <em>更准的模型</em>
+          <b>三个独立的东西，只是恰好叠在一起。</b>终端模拟器是一块“会显示字符、会转发按键”的玻璃，它对命令一无所知。Shell 是跑在这块玻璃后面的一个普通程序，负责解释你的输入。内核才是真正执行的那一层。
+          <strong>实践意义</strong>：出问题时先判断“这是哪一层的事”——配色乱码找终端，语法与变量找 shell，权限与文件找内核。分层诊断能省下大量时间。
+        </div>
+      </div>
+    </div>
+
+    <div class="mis">
+      <div class="wrong"><span class="x">✕</span><b>误解 2：命令行是过时的东西，是图形界面还没发明时的将就</b></div>
+      <div class="inner">
+        <div class="why">
+          <em>为什么会这样想</em>
+          它长得就很“上世纪”：单色文字、没有图标、没有动画。而消费级软件三十年的进化方向确实是图形化。于是很容易得出“CLI 是历史遗留”的结论。
+        </div>
+        <div class="right">
+          <em>更准的模型</em>
+          <b>它不是没进化，是已经进化到了那个不需要再变的形态。</b>
+          文本接口之所以维持原样，是因为它已经处在“最小共同标准”的位置——再简化就无法表达，再复杂就失去通用性。
+          <strong>关键证据</strong>:2023 年之后 CLI 使用量不降反升，原因恰恰是 LLM 的出现。一个“过时”的东西不会因为最前沿的技术出现而复兴，只有<em>基础设施级</em>的东西才会。
+        </div>
+      </div>
+    </div>
+
+    <div class="mis">
+      <div class="wrong"><span class="x">✕</span><b>误解 3：黑窗口很危险，一不小心就把电脑搞坏</b></div>
+      <div class="inner">
+        <div class="why">
+          <em>为什么会这样想</em>
+          流传的恐怖故事大多围绕“某人一条命令删光了硬盘”。加上界面本身没有确认弹窗、没有撤销按钮，心理上就显得格外凶险。
+        </div>
+        <div class="right">
+          <em>更准的模型</em>
+          <b>危险不来自“命令行”这个形式，而来自“不可逆”这个属性。</b>
+          绝大多数命令是只读的——查看、搜索、统计、列出——它们和打开一个文件夹一样安全。真正需要警惕的只有一小类：删除、覆盖、格式化、批量修改、以及任何带
+          <code>sudo</code> 的操作。
+          <strong>正确的心智替换</strong>：不要问“命令行危不危险”，要问
+          <em>“这一步可逆吗？它碰哪些文件？”</em> 这个问题一问，风险就从弥漫的恐惧变成了可管理的清单。而且 git 和备份存在的意义，正是把“不可逆”变回“可逆”。
+        </div>
+      </div>
+    </div>
+
+    <div class="mis">
+      <div class="wrong"><span class="x">✕</span><b>误解 4:AI 时代不用学 CLI 了，反正让 AI 干就行</b></div>
+      <div class="inner">
+        <div class="why">
+          <em>为什么会这样想</em>
+          这个推理有一半是对的，所以特别有迷惑性：AI 确实能替你写出任何命令，“背命令”这件事的价值确实归零了。问题出在把“不用背”错误外推成了“不用懂”。
+        </div>
+        <div class="right">
+          <em>更准的模型</em>
+          <b>恰恰相反——CLI 是 AI 的执行层，你需要的能力从“会写”变成了“读得懂 + 会验收”。</b>
+          当 AI 在你的机器上执行操作时，你是唯一的责任人。你需要判断：它要碰什么？这一步可逆吗？它说“完成了”的依据是什么？结果真的符合预期吗？
+          <strong>换句话说</strong>：你的角色从“操作员”变成了“验收方”。验收方不需要手速，但必须有<em>比操作员更准确的心智模型</em>——因为你要能看出哪里不对，而不只是照着做。
+          <em>不懂 CLI 而使用 AI agent，等于闭着眼睛签字。</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="mis">
+      <div class="wrong"><span class="x">✕</span><b>误解 5：命令跑完屏幕上没报错，就说明成功了</b></div>
+      <div class="inner">
+        <div class="why">
+          <em>为什么会这样想</em>
+          这是从 GUI 世界带过来的直觉：图形软件出错会弹窗，没弹窗就是没事。于是自然把“屏幕安静”等同于“一切顺利”。
+        </div>
+        <div class="right">
+          <em>更准的模型</em>
+          <b>输出是过程的回声，状态才是结果；而机器只认退出码。</b>
+          程序完全可能打印一堆好看的进度条，最后返回非零退出码；也可能安静地什么都没做，却返回 0。更常见的情况是：它<em>确实</em>做了，但做的不是你想要的那件事。
+          <strong>正确的验收姿势</strong>：看退出码(机器判据)+ 直接检查结果状态
+          (文件真的在吗？内容真的对吗？行数对吗？)。委派 AI 时这条尤其致命——它会真诚地告诉你“已完成”，而它的依据可能只是自己的输出文本。
+        </div>
+      </div>
+    </div>
+
+    <div class="mis">
+      <div class="wrong"><span class="x">✕</span><b>误解 6：学 CLI 就是背一堆命令和参数</b></div>
+      <div class="inner">
+        <div class="why">
+          <em>为什么会这样想</em>
+          市面上的入门教程绝大多数就是命令速查表——第一章列 20 个命令，第二章再列 20 个。学的人自然以为这就是全部内容，然后在背到第三章时放弃。
+        </div>
+        <div class="right">
+          <em>更准的模型</em>
+          <b>命令是词汇，心智模型才是语法。</b>只背词汇的人永远造不出新句子；掌握语法的人可以在需要时查任何词。真正要建立的是那套结构：进程、流、退出码、组合、状态、可逆性。这些东西<em>加起来不超过 14 条</em>，一天能理解，一辈子不过时。
+          <strong>而具体命令，现在有 AI 了</strong>——它比任何速查表都全、都新、还能根据你的情况定制。把记忆外包出去，把理解留给自己，这才是 AI 时代正确的学习分工。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 10 总结 ==================== -->
+<section id="s10">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">10</span>
+      <h2>总结</h2>
+      <div class="sub">Summary · 我真正获得的是什么</div>
+    </div>
+
+    <div class="summary-box">
+      <div class="fill">
+        我真正获得的不是<span class="not">一堆能背出来的命令</span>,<br>
+        而是<span class="is">一种把意图表达成可组合、可验证、可自动化的文本的思维方式</span>——以及<span class="is">与 AI 共事时那门共同语言</span>。
+      </div>
+      <div class="tail">
+        <b>这个差别有多大？</b>
+        背命令的人，能力上限等于他记得住多少；建立了模型的人，能力上限等于他<em>能想到多少</em>——而具体怎么做，现在有 AI 补齐。前者的天花板在下降(记忆的价值在贬值),
+        后者的天花板在上升(能想到的事越来越容易被执行)。
+      </div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <span class="kicker">思维层面的改变</span>
+        <h4><span class="ico">◇</span>看见“可自动化”</h4>
+        <p>
+          建立模型之后，你会开始<strong>本能地识别重复模式</strong>。第三次做同一件事时，脑子里会响起提示音：这应该被固化下来。这个雷达一旦装上，就再也关不掉——它会持续把你的时间从消耗性劳动里赎回来。
+        </p>
+      </div>
+      <div class="card">
+        <span class="kicker">决策层面的改变</span>
+        <h4><span class="ico">◈</span>用“可逆性”衡量风险</h4>
+        <p>
+          你不再笼统地害怕“技术操作”，而是精确地问：
+          <strong>这一步可逆吗？</strong>可逆的大胆试，不可逆的先备份、先看不改。这套判据可以直接迁移到经营决策、合作决策、人生决策——
+          <em>它本来就不是关于命令行的</em>。
+        </p>
+      </div>
+      <div class="card">
+        <span class="kicker">协作层面的改变</span>
+        <h4><span class="ico">◉</span>从操作员到验收方</h4>
+        <p>
+          你和 AI 的关系不再是“我问它答”，而是<strong>你定意图、它执行、你验收</strong>。验收需要的不是手速，是准确的模型和证据意识：看退出码、看真实状态、不信声明。这是 AI 时代唯一无法外包的那部分能力。
+        </p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="t">一句话收束</div>
+      <p>
+        CLI 不是一项要学的技能，而是<strong>一层一直存在的基础设施</strong>——过去它服务于少数愿意敲键盘的人，现在它服务于每一个 agent。你不需要成为敲得最快的那个人，你需要成为<strong>能清楚说出要什么、并能确认它真的做到了的那个人。</strong>
+      </p>
+      <p>
+        剩下的，交给机器。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="wrap">
+    <div class="s"><b>AI 时代学习地图</b> · 01 命令行工具基础</div>
+    <div class="d">GENERATED 2026-07-29 · MENTAL MODEL SERIES</div>
+  </div>
+</footer>
+
+<script>
+mermaid.initialize({
+  startOnLoad:true,
+  theme:'dark',
+  securityLevel:'loose',
+  flowchart:{curve:'basis',padding:16,nodeSpacing:42,rankSpacing:52,useMaxWidth:true},
+  themeVariables:{
+    darkMode:true,
+    background:'#0B0E14',
+    primaryColor:'#1A2234',
+    primaryTextColor:'#E8ECF4',
+    primaryBorderColor:'#26304A',
+    lineColor:'#4ADE80',
+    secondaryColor:'#141A26',
+    tertiaryColor:'#141A26',
+    fontFamily:'-apple-system,"PingFang SC","Noto Sans SC",sans-serif',
+    fontSize:'14px'
+  }
+});
+</script>
+</body>
+</html>

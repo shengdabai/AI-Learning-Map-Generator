@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Claude 命令重要参数：面向 AI 时代的心智模型、世界模型与决策地图。">
+  <title>Claude 命令重要参数｜AI 时代学习地图</title>
+  <link rel="stylesheet" href="assets/learning-map.css">
+  <script src="assets/learning-map.js" defer></script>
+  <style>
+    /* Inline SVG Visual Enhancements for Claude Topic */
+    .visual-diagram-box {
+      background: var(--paper-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    .visual-diagram-box svg {
+      width: 100%;
+      height: auto;
+      min-width: 640px;
+      display: block;
+    }
+    .node-rect { fill: var(--paper); stroke: var(--accent); stroke-width: 2; rx: 6px; }
+    .node-title { fill: var(--ink); font-weight: bold; font-size: 14px; font-family: var(--body); }
+    .node-sub { fill: var(--ink-soft); font-size: 12px; font-family: var(--body); }
+    .edge-line { stroke: var(--line); stroke-width: 2; stroke-dasharray: 4,4; }
+    .edge-flow { stroke: var(--accent); stroke-width: 2.5; marker-end: url(#arrow-claude); }
+  </style>
+</head>
+<body class="topic-claude">
+  <div class="reading-progress" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="atlas-hero" data-glyph="✳︎">
+    <div class="hero-grid">
+      <p class="eyebrow">Learning map 02 · Claude CLI parameter contracts</p>
+      <h1>Claude 命令参数不是语法清单，而是 AI 智能体的运行契约</h1>
+      <p class="hero-deck">配置一个 CLI 参数，本质上是在向 autonomous agent 签发一份工作合同：决定它的思考深度、记忆范围、工具权限、算力预算与机器交互协议。</p>
+      <div class="hero-thesis">
+        <span>核心判断</span>
+        <strong>传统的命令行 flag 配置格式与选项；AI 时代的命令参数锁死智能体在系统中的授权红线与输出契约。</strong>
+      </div>
+    </div>
+  </header>
+
+  <nav class="atlas-nav" aria-label="章节导航">
+    <a class="home-link" href="00-十五份HTML全面对比报告.html">总览</a>
+    <a href="#essence">01 本质</a>
+    <a href="#world">02 世界</a>
+    <a href="#concepts">03 概念</a>
+    <a href="#decisions">04 决策</a>
+    <a href="#search">05 搜索空间</a>
+    <a href="#ecosystem">06 生态</a>
+    <a href="#principles">07 原则</a>
+    <a href="#minimum">08 最小模型</a>
+    <a href="#misconceptions">09 误区</a>
+    <a href="#summary">10 总结</a>
+  </nav>
+
+  <div class="atlas-shell">
+    <main id="main">
+      <!-- 01 本质 -->
+      <section class="chapter" id="essence">
+        <header class="chapter-head">
+          <span class="chapter-no">01</span>
+          <div>
+            <h2>本质：控制 Autonomous Agent 运行状态的结构化声明</h2>
+            <p class="chapter-intro">`claude` CLI 的参数选项不是为了传参给传统程序，而是为具身在终端中的 AI 智能体设定认知策略、能力沙箱与机器交付接口。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <p class="big-answer">它本质上是<mark>人类向 AI 智能体签发的 Agent 运行契约（Agent Operating Contract）</mark>。</p>
+          <div class="before-after">
+            <article>
+              <h3>为什么存在？</h3>
+              <p>LLM 本质上是无状态、概率性的语言预测引擎。CLI 参数提供了确定性的框架，限制 Agent 不越界、不幻觉，并按需继承特定上下文与算力资源。</p>
+            </article>
+            <article>
+              <h3>解决什么根本问题？</h3>
+              <p>解决“如何让 AI 代理既能自治完成复杂多步任务，又严格受控于人类的安全防线与工程标准”。</p>
+            </article>
+            <article>
+              <h3>没有它时人们怎么办？</h3>
+              <p>在 Web UI 中靠人类手动复制粘贴文件、在 Prompt 中一遍遍强调“请不要修改代码”、通过频繁的人工确认打破自动化链条。</p>
+            </article>
+            <article>
+              <h3>带来了哪些新的可能？</h3>
+              <p>允许将 Claude 深度集成进 CI/CD 自动化构建、Git 提交前置审查、无头（Headless）后台批量代码重构等高阶工程管线中。</p>
+            </article>
+          </div>
+          <div class="callout">
+            <strong>AI 时代参数观：</strong>你不需要记住 40 个 flag 的具体拼写，你需要理解的是四大参数家族：<strong>上下文范围、能力授权、算力控制、协议交付</strong>。
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 世界模型 -->
+      <section class="chapter" id="world">
+        <header class="chapter-head">
+          <span class="chapter-no">02</span>
+          <div>
+            <h2>世界模型：四大维度锁死 Agent 运行边界</h2>
+            <p class="chapter-intro">参数不仅作用于终端命令行本身，更直接调控 API 认知模型、本地文件系统、MCP 工具网络与自动化管道。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="visual-diagram-box" role="figure" aria-label="Claude 参数契约四大控制维度">
+            <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="arrow-claude" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <!-- Central Agent Box -->
+              <rect x="270" y="110" width="220" height="100" class="node-rect" style="stroke-width:3px; fill:var(--accent-soft);" />
+              <text x="315" y="150" class="node-title" font-size="16" fill="var(--accent-ink)">CLAUDE AGENT CORE</text>
+              <text x="325" y="175" class="node-sub">智能体执行核心 (CLI Session)</text>
+
+              <!-- Top: Context & Scope -->
+              <rect x="230" y="20" width="300" height="60" class="node-rect" />
+              <text x="245" y="45" class="node-title">1. Context & Scope (上下文与记忆范围)</text>
+              <text x="245" y="62" class="node-sub">`--resume`, `--session`, `--system-prompt`, `--file`</text>
+
+              <!-- Bottom: Automation Protocol -->
+              <rect x="230" y="240" width="300" height="60" class="node-rect" />
+              <text x="245" y="265" class="node-title">4. Automation Protocol (交付与输出协议)</text>
+              <text x="245" y="282" class="node-sub">`--print`, `--json`, `--non-interactive`, `--stream`</text>
+
+              <!-- Left: Cognitive Budget -->
+              <rect x="20" y="110" width="210" height="100" class="node-rect" stroke="var(--positive)" />
+              <text x="30" y="140" class="node-title">2. Cognitive Budget (算力)</text>
+              <text x="30" y="160" class="node-sub">`--model claude-3-7-sonnet`</text>
+              <text x="30" y="180" class="node-sub">`--thinking-budget 8000`</text>
+
+              <!-- Right: Capability Boundaries -->
+              <rect x="530" y="110" width="210" height="100" class="node-rect" stroke="var(--danger)" />
+              <text x="540" y="140" class="node-title">3. Security Boundary (权限)</text>
+              <text x="540" y="160" class="node-sub">`--allowedTools` / `--mcp`</text>
+              <text x="540" y="180" class="node-sub">`--dangerously-skip-permissions`</text>
+
+              <!-- Connections -->
+              <path d="M 380 80 L 380 110" class="edge-flow" />
+              <path d="M 380 210 L 380 240" class="edge-flow" />
+              <path d="M 230 160 L 270 160" class="edge-flow" />
+              <path d="M 530 160 L 490 160" class="edge-flow" />
+            </svg>
+          </div>
+
+          <div class="system-map">
+            <div class="map-lane">
+              <div class="lane-label">1. 上下文控制</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>`--resume <id>`</strong><small>恢复特定历史会话上下文与记忆</small></div>
+                <div class="map-node"><strong>`--system-prompt`</strong><small>注入最高优先级的系统级行为准则</small></div>
+                <div class="map-node"><strong>`--file <path>`</strong><small>在启动时直接挂载特定文件上下文</small></div>
+              </div>
+            </div>
+            <div class="map-lane">
+              <div class="lane-label">2. 权限与安全</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>`--allowedTools`</strong><small>显式白名单授权 Agent 可执行的工具</small></div>
+                <div class="map-node"><strong>`--dangerously-skip`</strong><small>绕过人工确认弹窗（仅限隔离容器）</small></div>
+                <div class="map-node"><strong>`--mcp-config`</strong><small>连接外部 MCP 扩展服务工具集</small></div>
+              </div>
+            </div>
+            <div class="map-lane">
+              <div class="lane-label">3. 算力与模型</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>`--model <name>`</strong><small>在 3.5 Sonnet / 3.7 Sonnet / Haiku 间切换</small></div>
+                <div class="map-node"><strong>`--thinking-budget`</strong><small>分配深度推理 (Extended Thinking) Token 预算</small></div>
+                <div class="map-node"><strong>`--max-tokens`</strong><small>硬性封顶单次响应的消耗与长度</small></div>
+              </div>
+            </div>
+            <div class="map-lane">
+              <div class="lane-label">4. 脚本与交付</div>
+              <div class="lane-items">
+                <div class="map-node"><strong>`--print` / `-p`</strong><small>不进入 TTY 交互界面，直接打到 STDOUT</small></div>
+                <div class="map-node"><strong>`--json`</strong><small>输出机器可读的结构化 JSON 响应</small></div>
+                <div class="map-node"><strong>`--non-interactive`</strong><small>适合 CI 管道的无头只读运行模式</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 概念地图 -->
+      <section class="chapter" id="concepts">
+        <header class="chapter-head">
+          <span class="chapter-no">03</span>
+          <div>
+            <h2>概念地图：解构 Claude CLI 参数家族</h2>
+            <p class="chapter-intro">从实体、动作、目的与相互关系的视角，深刻理解各大参数族的本质设计意图。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="concept-grid">
+            <article class="concept-card">
+              <span class="layer-tag">Family 1 · 安全授权与工具防线</span>
+              <h3>`--allowedTools` vs `--dangerously-skip-permissions`</h3>
+              <p><strong>Entity (名词):</strong> 工具访问权限白名单与安全断路器。</p>
+              <p><strong>Action (动词):</strong> 预判与裁剪能力（`read_file`, `write_file`, `bash`），关闭交互式人工确认。</p>
+              <p><strong>Purpose (目的):</strong> 在“全自动高效率”与“系统安全红线”之间建立精确可控的隔离带。</p>
+              <p><strong>Relationship (关系):</strong> `--allowedTools` 是精细化最小权限原则 (PoLP) 的体现；`--dangerously-skip-permissions` 是在物理沙箱 (Docker) 内解除防线。</p>
+            </article>
+
+            <article class="concept-card">
+              <span class="layer-tag">Family 2 · 认知开销与预算</span>
+              <h3>`--thinking-budget` & `--model`</h3>
+              <p><strong>Entity (名词):</strong> 拓展思考 (Extended Thinking) Token 额度与模型档位。</p>
+              <p><strong>Action (动词):</strong> 强制 Agent 在输出代码前开辟独立显式思维链 (Chain of Thought)。</p>
+              <p><strong>Purpose (目的):</strong> 用更高的思考算力换取复杂重构任务的准确率，避免盲目写出低质量代码。</p>
+              <p><strong>Relationship (关系):</strong> 简单修改使用低预算，复杂系统架构分析结合 Haiku/Sonnet 分配高 `thinking-budget`。</p>
+            </article>
+
+            <article class="concept-card">
+              <span class="layer-tag">Family 3 · 自动化与管道输出</span>
+              <h3>`--print` & `--json`</h3>
+              <p><strong>Entity (名词):</strong> 非交互式控制台输出流与机器可读协议。</p>
+              <p><strong>Action (动词):</strong> 剥离终端 TTY 交互动画，将结构化 JSON 直接打入 STDOUT。</p>
+              <p><strong>Purpose (目的):</strong> 允许 `claude` 被 Shell 管道 (`|`)、`jq` 或下游 Python 脚本消费。</p>
+              <p><strong>Relationship (关系):</strong> 将 Claude 从一个人类使用的聊天软件，彻底转变为 Unix 工具链中的一个“高阶处理节点”。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 决策地图 -->
+      <section class="chapter" id="decisions">
+        <header class="chapter-head">
+          <span class="chapter-no">04</span>
+          <div>
+            <h2>决策地图：自动化场景下的参数组合策略</h2>
+            <p class="chapter-intro">针对真实的工程应用场景，制定最稳妥的 Agent 参数契约方案。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="decision-chain">
+            <div class="decision-card">
+              <div class="situation"><strong>Situation 场景：</strong>在 GitHub Actions CI 自动化构建管线中，让 Claude 自动审查 PR 代码并输出 JSON 审计报告。</div>
+              <div class="arrow">↓</div>
+              <div class="decision"><strong>Decision 决策：</strong>使用组合参数 `claude -p "Review code" --non-interactive --allowedTools "read_file,git" --json`</div>
+              <div class="arrow">↓</div>
+              <div class="reason"><strong>Reason 理由：</strong>剥离交互确认，仅授予只读工具权限以防修改代码仓库，且输出结构化 JSON 便于 CI 脚本解析结果。</div>
+              <div class="arrow">↓</div>
+              <div class="outcome"><strong>Expected Outcome 期望结果：</strong>安全、可预测、无阻塞地在 CI 中完成代码质量自动审查。</div>
+            </div>
+
+            <div class="decision-card">
+              <div class="situation"><strong>Situation 场景：</strong>面对遗留巨型代码库的重构，需要 AI 进行深入分析并设计长程重构方案。</div>
+              <div class="arrow">↓</div>
+              <div class="decision"><strong>Decision 决策：</strong>使用 `claude --model claude-3-7-sonnet --thinking-budget 16000 --system-prompt "Architecture Expert"`</div>
+              <div class="arrow">↓</div>
+              <div class="reason"><strong>Reason 理由：</strong>遗留代码分析极易陷入局部最优，给足 16k tokens 的 Extended Thinking 预算可让 Agent 在隐式思考中充分解构依赖关系。</div>
+              <div class="arrow">↓</div>
+              <div class="outcome"><strong>Expected Outcome 期望结果：</strong>获得具备大局观、全局无幻觉的深谋远虑重构方案。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 搜索空间扩展 -->
+      <section class="chapter" id="search">
+        <header class="chapter-head">
+          <span class="chapter-no">05</span>
+          <div>
+            <h2>搜索空间扩展：挖掘 Agent 参数的高级隐秘盲区</h2>
+            <p class="chapter-intro">超越基础 Flag 说明，探索影响 AI 智能体生产环境稳定性的核心问题。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="search-grid">
+            <article class="search-box">
+              <h3>🌱 初学者极少问，但至关重要的问题</h3>
+              <ul>
+                <li>在命令行中传入 `--file` 挂载超大文件与通过 Prompt 直接粘贴内容，在 Token Caching (提示词缓存) 成本上有何本质区别？</li>
+                <li>为什么 `--resume` 有时无法准确恢复会话状态？（Session 存储位置与本地 Git 工作树状态偏离）</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>🎯 专家真正关心的工程问题</h3>
+              <ul>
+                <li>如何在 MCP 扩展服务暴露出数十个工具时，通过 `--disallow-tools` 防止 Prompt Injection 导致的非法工具提权？</li>
+                <li>在无头脚本中调用 `claude` 时，如何通过 `--max-tokens` 结合超时机制，防止 Agent 陷入死循环刷爆 API 账单？</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>🚀 下一步值得深入探索的方向</h3>
+              <ul>
+                <li>基于 `--mcp-config` 构建特定领域的 Enterprise Private Context & Action Mesh (企业私有上下文与动作网格)。</li>
+                <li>多 Claude CLI Agent 节点的并行调度与状态同步契约。</li>
+              </ul>
+            </article>
+            <article class="search-box">
+              <h3>👑 决定该领域上限的根本问题</h3>
+              <ul>
+                <li>如何设计一份自包含的 Agent Runtime Spec，使得 AI 在完全零人工干预下，自我治理算力预算与故障恢复？</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 生态系统 -->
+      <section class="chapter" id="ecosystem">
+        <header class="chapter-head">
+          <span class="chapter-no">06</span>
+          <div>
+            <h2>生态系统：Claude 参数在 Agent 工具链中的位置</h2>
+            <p class="chapter-intro">定位 Claude CLI 选项与底层大模型 API、上游编排脚本及外部 MCP 协议的关系。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="ecosystem-list">
+            <div class="eco-item">
+              <strong>上游依赖 (Upstream)</strong>
+              <p>Anthropic Messages API / Bedrock / Vertex AI 引擎、Model Context Protocol (MCP) 协议规范、本地 Shell 交互环境。</p>
+            </div>
+            <div class="eco-item">
+              <strong>下游集成 (Downstream)</strong>
+              <p>Git pre-commit 审查钩子、Jenkins / GitHub Actions 构建脚本、IDE 智能体插件、命令行自动化别名/函数。</p>
+            </div>
+            <div class="eco-item">
+              <strong>同类 Agent CLI (Alternatives)</strong>
+              <p>OpenAI Codex CLI, Aider CLI, Cursor Agent Terminal, Gemini CLI.</p>
+            </div>
+            <div class="eco-item">
+              <strong>互补生态 (Complements)</strong>
+              <p>数据处理工具 `jq`, MCP 工具服务器 (File System, GitHub, PostgreSQL MCP), 容器隔离 `Docker` / `Podman`。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 可迁移原则 -->
+      <section class="chapter" id="principles">
+        <header class="chapter-head">
+          <span class="chapter-no">07</span>
+          <div>
+            <h2>可迁移原则：提取智能体配置的核心范式</h2>
+            <p class="chapter-intro">标志性参数名未来可能会变，但对智能体授权与管理的架构范式永不过时。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="principles-grid">
+            <div class="p-card">
+              <h3>第一性原理 (First Principles)</h3>
+              <p><strong>Boundary Control for Non-deterministic Systems:</strong> 对概率性 Agent 的治理，核心不在于指导它“如何一步步做”，而在于显式锁定它的“权限边界、输入依赖与输出契约”。</p>
+            </div>
+            <div class="p-card">
+              <h3>可迁移的方法论 (Transferable Methodologies)</h3>
+              <p><strong>最小权限与明确契约:</strong> 给 Agent 授权时始终遵守 PoLP 原则；在机器管道交互中始终要求 Structured Output (e.g. JSON)。</p>
+            </div>
+            <div class="p-card">
+              <h3>长期稳定的知识 (Stable Knowledge)</h3>
+              <p>上下文窗口边界控制、人工确认与沙箱隔离屏障、Token 算力预算封顶、流式与结构化输出分离。</p>
+            </div>
+            <div class="p-card">
+              <h3>容易变化的知识 (Changing Knowledge)</h3>
+              <p>具体模型名称字符串 (e.g. `claude-3-7-sonnet`)、具体参数命名的横杠写法、特定 API Key 的环境变量名称。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 最小心智模型 -->
+      <section class="chapter" id="minimum">
+        <header class="chapter-head">
+          <span class="chapter-no">08</span>
+          <div>
+            <h2>最小心智模型：智能体参数契约的 12 个关键概念</h2>
+            <p class="chapter-intro">掌控这 12 个概念，即可自如配置任何现代 AI Agent 的 CLI 运行姿态。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <ol class="min-model-list">
+            <li><strong>Agent Operating Contract (运行契约):</strong> 通过命令行选项显式约束 Agent 行为模式的配置文件或参数声明。</li>
+            <li><strong>Context Scope (上下文作用域):</strong> 决定 Agent 在启动瞬间继承哪些文件、历史对话或系统提示词。</li>
+            <li><strong>Tool Permission Whitelist (`--allowedTools`):</strong> 限制 Agent 仅能调用的特定安全原语集合。</li>
+            <li><strong>Safety Circuit Breaker (`--dangerously-skip`):</strong> 跳过交互确认的风险选项，必须配合隔离容器使用。</li>
+            <li><strong>Extended Thinking Budget (`--thinking-budget`):</strong> 显式分配给 Agent 进行深思熟虑思维链推导的算力额度。</li>
+            <li><strong>Model Tier Selection (`--model`):</strong> 根据任务复杂度在快省模型 (Haiku) 与深思模型 (Sonnet) 之间抉择。</li>
+            <li><strong>Session Persistence (`--resume` / `--session`):</strong> 跨命令保留与追溯 Agent 内存上下文的机制。</li>
+            <li><strong>Structured Machine Output (`--json`):</strong> 放弃渲染给人类眼睛看的格式，输出符合 Schema 的机器数据。</li>
+            <li><strong>Non-Interactive Mode (`-p` / `--print`):</strong> 解耦 TTY 终端，使得 Agent 运行在无头构建管道中。</li>
+            <li><strong>System Prompt Overrides (`--system-prompt`):</strong> 覆盖或追加 Agent 顶层元规矩的高优先配置。</li>
+            <li><strong>MCP Integration (`--mcp-config`):</strong> 给 Agent 插入外部数据库、GitHub 或内部系统的标准化工具扩展插槽。</li>
+            <li><strong>Hard Token Ceiling (`--max-tokens`):</strong> 兜底熔断机制，防止异常任务刷爆消费额度。</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 09 常见误区 -->
+      <section class="chapter" id="misconceptions">
+        <header class="chapter-head">
+          <span class="chapter-no">09</span>
+          <div>
+            <h2>常见误区：打破对 Agent 参数的认知陷阱</h2>
+            <p class="chapter-intro">避免因误解 CLI 选项而引发安全事故或低效使用。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <div class="misconception-card">
+            <h3>误区一：`--dangerously-skip-permissions` 是一个无害的便捷开发参数</h3>
+            <p class="why"><strong>产生原因：</strong>讨厌频繁在终端点击 `y` 确认文件修改或 Bash 命令执行。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>该参数完全撤销了人类与系统之间的安全气囊。一旦 Agent 遭遇 Prompt 注入或产生幻觉，可能直接执行 `rm -rf /`；只有在轻量容器/沙箱中才允许开启。</p>
+          </div>
+
+          <div class="misconception-card">
+            <h3>误区二：挂载给 Agent 的上下文 (Files / Prompt) 越多越好</h3>
+            <p class="why"><strong>产生原因：</strong>认为大模型的上下文窗口巨大，一次性把整个项目代码挂载进去最省心。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>过多的无关上下文会导致注意力稀释 (Attention Dilution)、响应延迟陡增并极大地浪费 Prompt 缓存开销。精准提供相关模块才是专家做法。</p>
+          </div>
+
+          <div class="misconception-card">
+            <h3>误区三：Claude CLI 参数只用于控制终端显示格式</h3>
+            <p class="why"><strong>产生原因：</strong>用传统 `ls`, `grep` 的格式化 Flag 经验套用 AI CLI 工具。</p>
+            <p class="better"><strong>更准确的心智模型：</strong>Agent CLI 参数直接决定了后端大模型的思考方式、本地操作系统的工具调用许可与自动化构建管线的接口契约。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 总结 -->
+      <section class="chapter" id="summary">
+        <header class="chapter-head">
+          <span class="chapter-no">10</span>
+          <div>
+            <h2>总结</h2>
+            <p class="chapter-intro">一句话完成对 Claude 命令重要参数认知升级的凝练。</p>
+          </div>
+        </header>
+        <div class="section-body">
+          <blockquote class="summary-quote">
+            “在 AI 时代，我真正获得的不是<del>背诵几十个 Claude CLI Flag 选项拼写的手艺</del>，<br>
+            而是<mark>对智能体（Agent）上下文范围、安全能力边界、算力预算与自动化系统契约的精准掌控力</mark>。”
+          </blockquote>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="atlas-footer">
+    <p>AI 时代学习地图 · Claude 命令重要参数 · 维护于 2026</p>
+  </footer>
+</body>
+</html>
