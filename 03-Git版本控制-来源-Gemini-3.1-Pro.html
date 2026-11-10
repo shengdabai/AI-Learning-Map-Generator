@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" media="print" onload="this.onload=null;this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet"></noscript>
     <script type="module">
-      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs';
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.esm.min.mjs';
       mermaid.initialize({ startOnLoad: true, theme: 'dark', fontFamily: 'Inter' });
     </script>
     <style>
@@ -155,9 +155,9 @@
         <p>在 Git 的世界里，有三个核心的“空间”和不可变的历史“快照”。</p>
         <div class="mermaid">
             graph LR
-                Working[Working Directory<br>(你在编辑的文件)] -->|Stage| Staging[Staging Area / Index<br>(等待打包的草稿箱)]
-                Staging -->|Commit| LocalRepo[Local Repository<br>(不可变的历史快照)]
-                LocalRepo -->|Push| Remote[Remote Repository<br>(协作中心站)]
+                Working["Working Directory<br>(你在编辑的文件)"] -->|Stage| Staging["Staging Area / Index<br>(等待打包的草稿箱)"]
+                Staging -->|Commit| LocalRepo["Local Repository<br>(不可变的历史快照)"]
+                LocalRepo -->|Push| Remote["Remote Repository<br>(协作中心站)"]
                 Remote -->|Fetch / Pull| LocalRepo
                 LocalRepo -->|Checkout| Working
         </div>
